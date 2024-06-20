@@ -1,3 +1,3 @@
-![Project Logo](images/Presentation1.pdf)
+![Project Logo](images/Presentation1.png)
 
 # Introduction
