@@ -17,8 +17,7 @@ log.info """
     INPUT PARAMETERS:
         - reference samples             : ${params.input}
         - output directory              : ${params.output_dir}
-        - minimum number of CpGs        : ${params.cpg_filter_number}
-        - version of the genome         : ${params.genome_version}
+        - regions file                  : ${params.regions_file}
 
     ==============================================================================================
     """.stripIndent()
@@ -26,7 +25,25 @@ log.info """
 
 // include processes and subworkflows to make them available for use in this script 
 include { PREPROCESSING                                     } from "./modules/preprocessing/main" 
+include { DMR_ANALYSIS                                      } from "./modules/dmr_analysis/main"
+include { TEST_PREPROCESSING                                } from "./modules/test_preprocessing/main"
+
 
 workflow {
-    PREPROCESSING()
+    // set input data
+    samples_ch = Channel.fromPath(params.input, checkIfExists:true)
+    // set region file
+    regions_ch = Channel.fromPath(params.regions_file, checkIfExists:true)
+    // set test samples
+    test_ch = Channel.fromPath(params.test_samples, checkIfExists:true)
+
+    // Pass the input data and region file to the preprocessing module
+    PREPROCESSING(samples_ch, regions_ch)
+
+    // Pass the regions for the DMR analysis
+    DMR_ANALYSIS(PREPROCESSING.out.clusters)
+
+    // Pass the DMRs to the samples to deconvolve to preprocess them
+    TEST_PREPROCESSING(test_ch, DMR_ANALYSIS.out.reference)
+
 }
