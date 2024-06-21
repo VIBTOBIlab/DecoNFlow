@@ -38,13 +38,13 @@ Second, prepare a .tsv or .bed file that includes the pre-defined regions accord
 
 <span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">regions.bed</span>
 ```plaintext:
-1	    10497	    10588
-1	    10589	    10640
-1	    10641	    10669
-...     ...         ...
-22	    50064015	50064037
-22	    50064064	50064084
-22	    50064090	50064112
+1   10497   10588
+1   10589   10640
+1   10641   10669
+... ... ...
+22  50064015    50064037
+22  50064064    50064084
+22  50064090    50064112
 ```
 Each row represents a region, defined by chromosome (first column), starting position (second column) and ending position (third column).
 
