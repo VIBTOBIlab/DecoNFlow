@@ -3,8 +3,9 @@
 # Table of Contents
 1. [Introduction](#Introduction)
 2. [Usage](#Usage)
-3. [Contributing](#Contributing)
+3. [Credits](#Credits)
 4. [License](#License)
+5. [Citations](#Citations)
 
 # Introduction
 DNAmDeconv is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It pre-processes the coverage files of the reference dataset, it performs a clustering of the single CpGs in regions and then it runs a differential methylated regions (DMRs) analysis to extract cell type specific DNAm signatures (markers). Finally, it builds a reference matrix and deconvolves the bulks samples for which the cellular proportions are unknown.
@@ -18,7 +19,7 @@ If you are new to Nextflow and nf-core, please refer to [this page](https://nf-c
 ## Reference dataset
 First, prepare a samplesheet with your input data (reference dataset) data looks as follows:
 
-<span style="background-color: #808080; padding: 2px 4px; border-radius: 4px;">reference.csv</span>
+<span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">reference.csv</span>
 ```plaintext:
 name,type,file
 file1,healthy,/path/to/the/file/file1.cov.gz
@@ -31,5 +32,51 @@ file6,nbl,/path/to/the/file/file6.cov.gz
 Each row represents a coverage file, with the first column representing the name, the second column representing the name of the cell type and the last column representing the path where the coverage file is stored.
 
 ## Region file
+> **NOTE** The chromosome must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represent just by the number, without the "chr" string).
+
+Second, prepare a .tsv or .bed file that includes the pre-defined regions according to which the single CpGs in the coverage files will be clustered. The file looks as follow:
+
+<span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">regions.bed</span>
+```plaintext:
+1	    10497	    10588
+1	    10589	    10640
+1	    10641	    10669
+...     ...         ...
+22	    50064015	50064037
+22	    50064064	50064084
+22	    50064090	50064112
+```
+Each row represents a region, defined by chromosome (first column), starting position (second column) and ending position (third column).
 
 ## Testing samples
+Finally, prepare a samplesheet .csv file with your samples that need to be deconvolved as follows:
+
+<span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">test.csv</span>
+```plaintext:
+name,sample
+test1,/path/to/the/files/file1.cov.gz
+test2,/path/to/the/files/file2.cov.gz
+test3,/path/to/the/files/file3.cov.gz
+test4,/path/to/the/files/file4.cov.gz
+```
+Each row represents a sample, defined by a name (first column) and the sample path to the coverage file (second column).
+
+## Run the pipeline
+>Still working in progress: don't use it!!
+
+Now you can run the pipeline using:
+```plaintext:
+nextflow run nf-core/DNAmDeconv --input reference.csv --output_dir <OUTDIR> --regions regions.bed -profile <profile>
+```
+
+# Credits
+The scripts and containers have been written and built by Edoardo Giuili ([@edogiuili](https://github.com/edogiuili)), Maisa Renata Ferro Dos Santos and Sofie Van de Velde ([@sofie](https://github.com/sofvdvel)), who are also the maintainers.
+
+# Citations
+If you use this pipeline for your analysis, please cite it using the following doi: (...).
+You can cite the nf-core publication as follows:
+> The nf-core framework for community-curated bioinformatics pipelines. 
+>
+> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
+>
+> Nat Biotechnol. 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://www.nature.com/articles/s41587-020-0439-x).
