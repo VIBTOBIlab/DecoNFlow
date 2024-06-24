@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process PREPROCESSING {
-    container 'egiuili/preprocessing:mac'
+    container 'egiuili/preprocessing:v1.0'
 
     publishDir "${params.output_dir}/preprocessing", mode: 'copy'
 

@@ -15,9 +15,22 @@ log.info """
     ================================================================================================
 
     INPUT PARAMETERS:
-        - reference samples             : ${params.input}
-        - output directory              : ${params.output_dir}
-        - regions file                  : ${params.regions_file}
+        - input                         : ${params.input}
+        - output_dir                    : ${params.output_dir}
+        - regions_file                  : ${params.regions_file}
+        - test_samples                  : ${params.test_samples}
+
+    OPTION PARAMETERS:
+        - min_counts                    : ${params.min_counts}
+        - min_cpgs                      : ${params.min_cpgs}
+        - merging_approach              : ${params.merging_approach}
+        - chunk_size                    : ${params.chunk_size}
+        - ncores                        : ${params.ncores}   // still need to include it in the modules so not working now
+        - adjp                          : ${params.adjp}
+        - adj_method                    : ${params.adj_method}
+        - collapse_method               : ${params.collapse_method}
+        - direction                     : ${params.direction}
+        - top                           : ${params.top}
 
     ==============================================================================================
     """.stripIndent()

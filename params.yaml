@@ -1,4 +1,4 @@
 input: ./resources/reference.csv
-output_dir: ./resources/results
+output_dir: ./results
 regions_file: ./resources/RRBS_regions20-200.bed
 test_samples: ./resources/test.csv
