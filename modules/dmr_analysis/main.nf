@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process DMR_ANALYSIS {
-    container 'egiuili/dmr_analysis:mac'
+    container 'egiuili/dmr_analysis:v1.0'
 
     publishDir "${params.output_dir}/dmr_analysis", mode: 'copy'
 
