@@ -14,13 +14,13 @@ log.info """
 
     ================================================================================================
 
-    INPUT PARAMETERS:
+    POSITIONAL PARAMETERS:
         - input                         : ${params.input}
         - output_dir                    : ${params.output_dir}
         - regions_file                  : ${params.regions_file}
         - test_samples                  : ${params.test_samples}
 
-    OPTION PARAMETERS:
+    OPTIONAL PARAMETERS:
         - min_counts                    : ${params.min_counts}
         - min_cpgs                      : ${params.min_cpgs}
         - merging_approach              : ${params.merging_approach}
@@ -40,7 +40,7 @@ log.info """
 include { PREPROCESSING                                     } from "./modules/preprocessing/main" 
 include { DMR_ANALYSIS                                      } from "./modules/dmr_analysis/main"
 include { TEST_PREPROCESSING                                } from "./modules/test_preprocessing/main"
-
+include { METHYL_ATLAS                                      } from "./modules/methyl_atlas/main"
 
 workflow {
     // set input data
@@ -58,5 +58,8 @@ workflow {
 
     // Pass the DMRs to the samples to deconvolve to preprocess them
     TEST_PREPROCESSING(test_ch, DMR_ANALYSIS.out.reference)
+
+    // Run Deconvolution for the testing samples
+    METHYL_ATLAS(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 
 }
