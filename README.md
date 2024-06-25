@@ -19,7 +19,7 @@ If you are new to Nextflow and nf-core, please refer to [this page](https://nf-c
 ## Reference dataset
 First, prepare a samplesheet with your input data (reference dataset) data looks as follows:
 
-<span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">reference.csv</span>
+`reference.csv`
 ```plaintext:
 name,type,file
 file1,healthy,/path/to/the/file/file1.cov.gz
@@ -36,7 +36,7 @@ Each row represents a coverage file, with the first column representing the name
 
 Second, prepare a .tsv or .bed file that includes the pre-defined regions according to which the single CpGs in the coverage files will be clustered. The file looks as follow:
 
-<span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">regions.bed</span>
+`regions.bed`
 ```plaintext:
 1   10497       10588
 1   10589       10640
@@ -51,7 +51,7 @@ Each row represents a region, defined by chromosome (first column), starting pos
 ## Testing samples
 Finally, prepare a samplesheet .csv file with your samples that need to be deconvolved as follows:
 
-<span style="background-color: #333333; padding: 2px 4px; border-radius: 4px;">test.csv</span>
+`test.csv`:
 ```plaintext:
 name,sample
 test1,/path/to/the/files/file1.cov.gz
@@ -62,15 +62,17 @@ test4,/path/to/the/files/file4.cov.gz
 Each row represents a sample, defined by a name (first column) and the sample path to the coverage file (second column).
 
 ## Run the pipeline
->Still working in progress: don't use it!!
-
-Now you can run the pipeline using:
+Now you can run the pipeline using docker profile:
 ```plaintext:
-nextflow run nf-core/DNAmDeconv --input reference.csv --output_dir <OUTDIR> --regions regions.bed -profile <profile>
+nextflow run main.nf -params-file params.yaml -profile docker
+```
+Or using singularity profile:
+```plaintext:
+nextflow run main.nf -params-file params.yaml -profile singularity
 ```
 
 # Credits
-The scripts and containers have been written and built by Edoardo Giuili ([@edogiuili](https://github.com/edogiuili)), Maisa Renata Ferro Dos Santos and Sofie Van de Velde ([@sofie](https://github.com/sofvdvel)), who are also the maintainers.
+The scripts and containers have been written and built by Edoardo Giuili ([@edogiuili](https://github.com/edogiuili)), Maísa Santos([@mferrodo](https://github.com/mferrodo)) and Sofie Van de Velde ([@sofie](https://github.com/sofvdvel)), who are also the maintainers.
 
 # Citations
 If you use this pipeline for your analysis, please cite it using the following doi: (...).

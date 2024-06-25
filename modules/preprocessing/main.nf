@@ -21,7 +21,7 @@ process PREPROCESSING {
     -c ${params.min_cpgs} \
     -g ${params.min_counts} \
     -f ${params.merging_approach} \
-    -k ${params.chunk_size} \
+    -k ${params.chunk_size}
     """
     
 }
