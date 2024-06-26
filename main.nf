@@ -41,6 +41,8 @@ include { PREPROCESSING                                     } from "./modules/pr
 include { DMR_ANALYSIS                                      } from "./modules/dmr_analysis/main"
 include { TEST_PREPROCESSING                                } from "./modules/test_preprocessing/main"
 include { METHYL_ATLAS                                      } from "./modules/methyl_atlas/main"
+include { CIBERSORT                                         } from "./modules/cibersort/main"
+include { EPIDISH                                           } from "./modules/epidish/main"
 
 workflow {
     // set input data
@@ -62,4 +64,7 @@ workflow {
     // Run Deconvolution for the testing samples
     METHYL_ATLAS(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 
+    CIBERSORT(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
+
+    EPIDISH(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 }
