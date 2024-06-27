@@ -31,7 +31,8 @@ log.info """
         - collapse_method               : ${params.collapse_method}
         - direction                     : ${params.direction}
         - top                           : ${params.top}
-
+        - mod                           : ${params.mod}
+        
     ==============================================================================================
     """.stripIndent()
 

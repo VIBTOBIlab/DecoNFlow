@@ -1,0 +1,1 @@
+2024-06-26 17:09:17	4m 54s	cheesy_hoover	OK	7d13fb6c32ebd614947a961909fc2752	9664ed9b-1a98-43be-a0b8-007c1c3aa9f2	nextflow run main.nf -params-file params.yaml -profile docker
