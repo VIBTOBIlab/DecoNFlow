@@ -1,8 +1,0 @@
-Formatting the reference dataset: initiated!
-Formatting the reference dataset: complete!
-Formatting the samples dataset: initiated!
-Formatting the samples dataset: complete!
-Running EpiDISH deconvolution algorithm. EpiDISH can be run in 4 modalities - RPC, CBS, CP_ineq, CP_eq.
-EpiDISH deconvolution: started!
-Selected modality: RPC
-EpiDISH deconvolution: done!
