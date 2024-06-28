@@ -31,8 +31,12 @@ log.info """
         - collapse_method               : ${params.collapse_method}
         - direction                     : ${params.direction}
         - top                           : ${params.top}
+    EPIDISH PARAMETERS
         - mod                           : ${params.mod}
-        
+    MethylResolver PARAMETERS:
+        - alpha                         : ${params.alpha}
+    EpiSCORE PARAMETERS:
+        - weight                        : ${params.weight}
     ==============================================================================================
     """.stripIndent()
 
@@ -44,6 +48,8 @@ include { TEST_PREPROCESSING                                } from "./modules/te
 include { METHYL_ATLAS                                      } from "./modules/methyl_atlas/main"
 include { CIBERSORT                                         } from "./modules/cibersort/main"
 include { EPIDISH                                           } from "./modules/epidish/main"
+include { METHYL_RESOLVER                                   } from "./modules/methyl_resolver/main"
+include { EPISCORE                                          } from "./modules/episcore/main"
 
 workflow {
     // set input data
@@ -68,4 +74,8 @@ workflow {
     CIBERSORT(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 
     EPIDISH(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
+
+    METHYL_RESOLVER(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
+
+    EPISCORE(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 }
