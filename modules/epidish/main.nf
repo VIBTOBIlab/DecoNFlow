@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process EPIDISH {
-    container 'egiuili/epidish:v1.0'
+    container 'egiuili/epidish:v1'
 
     publishDir "${params.output_dir}/epidish", mode: 'copy'
 
@@ -11,11 +11,10 @@ process EPIDISH {
 
     output:
     path 'epidish_res_*.csv', emit: output
-    path 'epidish_test_matrix*.csv'
 
     script:
     """
-    Rscript /source/EpiDISH.R ${ref_path} ${samples_path} ${params.mod}
+    Rscript /source/EpiDISH.R -s ${ref_path} -m ${samples_path} -d ${params.mod}
     """
 
 }

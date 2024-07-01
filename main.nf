@@ -31,10 +31,13 @@ log.info """
         - collapse_method               : ${params.collapse_method}
         - direction                     : ${params.direction}
         - top                           : ${params.top}
-    EPIDISH PARAMETERS
+    
+    EPIDISH PARAMETERS:
         - mod                           : ${params.mod}
+    
     MethylResolver PARAMETERS:
         - alpha                         : ${params.alpha}
+    
     EpiSCORE PARAMETERS:
         - weight                        : ${params.weight}
     ==============================================================================================
