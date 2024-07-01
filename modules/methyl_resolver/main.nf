@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process METHYL_RESOLVER {
-    container 'egiuili/methyl_resolver:v1.0'
+    container 'egiuili/methylresolver:v1'
 
     publishDir "${params.output_dir}/methyl_resolver", mode: 'copy'
 

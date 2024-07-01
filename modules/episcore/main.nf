@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process EPISCORE {
-    container 'egiuili/episcore:v1.0'
+    container 'egiuili/episcore:v1'
 
     publishDir "${params.output_dir}/episcore", mode: 'copy'
 
