@@ -62,13 +62,22 @@ test4,/path/to/the/files/file4.cov.gz
 Each row represents a sample, defined by a name (first column) and the sample path to the coverage file (second column).
 
 ## Run the pipeline
-Now you can run the pipeline using docker profile:
+Now you can run the NextFlow (version 24.04.2) pipeline using docker profile:
 ```plaintext:
 nextflow run main.nf -params-file params.yaml -profile docker
 ```
 Or using singularity profile:
 ```plaintext:
 nextflow run main.nf -params-file params.yaml -profile singularity
+```
+The params.yaml file is used in this example, but all the parameters specified in the file can also be specified in the command line using the corresponding flags:
+
+`params.yaml`:
+```plaintext: 
+input: ./resources/reference.csv
+output_dir: ./results
+regions_file: ./resources/RRBS_regions20-200.bed
+test_samples: ./resources/test.csv
 ```
 
 # Credits
