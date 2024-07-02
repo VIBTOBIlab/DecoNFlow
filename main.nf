@@ -31,7 +31,9 @@ log.info """
         - collapse_method               : ${params.collapse_method}
         - direction                     : ${params.direction}
         - top                           : ${params.top}
-    
+        - refree_min_cpgs               : ${params.refree_min_cpgs}
+        - refree_min_counts             : ${params.refree_min_counts}
+
     EPIDISH PARAMETERS:
         - mod                           : ${params.mod}
     
@@ -40,6 +42,11 @@ log.info """
     
     EpiSCORE PARAMETERS:
         - weight                        : ${params.weight}
+    
+    PRMeth PARAMETERS:
+        - ncells                        : ${params.ncells}
+        - prmeth_mod                    : ${params.prmeth_mod}
+        
     ==============================================================================================
     """.stripIndent()
 
@@ -53,6 +60,9 @@ include { CIBERSORT                                         } from "./modules/ci
 include { EPIDISH                                           } from "./modules/epidish/main"
 include { METHYL_RESOLVER                                   } from "./modules/methyl_resolver/main"
 include { EPISCORE                                          } from "./modules/episcore/main"
+include { REFREE_PREPROCESSING                              } from "./modules/refree_preprocessing/main"
+include { PRMETH                                            } from "./modules/prmeth/main"
+
 
 workflow {
     // set input data
@@ -70,6 +80,8 @@ workflow {
 
     // Pass the DMRs to the samples to deconvolve to preprocess them
     TEST_PREPROCESSING(test_ch, DMR_ANALYSIS.out.reference)
+    // Preprocess testing samples for reference-free deconvolution tools
+    REFREE_PREPROCESSING(test_ch, regions_ch)
 
     // Run Deconvolution for the testing samples
     METHYL_ATLAS(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
@@ -81,4 +93,6 @@ workflow {
     METHYL_RESOLVER(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 
     EPISCORE(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
+
+    PRMETH(DMR_ANALYSIS.out.reference, REFREE_PREPROCESSING.out.preprocessed_refree)
 }
