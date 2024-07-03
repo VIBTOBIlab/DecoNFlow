@@ -48,7 +48,6 @@ log.info """
         - prmeth_mod                    : ${params.prmeth_mod}
 
     MeDeCom PARAMETERS:
-        - lambda                        : ${params.lambda}
         - clusters                      : ${params.clusters}
         - ninit                         : ${params.ninit}
         - nfold                         : ${params.nfold}
