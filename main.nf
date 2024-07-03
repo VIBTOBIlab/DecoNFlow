@@ -46,7 +46,15 @@ log.info """
     PRMeth PARAMETERS:
         - ncells                        : ${params.ncells}
         - prmeth_mod                    : ${params.prmeth_mod}
-        
+
+    MeDeCom PARAMETERS:
+        - lambda                        : ${params.lambda}
+        - clusters                      : ${params.clusters}
+        - ninit                         : ${params.ninit}
+        - nfold                         : ${params.nfold}
+        - itermax                       : ${params.itermax}
+        - ncores                        : ${params.ncores_medecom} // not yet implemented
+
     ==============================================================================================
     """.stripIndent()
 
@@ -62,6 +70,7 @@ include { METHYL_RESOLVER                                   } from "./modules/me
 include { EPISCORE                                          } from "./modules/episcore/main"
 include { REFREE_PREPROCESSING                              } from "./modules/refree_preprocessing/main"
 include { PRMETH                                            } from "./modules/prmeth/main"
+include { MEDECOM                                           } from "./modules/medecom/main"
 
 
 workflow {
@@ -95,4 +104,6 @@ workflow {
     EPISCORE(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
 
     PRMETH(DMR_ANALYSIS.out.reference, REFREE_PREPROCESSING.out.preprocessed_refree)
+
+    MEDECOM(REFREE_PREPROCESSING.out.preprocessed_refree)
 }
