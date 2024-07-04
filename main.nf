@@ -54,6 +54,13 @@ log.info """
         - itermax                       : ${params.itermax}
         - ncores                        : ${params.ncores_medecom} // not yet implemented
 
+    CelFiE PARAMETERS:
+        - nsamples                      : ${params.nsamples}    // to be optimized (now it needs to be specified by the user but parametrization possible)
+        - celfie_maxiter                : ${params.maxiter}
+        - unknown                       : ${params.unknown}
+        - parall_job                    : ${params.parall_job}
+        - converg                       : ${params.converg}
+        - celfie_randrest               : ${params.celfie_randrest}
     ==============================================================================================
     """.stripIndent()
 
@@ -70,6 +77,7 @@ include { EPISCORE                                          } from "./modules/ep
 include { REFREE_PREPROCESSING                              } from "./modules/refree_preprocessing/main"
 include { PRMETH                                            } from "./modules/prmeth/main"
 include { MEDECOM                                           } from "./modules/medecom/main"
+include { CELFIE                                            } from "./modules/celfie/main"
 
 
 workflow {
@@ -88,6 +96,7 @@ workflow {
 
     // Pass the DMRs to the samples to deconvolve to preprocess them
     TEST_PREPROCESSING(test_ch, DMR_ANALYSIS.out.reference)
+
     // Preprocess testing samples for reference-free deconvolution tools
     REFREE_PREPROCESSING(test_ch, regions_ch)
 
@@ -105,4 +114,6 @@ workflow {
     PRMETH(DMR_ANALYSIS.out.reference, REFREE_PREPROCESSING.out.preprocessed_refree)
 
     MEDECOM(REFREE_PREPROCESSING.out.preprocessed_refree)
+
+    CELFIE(PREPROCESSING.out.celfie_ref, TEST_PREPROCESSING.out.celfie_test)
 }

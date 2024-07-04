@@ -10,15 +10,18 @@ process TEST_PREPROCESSING {
     path reference
 
     output:
-    path '*.csv', emit: preprocessed_test
+    path 'test_samples.csv', emit: preprocessed_test
+    path 'celfie*.csv', emit: celfie_test
     path '*.out'
 
     script:
+    def celfie_flag = params.celfie ? "--celfie" : ""
     """
     python3 /source/test_preprocessing.py \
     -i ${test} \
     -r ${reference} \
     -k ${params.chunk_size} \
+    ${celfie_flag}
     """
     
 }
