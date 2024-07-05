@@ -1,0 +1,1 @@
+2024-07-05 11:58:30	8m 19s	scruffy_bhabha	OK	02b67f8d07314525dcbc463728df711c	0466011b-65fd-4140-9a1b-e55a36fa9ee0	nextflow run main.nf -params-file params.yaml -profile docker --ncells 2 --clusters 2 --nsamples 5
