@@ -56,7 +56,7 @@ log.info """
 
     CelFiE PARAMETERS:
         - nsamples                      : ${params.nsamples}    // to be optimized (now it needs to be specified by the user but parametrization possible)
-        - celfie_maxiter                : ${params.maxiter}
+        - celfie_maxiter                : ${params.celfie_maxiter}
         - unknown                       : ${params.unknown}
         - parall_job                    : ${params.parall_job}
         - converg                       : ${params.converg}
