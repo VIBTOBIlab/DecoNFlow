@@ -3,7 +3,7 @@
 process PREPROCESSING {
     container 'egiuili/preprocessing:v1.0'
 
-    publishDir "${params.output_dir}/preprocessing", mode: 'copy'
+    publishDir "${params.outdir}/preprocessing", mode: 'copy'
 
     input:
     path file
@@ -11,11 +11,14 @@ process PREPROCESSING {
 
     output:
     path 'regions.csv', emit: clusters
-    path 'celfie_regions.csv', emit: celfie_ref
+    path 'celfie_regions.csv', emit: celfie_ref, optional: true
     path '*.out'
     
     script:
-    def celfie_flag = params.celfie ? "--celfie" : ""
+    def args = ''
+    if (params.celfie || params.benchmark) {
+        args += '--celfie'
+    }
     """
     python3 /source/preprocessing.py \
     -i ${file} \
@@ -24,7 +27,7 @@ process PREPROCESSING {
     -g ${params.min_counts} \
     -f ${params.merging_approach} \
     -k ${params.chunk_size} \
-    ${celfie_flag}
+    $args
     """
     
 }

@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 
-process DMR_ANALYSIS {
+process LIMMA {
     container 'egiuili/dmr_analysis:v1.0'
 
-    publishDir "${params.output_dir}/dmr_analysis", mode: 'copy'
+    publishDir "${params.outdir}/dmr_analysis", mode: 'copy'
 
     input:
     path clusters
