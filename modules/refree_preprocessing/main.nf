@@ -3,7 +3,7 @@
 process REFREE_PREPROCESSING {
     container 'egiuili/refree_preprocessing:v1'
 
-    publishDir "${params.output_dir}/refree_preprocessing", mode: 'copy'
+    publishDir "${params.outdir}/refree_preprocessing", mode: 'copy'
 
     input:
     path test

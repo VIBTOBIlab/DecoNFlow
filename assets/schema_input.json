@@ -1,0 +1,31 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "DNAmDeconv pipeline - params.input schema",
+    "description": "Schema for the file provided with params.input",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
+            },
+            "type": {
+                "type": "string",
+                "pattern": "^[a-zA-Z]+$",
+                "errorMessage": "Sample type must be provided, cannot contain spaces or numbers but only characters"
+            },
+            "file": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.cov\\.gz$",
+                "errorMessage": "Path for the coverage file must be provided and cannot contain spaces"
+
+            }
+        },
+        "required": ["name", "type", "file"]
+    }
+}

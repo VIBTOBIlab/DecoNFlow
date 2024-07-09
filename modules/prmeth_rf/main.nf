@@ -1,12 +1,11 @@
 #!/usr/bin/env nextflow
 
-process PRMETH {
+process PRMETH_RF {
     container 'egiuili/prmeth:v1'
 
     publishDir "${params.outdir}/prmeth", mode: 'copy'
 
     input:
-    path reference
     path samples
 
     output:
@@ -15,10 +14,10 @@ process PRMETH {
     script:
     """
     Rscript /source/run_prmeth.R \
-    -s ${reference} \
+    -s ${samples} \
     -m ${samples} \
     -k ${params.clusters} \
-    -d ${params.prmeth_mod}
+    -d RF
     """
     
 }

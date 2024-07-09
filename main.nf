@@ -1,119 +1,69 @@
 #!/usr/bin/env nextflow
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    nf-core/DNAmDeconv
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Github : https://github.com/nf-core/
+    Website: https://nf-co.re/
+----------------------------------------------------------------------------------------
+*/
 
-// Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\$' and '\' =>'\\')
-log.info """
-    ================================================================================================    
+nextflow.enable.dsl = 2
 
-                                                                                                            
- ____   _____  ____  ___   _   _ __     __  ____   _____  _   _   ____  _   _  __  __     _     ____   _  __
-|  _ \\ | ____|/ ___|/ _ \\ | \\ | |\\ \\   / / | __ ) | ____|| \\ | | / ___|| | | ||  \\/  |   / \\   |  _ \\ | |/ /
-| | | ||  _| | |   | | | ||  \\| | \\ \\ / /  |  _ \\ |  _|  |  \\| || |    | |_| || |\\/| |  / _ \\  | |_) || ' / 
-| |_| || |___| |___| |_| || |\\  |  \\ V /   | |_) || |___ | |\\  || |___ |  _  || |  | | / ___ \\ |  _ < | . \\ 
-|____/ |_____|\\____|\\___/ |_| \\_|   \\_/    |____/ |_____||_| \\_| \\____||_| |_||_|  |_|/_/   \\_\\|_| \\_\\|_|\\_\\
-                                                                                                            
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    VALIDATE & PRINT PARAMETER SUMMARY
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+include { validateParameters; paramsHelp; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 
-    ================================================================================================
-
-    POSITIONAL PARAMETERS:
-        - input                         : ${params.input}
-        - output_dir                    : ${params.output_dir}
-        - regions_file                  : ${params.regions_file}
-        - test_samples                  : ${params.test_samples}
-
-    OPTIONAL PARAMETERS:
-        - min_counts                    : ${params.min_counts}
-        - min_cpgs                      : ${params.min_cpgs}
-        - merging_approach              : ${params.merging_approach}
-        - chunk_size                    : ${params.chunk_size}
-        - ncores                        : ${params.ncores}   // still need to include it in the modules so not working now
-        - adjp                          : ${params.adjp}
-        - adj_method                    : ${params.adj_method}
-        - collapse_method               : ${params.collapse_method}
-        - direction                     : ${params.direction}
-        - top                           : ${params.top}
-        - refree_min_cpgs               : ${params.refree_min_cpgs}
-        - refree_min_counts             : ${params.refree_min_counts}
-
-    EPIDISH PARAMETERS:
-        - mod                           : ${params.mod}
-    
-    MethylResolver PARAMETERS:
-        - alpha                         : ${params.alpha}
-    
-    EpiSCORE PARAMETERS:
-        - weight                        : ${params.weight}
-    
-    PRMeth PARAMETERS:
-        - ncells                        : ${params.ncells}
-        - prmeth_mod                    : ${params.prmeth_mod}
-
-    MeDeCom PARAMETERS:
-        - clusters                      : ${params.clusters}
-        - ninit                         : ${params.ninit}
-        - nfold                         : ${params.nfold}
-        - itermax                       : ${params.itermax}
-        - ncores                        : ${params.ncores_medecom} // not yet implemented
-
-    CelFiE PARAMETERS:
-        - nsamples                      : ${params.nsamples}    // to be optimized (now it needs to be specified by the user but parametrization possible)
-        - celfie_maxiter                : ${params.celfie_maxiter}
-        - unknown                       : ${params.unknown}
-        - parall_job                    : ${params.parall_job}
-        - converg                       : ${params.converg}
-        - celfie_randrest               : ${params.celfie_randrest}
-    ==============================================================================================
-    """.stripIndent()
-
-
-// include processes and subworkflows to make them available for use in this script 
-include { PREPROCESSING                                     } from "./modules/preprocessing/main" 
-include { DMR_ANALYSIS                                      } from "./modules/dmr_analysis/main"
-include { TEST_PREPROCESSING                                } from "./modules/test_preprocessing/main"
-include { METHYL_ATLAS                                      } from "./modules/methyl_atlas/main"
-include { CIBERSORT                                         } from "./modules/cibersort/main"
-include { EPIDISH                                           } from "./modules/epidish/main"
-include { METHYL_RESOLVER                                   } from "./modules/methyl_resolver/main"
-include { EPISCORE                                          } from "./modules/episcore/main"
-include { REFREE_PREPROCESSING                              } from "./modules/refree_preprocessing/main"
-include { PRMETH                                            } from "./modules/prmeth/main"
-include { MEDECOM                                           } from "./modules/medecom/main"
-include { CELFIE                                            } from "./modules/celfie/main"
-
-
-workflow {
-    // set input data
-    samples_ch = Channel.fromPath(params.input, checkIfExists:true)
-    // set region file
-    regions_ch = Channel.fromPath(params.regions_file, checkIfExists:true)
-    // set test samples
-    test_ch = Channel.fromPath(params.test_samples, checkIfExists:true)
-
-    // Pass the input data and region file to the preprocessing module
-    PREPROCESSING(samples_ch, regions_ch)
-
-    // Pass the regions for the DMR analysis
-    DMR_ANALYSIS(PREPROCESSING.out.clusters)
-
-    // Pass the DMRs to the samples to deconvolve to preprocess them
-    TEST_PREPROCESSING(test_ch, DMR_ANALYSIS.out.reference)
-
-    // Preprocess testing samples for reference-free deconvolution tools
-    REFREE_PREPROCESSING(test_ch, regions_ch)
-
-    // Run Deconvolution for the testing samples
-    METHYL_ATLAS(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
-
-    CIBERSORT(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
-
-    EPIDISH(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
-
-    METHYL_RESOLVER(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
-
-    EPISCORE(DMR_ANALYSIS.out.reference, TEST_PREPROCESSING.out.preprocessed_test)
-
-    PRMETH(DMR_ANALYSIS.out.reference, REFREE_PREPROCESSING.out.preprocessed_refree)
-
-    MEDECOM(REFREE_PREPROCESSING.out.preprocessed_refree)
-
-    CELFIE(PREPROCESSING.out.celfie_ref, TEST_PREPROCESSING.out.celfie_test)
+// Print help message, supply typical command line usage for the pipeline
+if (params.help) {
+   log.info paramsHelp("nextflow run main.nf --input input_file.csv --test_samples test.csv --outdir results/ --regions_file regions.bed -profile <profile>")
+   exit 0
 }
+
+// Validate input parameters
+//validateParameters()
+
+// Print summary of supplied parameters
+log.info paramsSummaryLog(workflow)
+
+// Create a new channel of metadata from a sample sheet passed to the pipeline through the --input parameter
+ch_input = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
+
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    NAMED WORKFLOW FOR PIPELINE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+include { DNAmDeconv } from './workflows/DNAmDeconv'
+
+//
+// WORKFLOW: Run main nf-core/DNAmDeconv analysis pipeline
+//
+workflow RUN_DNAmDeconv {
+    DNAmDeconv ()
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    RUN ALL WORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+//
+// WORKFLOW: Execute a single named workflow for the pipeline
+// See: https://github.com/nf-core/rnaseq/issues/619
+//
+workflow {
+    RUN_DNAmDeconv ()
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    THE END
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/

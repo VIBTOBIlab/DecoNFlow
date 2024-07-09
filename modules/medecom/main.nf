@@ -3,7 +3,7 @@
 process MEDECOM {
     container 'egiuili/medecom:v1'
 
-    publishDir "${params.output_dir}/medecom", mode: 'copy'
+    publishDir "${params.outdir}/medecom", mode: 'copy'
 
     input:
     path samples_path
