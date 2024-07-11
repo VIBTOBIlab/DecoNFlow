@@ -70,6 +70,8 @@ include { refBasedDeconv                                    } from "../subworkfl
 include { refFreeDeconv                                     } from "../subworkflows/refFreeDeconv"
 include { CELFIE                                            } from "../subworkflows/celfie"
 include { TEST_PREPROCESSING                                } from "../modules/test_preprocessing/main"
+include { COMBINE_FILES                                     } from "../modules/combine_files/main"
+
 
 workflow DNAmDeconv{
 
@@ -87,17 +89,19 @@ workflow DNAmDeconv{
          *     - inHousePrep if regions specified
          *     - Other DMRselection tools else
          */
-        if (params.regions) {
+        if (params.DMRselection=="custom") {
             regions_ch = Channel.fromPath(params.regions)
             inHousePrep(samples_ch, regions_ch)
+            dmrs = inHousePrep.out.dmrs
         } 
         
-        else { 
-            println "No regions: specify them (or wait for modules reference = DMRfinder, DSS, etc)"
-        }
+        //else if (params.regions=="DMRfinder"){ 
+        //    println "No regions: specify them (or wait for modules reference = DMRfinder, DSS, etc)"
+            // dmrs = DMRfinder()
+        //}
 
         // Preprocess test samples
-        TEST_PREPROCESSING(test_ch, inHousePrep.out.dmrs)
+        TEST_PREPROCESSING(test_ch, dmrs)
         test = TEST_PREPROCESSING.out.preprocessed_test
 
         /*
@@ -113,7 +117,7 @@ workflow DNAmDeconv{
         /*
          * SUBWORKFLOW: Reference-based cellular deconvolution 
          */
-        refBasedDeconv(inHousePrep.out.dmrs, test)
+        refBasedDeconv(dmrs, test)
         proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
             
     }
@@ -132,4 +136,10 @@ workflow DNAmDeconv{
             println "Region file is required for ref-free deconvolution"
         }
     }
+
+
+    /*
+     * PROCESS: Combine results in a unique table 
+     */
+    COMBINE_FILES( proportion_ch.collect { t -> t[0] + ':' + t[1] } )
 }
