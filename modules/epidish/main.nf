@@ -3,7 +3,7 @@
 process EPIDISH {
     container 'egiuili/epidish:v1'
 
-    publishDir "${params.outdir}/epidish", mode: 'copy'
+    label 'process_medium'
 
     input:
     path ref_path

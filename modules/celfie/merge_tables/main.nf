@@ -3,7 +3,7 @@
 process MERGE_TABLES {
     container 'egiuili/celfie:v1.0'
 
-    publishDir "${params.outdir}/celfie", mode: 'copy'
+    label 'process_low'
 
     input:
     path ref_matrix

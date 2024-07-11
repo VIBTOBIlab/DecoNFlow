@@ -3,7 +3,7 @@
 process LIMMA {
     container 'egiuili/dmr_analysis:v1.0'
 
-    publishDir "${params.outdir}/dmr_analysis", mode: 'copy'
+    label 'process_low'
 
     input:
     path clusters
@@ -14,14 +14,20 @@ process LIMMA {
     path '*.out'
 
     script:
+    def args = ''
+    if (params.direction) {
+        args += "-d ${params.direction}"
+        if (params.top) {
+        args += " -t ${params.top}"
+    }
+    }
     """
     Rscript /source/test_DMR.R \
     -i ${clusters} \
     -p ${params.adjp} \
     -j ${params.adj_method} \
     -c ${params.collapse_method} \
-    -d ${params.direction} \
-    -t ${params.top} \
+    $args
     """
     
 }

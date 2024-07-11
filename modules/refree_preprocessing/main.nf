@@ -3,7 +3,7 @@
 process REFREE_PREPROCESSING {
     container 'egiuili/refree_preprocessing:v1'
 
-    publishDir "${params.outdir}/refree_preprocessing", mode: 'copy'
+    label 'process_high_memory'
 
     input:
     path test
@@ -14,13 +14,15 @@ process REFREE_PREPROCESSING {
     path '*.out'
 
     script:
+    def args = "-n ${task.cpus}"
     """
     python3 /source/preprocessing.py \
     -i ${test} \
     -r ${reference} \
     -c ${params.refree_min_cpgs} \
     -g ${params.refree_min_counts} \
-    -k ${params.chunk_size}
+    -k ${params.chunk_size} \
+    $args
     """
     
 }

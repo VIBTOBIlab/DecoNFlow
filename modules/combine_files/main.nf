@@ -3,9 +3,9 @@
 process COMBINE_FILES {
     container 'egiuili/combine_files:v1'
 
-    containerOptions "--volume ${projectDir}:${projectDir}"
+    label 'process_low'
 
-    publishDir "${params.outdir}/final_outputs", mode: 'copy'
+    containerOptions "--volume ${projectDir}:${projectDir}"
 
     input:
     val files

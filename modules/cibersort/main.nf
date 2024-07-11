@@ -3,7 +3,7 @@
 process CIBERSORT {
     container 'egiuili/cibersort:v1'
 
-    publishDir "${params.outdir}/cibersort", mode: 'copy'
+    label 'process_medium'
 
     input:
     path reference

@@ -3,7 +3,6 @@
 // Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\$' and '\' =>'\\')
 log.info """
     ================================================================================================    
-
                                                                                                             
  ____   _____  ____  ___   _   _ __     __  ____   _____  _   _   ____  _   _  __  __     _     ____   _  __
 |  _ \\ | ____|/ ___|/ _ \\ | \\ | |\\ \\   / / | __ ) | ____|| \\ | | / ___|| | | ||  \\/  |   / \\   |  _ \\ | |/ /
@@ -12,54 +11,6 @@ log.info """
 |____/ |_____|\\____|\\___/ |_| \\_|   \\_/    |____/ |_____||_| \\_| \\____||_| |_||_|  |_|/_/   \\_\\|_| \\_\\|_|\\_\\
                                                                                                             
 
-    ================================================================================================
-
-    POSITIONAL PARAMETERS:
-        - input                         : ${params.input}
-        - output_dir                    : ${params.outdir}
-        - regions_file                  : ${params.regions}
-        - test_samples                  : ${params.test}
-
-    OPTIONAL PARAMETERS:
-        - min_counts                    : ${params.min_counts}
-        - min_cpgs                      : ${params.min_cpgs}
-        - merging_approach              : ${params.merging_approach}
-        - chunk_size                    : ${params.chunk_size}
-        - ncores                        : ${params.ncores}   // still need to include it in the modules so not working now
-        - adjp                          : ${params.adjp}
-        - adj_method                    : ${params.adj_method}
-        - collapse_method               : ${params.collapse_method}
-        - direction                     : ${params.direction}
-        - top                           : ${params.top}
-        - refree_min_cpgs               : ${params.refree_min_cpgs}
-        - refree_min_counts             : ${params.refree_min_counts}
-
-    EPIDISH PARAMETERS:
-        - mod                           : ${params.mod}
-    
-    MethylResolver PARAMETERS:
-        - alpha                         : ${params.alpha}
-    
-    EpiSCORE PARAMETERS:
-        - weight                        : ${params.weight}
-    
-    PRMeth PARAMETERS:
-        - prmeth_mod                    : ${params.prmeth_mod}
-
-    MeDeCom PARAMETERS:
-        - clusters                      : ${params.clusters}
-        - ninit                         : ${params.ninit}
-        - nfold                         : ${params.nfold}
-        - itermax                       : ${params.itermax}
-        - ncores                        : ${params.ncores_medecom} // not yet implemented
-
-    CelFiE PARAMETERS:
-        - nsamples                      : ${params.nsamples}
-        - celfie_maxiter                : ${params.celfie_maxiter}
-        - unknown                       : ${params.unknown}
-        - parall_job                    : ${params.parall_job}
-        - converg                       : ${params.converg}
-        - celfie_randrest               : ${params.celfie_randrest}
     ==============================================================================================
     """.stripIndent()
 
@@ -79,7 +30,7 @@ workflow DNAmDeconv{
     proportion_ch = Channel.empty()
 
     // Set the testing samples channel
-    test_ch = Channel.fromPath(params.test)
+    test_ch = Channel.fromPath(params.test_set)
 
     if (params.input) {
         samples_ch = Channel.fromPath(params.input)

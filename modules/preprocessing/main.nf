@@ -3,7 +3,7 @@
 process PREPROCESSING {
     container 'egiuili/preprocessing:v1.0'
 
-    publishDir "${params.outdir}/preprocessing", mode: 'copy'
+    label 'process_high_memory'
 
     input:
     path file
@@ -15,9 +15,9 @@ process PREPROCESSING {
     path '*.out'
     
     script:
-    def args = ''
+    def args = "-n ${task.cpus}"
     if (params.celfie || params.benchmark) {
-        args += '--celfie'
+        args += ' --celfie'
     }
     """
     python3 /source/preprocessing.py \

@@ -3,7 +3,7 @@
 process EPISCORE {
     container 'egiuili/episcore:v1'
 
-    publishDir "${params.outdir}/episcore", mode: 'copy'
+    label 'process_medium'
 
     input:
     path reference
