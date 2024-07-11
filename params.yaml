@@ -1,5 +1,5 @@
 input: ./resources/reference.csv
-outdir: ./results2
+outdir: ./results
 regions: ./resources/RRBS_regions20-200.bed
 test: ./resources/test.csv
 nsamples: 5
