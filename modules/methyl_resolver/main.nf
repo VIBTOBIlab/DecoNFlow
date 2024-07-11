@@ -3,7 +3,7 @@
 process METHYL_RESOLVER {
     container 'egiuili/methylresolver:v1'
 
-    publishDir "${params.outdir}/methyl_resolver", mode: 'copy'
+    label 'process_medium'
 
     input:
     path reference

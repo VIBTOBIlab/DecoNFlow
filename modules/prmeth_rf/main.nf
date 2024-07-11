@@ -3,7 +3,7 @@
 process PRMETH_RF {
     container 'egiuili/prmeth:v1'
 
-    publishDir "${params.outdir}/prmeth", mode: 'copy'
+    label 'process_medium'
 
     input:
     path samples

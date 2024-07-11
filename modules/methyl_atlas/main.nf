@@ -3,7 +3,7 @@
 process METHYL_ATLAS {
     container 'egiuili/methyl_atlas:v1.0'
 
-    publishDir "${params.outdir}/methyl_atlas", mode: 'copy'
+    label 'process_medium'
 
     input:
     path reference

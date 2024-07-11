@@ -3,7 +3,7 @@
 process MEDECOM {
     container 'egiuili/medecom:v1'
 
-    publishDir "${params.outdir}/medecom", mode: 'copy'
+    label 'process_high'
 
     input:
     path samples_path
@@ -12,6 +12,7 @@ process MEDECOM {
     path '*deconv_output*.csv', emit: output
 
     script:
+    def args = "-c ${task.cpus}"
     """
     Rscript /source/run_medecom.R \
     -m ${samples_path} \
@@ -19,6 +20,7 @@ process MEDECOM {
     -n ${params.ninit} \
     -f ${params.nfold} \
     -r ${params.itermax} \
+    $args
     """
 
 }

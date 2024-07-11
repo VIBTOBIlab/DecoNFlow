@@ -1,6 +1,5 @@
 input: ./resources/reference.csv
 outdir: ./results
 regions: ./resources/RRBS_regions20-200.bed
-test: ./resources/test.csv
+test_set: ./resources/test.csv
 nsamples: 5
-clusters: 2

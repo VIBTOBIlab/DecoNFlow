@@ -1,0 +1,360 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/DNAmDeconv/master/nextflow_schema.json",
+    "title": "DNAmDeconv pipeline parameters",
+    "description": "DNA methylation computational deconvolution pipeline.",
+    "type": "object",
+    "defs": {
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "fa_icon": "fas fa-terminal",
+            "description": "Define where the pipeline should find input data and save output data.",
+            "required": [
+                "test_set",
+                "outdir"
+            ],
+            "properties": {
+                "input": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "schema": "assets/schema_input.json",
+                    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the reference samples.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "test_set": {
+                    "type": "string",
+                    "description": "Path to comma-separated file containing information about the samples to deconvolve.."
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
+                    "fa_icon": "fas fa-folder-open"
+                }
+            }
+        },
+        "generic_options": {
+            "title": "Generic options",
+            "type": "object",
+            "fa_icon": "fas fa-file-import",
+            "description": "Less common options for the pipeline, typically set in a config file.",
+            "help_text": "These options are common to all nf-core pipelines and allow you to customise some of the core preferences for how the pipeline runs.\n\nTypically these options would be set in a Nextflow config file loaded for all pipeline runs, such as `~/.nextflow/config`.",
+            "properties": {
+                "help": {
+                    "type": "boolean",
+                    "description": "Display help text.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
+                "version": {
+                    "type": "boolean",
+                    "description": "Display version and exit.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                }
+            }
+        },
+        "benchmarking_options": {
+            "title": "Benchmarking options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "benchmark": {
+                    "type": "boolean",
+                    "description": "If True, it runs all the tools present in the pipeline"
+                },
+                "save_intermeds": {
+                    "type": "boolean",
+                    "description": "Save intermediate files, including single deconvolution tool output files"
+                },
+                "epidish": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "methyl_resolver": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "episcore": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "prmeth": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "prmeth_rf": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "medecom": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "celfie": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "methyl_atlas": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "cibersort": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                }
+            }
+        },
+        "dmr_analysis_options": {
+            "title": "DMR analysis options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "DMRselection": {
+                    "type": "string",
+                    "default": "custom",
+                    "description": "DMR selection approach adopted"
+                },
+                "regions": {
+                    "type": "string",
+                    "description": "Path to region file if DMRselection == \"custom\""
+                },
+                "adjp": {
+                    "type": "number",
+                    "default": 0.001,
+                    "description": "Adjusted p-value threshold"
+                },
+                "adj_method": {
+                    "type": "string",
+                    "default": "BH",
+                    "description": "Multiple testing correction method among the ones available in limma R package"
+                },
+                "collapse_method": {
+                    "type": "string",
+                    "default": "mean",
+                    "description": "Method to collapse the sample values for each region"
+                },
+                "direction": {
+                    "type": "string",
+                    "description": "Direction of methylation.",
+                    "help_text": "Default takes all the regions: it can be either \"hypo\",\"hyper\",\"both\" or \"random\""
+                },
+                "top": {
+                    "type": "integer",
+                    "description": "Take the top x number of DMRs per cell state.",
+                    "help_text": "Default is \"None\". It can be used only if \"direction\" flag is specified."
+                }
+            }
+        },
+        "options_for_the_preprocessing_of_the_reference_samples": {
+            "title": "Options for the preprocessing of the reference samples",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "min_counts": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Minimum number of counts to keep a CpG position"
+                },
+                "min_cpgs": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Minimum number of CpGs per region"
+                },
+                "merging_approach": {
+                    "type": "string",
+                    "default": "intersect",
+                    "description": "Approach adopted to merge the reference coverage files. Alternative is 'union' (less stringent approach)"
+                },
+                "chunk_size": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "Size of the chunks that are used to reduce the memory required."
+                }
+            }
+        },
+        "options_for_the_preprocessing_for_reference_free_tools": {
+            "title": "Options for the preprocessing for reference-free tools",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "refree_min_cpgs": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Minimum number of counts to keep a CpG position"
+                },
+                "refree_min_counts": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Minimum number of CpGs per region"
+                },
+                "clusters": {
+                    "type": "integer",
+                    "default": 2,
+                    "description": "Number of cell types expected (necessary for ref-free modality)"
+                }
+            }
+        },
+        "medecom_parameters": {
+            "title": "MeDeCom parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "ninit": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Number of random initializations"
+                },
+                "nfold": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Number of folds for CV"
+                },
+                "itermax": {
+                    "type": "integer",
+                    "default": 300,
+                    "description": "Max number of iterations"
+                }
+            }
+        },
+        "episcore_parameters": {
+            "title": "EpiSCORE parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "weight": {
+                    "type": "number",
+                    "default": 0.4,
+                    "description": "Weight parameter used for deconvolution (can go from 0.05 to 0.9)"
+                }
+            }
+        },
+        "epidish_parameters": {
+            "title": "EpiDISH parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "mod": {
+                    "type": "string",
+                    "default": "RPC",
+                    "description": "EpiDISH deconvolution modality",
+                    "help_text": "Alternatives are: [RPC, CBS, CP_ineq, CP_eq]"
+                }
+            }
+        },
+        "methylresolver_parameters": {
+            "title": "MethylResolver parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "alpha": {
+                    "type": "number",
+                    "default": 0.5,
+                    "description": "Alpha parameter used by the model (can go from 0.5 to 0.9)"
+                }
+            }
+        },
+        "prmeth_parameters": {
+            "title": "PRMeth parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "prmeth_mod": {
+                    "type": "string",
+                    "default": "QP",
+                    "description": "PRMeth deconv modality",
+                    "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based). PRMeth_RF runs always reference-free deconvolution."
+                }
+            }
+        },
+        "celfie_parameters": {
+            "title": "CelFiE parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "nsamples": {
+                    "type": "integer",
+                    "description": "Number of samples to deconvolve"
+                },
+                "celfie_maxiter": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "How long the EM should iterate before stopping, unless convergence criteria is met"
+                },
+                "unknown": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Number of unknown categories to be estimated along with the reference data"
+                },
+                "parall_job": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Replicate number in a simulation experiment"
+                },
+                "converg": {
+                    "type": "number",
+                    "default": 0.0001,
+                    "description": "Convergence criteria for EM"
+                },
+                "celfie_randrest": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "CelFiE will perform several random restarts and select the one with the highest log-likelihood"
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/defs/input_output_options"
+        },
+        {
+            "$ref": "#/defs/generic_options"
+        },
+        {
+            "$ref": "#/defs/benchmarking_options"
+        },
+        {
+            "$ref": "#/defs/dmr_analysis_options"
+        },
+        {
+            "$ref": "#/defs/options_for_the_preprocessing_of_the_reference_samples"
+        },
+        {
+            "$ref": "#/defs/options_for_the_preprocessing_for_reference_free_tools"
+        },
+        {
+            "$ref": "#/defs/medecom_parameters"
+        },
+        {
+            "$ref": "#/defs/episcore_parameters"
+        },
+        {
+            "$ref": "#/defs/epidish_parameters"
+        },
+        {
+            "$ref": "#/defs/methylresolver_parameters"
+        },
+        {
+            "$ref": "#/defs/prmeth_parameters"
+        },
+        {
+            "$ref": "#/defs/celfie_parameters"
+        }
+    ]
+}

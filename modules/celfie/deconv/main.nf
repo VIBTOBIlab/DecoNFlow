@@ -3,8 +3,8 @@
 process RUN_DECONV {
     container 'egiuili/celfie:v1.0'
 
-    publishDir "${params.outdir}/celfie", mode: 'copy'
-
+    label 'process_low'    
+    
     input:
     path merged_table
 

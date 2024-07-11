@@ -19,12 +19,16 @@ include { validateParameters; paramsHelp; paramsSummaryLog; samplesheetToList } 
 
 // Print help message, supply typical command line usage for the pipeline
 if (params.help) {
-   log.info paramsHelp("nextflow run main.nf --input input_file.csv --test_samples test.csv --outdir results/ --regions_file regions.bed -profile <profile>")
+   log.info paramsHelp("nextflow run main.nf --input input_file.csv -test test.csv --outdir results/ --regions_file regions.bed -profile <profile>")
    exit 0
 }
 
 // Validate input parameters
-//validateParameters()
+validateParameters()
+if (params.DMRselection=="custom" & !(params.regions)) {
+    println("With custom DMR selection a cluster file is required (--regions)")
+    exit 0
+}
 
 // Print summary of supplied parameters
 log.info paramsSummaryLog(workflow)
