@@ -3,8 +3,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nf-core/DNAmDeconv
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/
-    Website: https://nf-co.re/
+    Github : https://github.com/nf-core/...
+    Website: https://nf-co.re/...
 ----------------------------------------------------------------------------------------
 */
 
@@ -19,7 +19,7 @@ include { validateParameters; paramsHelp; paramsSummaryLog; samplesheetToList } 
 
 // Print help message, supply typical command line usage for the pipeline
 if (params.help) {
-   log.info paramsHelp("nextflow run main.nf --input input_file.csv -test test.csv --outdir results/ --regions_file regions.bed -profile <profile>")
+   log.info paramsHelp("nextflow run main.nf --input input_file.csv -test_set test.csv --outdir results/ --regions_file regions.bed -profile <profile>")
    exit 0
 }
 
@@ -29,12 +29,19 @@ if (params.DMRselection=="custom" & !(params.regions)) {
     println("With custom DMR selection a cluster file is required (--regions)")
     exit 0
 }
+if (params.benchmark & !(params.input)) {
+    println("With benchmark option, the reference set (--input) is required")
+    exit 0
+}
 
 // Print summary of supplied parameters
 log.info paramsSummaryLog(workflow)
 
 // Create a new channel of metadata from a sample sheet passed to the pipeline through the --input parameter
-ch_input = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
+if (params.input) {
+    ch_input = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
+}
+ch_test = Channel.fromList(samplesheetToList(params.test_set, "assets/schema_testset.json"))
 
 
 /*

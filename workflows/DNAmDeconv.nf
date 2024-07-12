@@ -1,15 +1,14 @@
 #!/usr/bin/env nextflow
 
-// Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\$' and '\' =>'\\')
+// Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
 log.info """
     ================================================================================================    
-                                                                                                            
- ____   _____  ____  ___   _   _ __     __  ____   _____  _   _   ____  _   _  __  __     _     ____   _  __
-|  _ \\ | ____|/ ___|/ _ \\ | \\ | |\\ \\   / / | __ ) | ____|| \\ | | / ___|| | | ||  \\/  |   / \\   |  _ \\ | |/ /
-| | | ||  _| | |   | | | ||  \\| | \\ \\ / /  |  _ \\ |  _|  |  \\| || |    | |_| || |\\/| |  / _ \\  | |_) || ' / 
-| |_| || |___| |___| |_| || |\\  |  \\ V /   | |_) || |___ | |\\  || |___ |  _  || |  | | / ___ \\ |  _ < | . \\ 
-|____/ |_____|\\____|\\___/ |_| \\_|   \\_/    |____/ |_____||_| \\_| \\____||_| |_||_|  |_|/_/   \\_\\|_| \\_\\|_|\\_\\
-                                                                                                            
+                 _____  _   _                      _____                            
+                |  __ \\| \\ | |   /\\               |  __ \\                           
+                | |  | |  \\| |  /  \\   _ __ ___   | |  | | ___  ___ ___  _ ____   __
+                | |  | | . ` | / /\\ \\ | '_ ` _ \\  | |  | |/ _ \\/ __/ _ \\| '_ \\ \\ / /
+                | |__| | |\\  |/ ____ \\| | | | | | | |__| |  __/ (_| (_) | | | \\ V / 
+                |_____/|_| \\_/_/    \\_\\_| |_| |_| |_____/ \\___|\\___\\___/|_| |_|\\_/  
 
     ==============================================================================================
     """.stripIndent()
@@ -54,6 +53,7 @@ workflow DNAmDeconv{
         // Preprocess test samples
         TEST_PREPROCESSING(test_ch, dmrs)
         test = TEST_PREPROCESSING.out.preprocessed_test
+
 
         /*
          * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE
