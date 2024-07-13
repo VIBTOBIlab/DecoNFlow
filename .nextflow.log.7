@@ -1,0 +1,267 @@
+Jul-13 16:08:42.791 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf -params-file params.yaml -profile docker --benchmark
+Jul-13 16:08:42.830 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 23.10.1
+Jul-13 16:08:42.843 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/Users/edoardogiuili/.nextflow/plugins; core-plugins: nf-amazon@2.1.4,nf-azure@1.3.3,nf-cloudcache@0.3.0,nf-codecommit@0.1.5,nf-console@1.0.6,nf-ga4gh@1.1.0,nf-google@1.8.3,nf-tower@1.6.3,nf-wave@1.0.1
+Jul-13 16:08:42.851 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jul-13 16:08:42.852 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jul-13 16:08:42.854 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jul-13 16:08:42.858 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jul-13 16:08:42.866 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/nextflow.config
+Jul-13 16:08:42.867 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/nextflow.config
+Jul-13 16:08:42.891 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `docker`
+Jul-13 16:08:43.335 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [debug, apptainer, singularity, arm, docker]
+Jul-13 16:08:43.350 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declararion
+Jul-13 16:08:43.357 [main] INFO  nextflow.cli.CmdRun - Launching `main.nf` [cranky_mandelbrot] DSL2 - revision: 3e76736075
+Jul-13 16:08:43.358 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins declared=[nf-schema@2.0.0]
+Jul-13 16:08:43.358 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jul-13 16:08:43.358 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[nf-schema@2.0.0]
+Jul-13 16:08:43.358 [main] DEBUG nextflow.plugin.PluginUpdater - Installing plugin nf-schema version: 2.0.0
+Jul-13 16:08:43.362 [main] INFO  org.pf4j.AbstractPluginManager - Plugin 'nf-schema@2.0.0' resolved
+Jul-13 16:08:43.362 [main] INFO  org.pf4j.AbstractPluginManager - Start plugin 'nf-schema@2.0.0'
+Jul-13 16:08:43.365 [main] DEBUG nextflow.plugin.BasePlugin - Plugin started nf-schema@2.0.0
+Jul-13 16:08:43.371 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /Users/edoardogiuili/.nextflow/secrets/store.json
+Jul-13 16:08:43.372 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@6418e39e] - activable => nextflow.secret.LocalSecretsProvider@6418e39e
+Jul-13 16:08:43.399 [main] DEBUG nextflow.Session - Session UUID: fbc38cd7-09ca-4d3a-845f-4d8396379f9c
+Jul-13 16:08:43.399 [main] DEBUG nextflow.Session - Run name: cranky_mandelbrot
+Jul-13 16:08:43.399 [main] DEBUG nextflow.Session - Executor pool size: 8
+Jul-13 16:08:43.402 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Jul-13 16:08:43.404 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=24; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jul-13 16:08:43.415 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 23.10.1 build 5891
+  Created: 12-01-2024 22:01 UTC (23:01 CEST)
+  System: Mac OS X 14.4.1
+  Runtime: Groovy 3.0.19 on OpenJDK 64-Bit Server VM 17.0.10+7
+  Encoding: UTF-8 (UTF-8)
+  Process: 13670@Edoardos-MacBook-Air.local [127.0.0.1]
+  CPUs: 8 - Mem: 16 GB (132.5 MB) - Swap: 4 GB (1.3 GB)
+Jul-13 16:08:43.421 [main] DEBUG nextflow.Session - Work-dir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work [Mac OS X]
+Jul-13 16:08:43.421 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/bin
+Jul-13 16:08:43.425 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jul-13 16:08:43.430 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jul-13 16:08:43.453 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jul-13 16:08:43.458 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 9; maxThreads: 1000
+Jul-13 16:08:43.499 [main] DEBUG nextflow.Session - Session start
+Jul-13 16:08:43.501 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/results/pipeline_info/execution_trace_20240713-160843.txt
+Jul-13 16:08:43.578 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jul-13 16:08:43.582 [main] DEBUG nextflow.script.IncludeDef - Loading included plugin extensions with names: [validateParameters:validateParameters, paramsHelp:paramsHelp, paramsSummaryLog:paramsSummaryLog, samplesheetToList:samplesheetToList]; plugin Id: nf-schema
+Jul-13 16:08:43.586 [main] DEBUG nextflow.validation.SchemaValidator - Starting parameters validation
+Jul-13 16:08:43.655 [main] DEBUG nextflow.validation.SchemaEvaluator - Started validating /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/reference.csv
+Jul-13 16:08:43.684 [main] DEBUG nextflow.validation.SchemaEvaluator - Validation of file './resources/reference.csv' passed!
+Jul-13 16:08:43.685 [main] DEBUG nextflow.validation.SchemaValidator - Finishing parameters validation
+Jul-13 16:08:43.687 [main] INFO  nextflow.Nextflow - [1mCore Nextflow options[0m
+  [0;34mrunName        : [0;32mcranky_mandelbrot[0m
+  [0;34mcontainerEngine: [0;32mdocker[0m
+  [0;34mlaunchDir      : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv[0m
+  [0;34mworkDir        : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work[0m
+  [0;34mprojectDir     : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv[0m
+  [0;34muserName       : [0;32medoardogiuili[0m
+  [0;34mprofile        : [0;32mdocker[0m
+  [0;34mconfigFiles    : [0;32m[0m
+
+[1mInput/output options[0m
+  [0;34minput          : [0;32m./resources/reference.csv[0m
+  [0;34mtest_set       : [0;32m./resources/test.csv[0m
+  [0;34moutdir         : [0;32m./results[0m
+
+[1mDeconvolution options[0m
+  [0;34mbenchmark      : [0;32mtrue[0m
+  [0;34mprmeth_rf      : [0;32mtrue[0m
+  [0;34mmethyl_atlas   : [0;32mtrue[0m
+
+[1mDMR analysis options[0m
+  [0;34mregions        : [0;32m./resources/RRBS_regions20-200.bed[0m
+
+[1mCelFiE parameters[0m
+  [0;34mnsamples       : [0;32m5[0m
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+-[2m----------------------------------------------------[0m-
+Jul-13 16:08:43.855 [main] INFO  nextflow.Nextflow - 
+==============================================================================================
+             _____  _   _                      _____
+            |  __ \| \ | |   /\               |  __ \
+            | |  | |  \| |  /  \   _ __ ___   | |  | | ___  ___ ___  _ ____   __
+            | |  | | . ` | / /\ \ | '_ ` _ \  | |  | |/ _ \/ __/ _ \| '_ \ \ / /
+            | |__| | |\  |/ ____ \| | | | | | | |__| |  __/ (_| (_) | | | \ V /
+            |_____/|_| \_/_/    \_\_| |_| |_| |_____/ \___|\___\___/|_| |_|\_/
+
+==============================================================================================
+
+Jul-13 16:08:44.283 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PREPROCESSING` matches process RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING
+Jul-13 16:08:44.285 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.285 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.288 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jul-13 16:08:44.290 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=16 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Jul-13 16:08:44.291 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Jul-13 16:08:44.320 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:LIMMA` matches process RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA
+Jul-13 16:08:44.321 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.321 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.323 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:TEST_PREPROCESSING` matches process RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING
+Jul-13 16:08:44.323 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.323 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.325 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:MERGE_TABLES` matches process RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES
+Jul-13 16:08:44.325 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.325 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.327 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:RUN_DECONV` matches process RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV
+Jul-13 16:08:44.327 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.327 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.354 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:METHYL_ATLAS` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS
+Jul-13 16:08:44.354 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.354 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.358 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:CIBERSORT` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT
+Jul-13 16:08:44.358 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.358 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.361 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:EPIDISH` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH
+Jul-13 16:08:44.361 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.361 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.364 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:METHYL_RESOLVER` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER
+Jul-13 16:08:44.366 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.366 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.369 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:EPISCORE` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE
+Jul-13 16:08:44.370 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.370 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.371 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PRMETH` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH
+Jul-13 16:08:44.372 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.372 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.374 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:REFREE_PREPROCESSING` matches process RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING
+Jul-13 16:08:44.374 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.374 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.376 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:MEDECOM` matches process RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM
+Jul-13 16:08:44.376 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.376 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.378 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PRMETH_RF` matches process RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF
+Jul-13 16:08:44.378 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.378 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.385 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:COMBINE_FILES` matches process RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES
+Jul-13 16:08:44.385 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:08:44.385 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:08:44.386 [main] DEBUG nextflow.Session - Config process names validation disabled as requested
+Jul-13 16:08:44.388 [main] DEBUG nextflow.Session - Igniting dataflow network (33)
+Jul-13 16:08:44.390 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH
+Jul-13 16:08:44.391 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING
+Jul-13 16:08:44.392 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM
+Jul-13 16:08:44.392 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF
+Jul-13 16:08:44.392 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES
+Jul-13 16:08:44.393 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_424a3d730fabf8ae: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/test_preprocessing/main.nf
+  Script_73786a80b5d26556: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/DNAmDeconv.nf
+  Script_2aef39511cb3a932: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/celfie/deconv/main.nf
+  Script_1bf4a131413325e3: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/refFreeDeconv.nf
+  Script_2cdbd63ba995ca7b: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/prmeth/main.nf
+  Script_a9774fabc82deab2: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/limma/main.nf
+  Script_09cfb52cd4414824: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/refree_preprocessing/main.nf
+  Script_a108b79d6a219e0f: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/medecom/main.nf
+  Script_b62a1dc1ebf2688c: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../subworkflows/celfie.nf
+  Script_942264538e833e4c: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/prmeth_rf/main.nf
+  Script_4584060f09923c52: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/methyl_atlas/main.nf
+  Script_6d96782abdf5a6db: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/refBasedDeconv.nf
+  Script_afeac1cc7d84eec6: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../subworkflows/../modules/celfie/merge_tables/main.nf
+  Script_2a920452b652e430: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/combine_files/main.nf
+  Script_cb46a604725f4d1e: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/cibersort/main.nf
+  Script_da506cea4522317d: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/methyl_resolver/main.nf
+  Script_d329832d5c171887: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/main.nf
+  Script_097aaf2ef8d04e23: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/episcore/main.nf
+  Script_9aafd707dc5fe296: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/epidish/main.nf
+  Script_36ea94a70bb575dc: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/inHousePrep.nf
+  Script_91f34534c3451388: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/preprocessing/main.nf
+Jul-13 16:08:44.393 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jul-13 16:08:44.393 [main] DEBUG nextflow.Session - Session await
+Jul-13 16:08:44.467 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:08:44.468 [Task submitter] INFO  nextflow.Session - [47/371458] Submitted process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING (1)
+Jul-13 16:08:44.473 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:08:44.473 [Task submitter] INFO  nextflow.Session - [7b/5e6f92] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING (1)
+Jul-13 16:12:31.874 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/47/371458b2188a833313907d49930a8c]
+Jul-13 16:12:31.934 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:12:31.935 [Task submitter] INFO  nextflow.Session - [17/3dbc75] Submitted process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA (1)
+Jul-13 16:12:40.206 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063]
+Jul-13 16:12:40.225 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:12:40.225 [Task submitter] INFO  nextflow.Session - [8f/0360c0] Submitted process > RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING (1)
+Jul-13 16:12:48.087 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/7b/5e6f923d1dc237579e85105c47f8aa]
+Jul-13 16:12:48.123 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:12:48.123 [Task submitter] INFO  nextflow.Session - [32/032e4b] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF (1)
+Jul-13 16:12:48.126 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:12:48.126 [Task submitter] INFO  nextflow.Session - [28/2ef1ab] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1)
+Jul-13 16:13:24.676 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/32/032e4b89b8c97c480dff1878b1fc25]
+Jul-13 16:13:44.407 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 2 -- submitted tasks are shown below
+~> TaskHandler[id: 4; name: RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING (1); status: RUNNING; exit: -; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168]
+~> TaskHandler[id: 6; name: RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1); status: RUNNING; exit: -; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/28/2ef1ab81dcbe88b68aedb55e2f71eb]
+Jul-13 16:14:46.537 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168]
+Jul-13 16:14:46.559 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.559 [Task submitter] INFO  nextflow.Session - [37/eaa763] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS (1)
+Jul-13 16:14:46.563 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.565 [Task submitter] INFO  nextflow.Session - [77/04a48d] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT (1)
+Jul-13 16:14:46.571 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.571 [Task submitter] INFO  nextflow.Session - [b3/21761c] Submitted process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES (1)
+Jul-13 16:14:46.576 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.576 [Task submitter] INFO  nextflow.Session - [f1/3c5de9] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE (1)
+Jul-13 16:14:46.578 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.579 [Task submitter] INFO  nextflow.Session - [6e/b64961] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH (1)
+Jul-13 16:14:46.584 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.586 [Task submitter] INFO  nextflow.Session - [46/e5307f] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER (1)
+Jul-13 16:14:46.593 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:46.593 [Task submitter] INFO  nextflow.Session - [cb/991879] Submitted process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH (1)
+Jul-13 16:14:48.546 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 9; name: RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/b3/21761c161710c938dfdc06e880afa9]
+Jul-13 16:14:48.587 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:14:48.587 [Task submitter] INFO  nextflow.Session - [3e/f22976] Submitted process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV (1)
+Jul-13 16:14:48.921 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 7; name: RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/cb/9918798e1ca15e4384f8617d87a545]
+Jul-13 16:14:49.824 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 10; name: RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/37/eaa763babb9b09017d1d3d4702a2e8]
+Jul-13 16:14:50.187 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 8; name: RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/46/e5307f52e8f09f8a1a871f9243d66d]
+Jul-13 16:14:50.335 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 12; name: RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/6e/b649619d4f7c46c880d6641ee8f1f5]
+Jul-13 16:14:50.364 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 14; name: RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/3e/f229765c8d4df33508a3d157bec75b]
+Jul-13 16:14:50.416 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 13; name: RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/77/04a48d6ae50faf4df91afa859f2052]
+Jul-13 16:14:52.424 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 11; name: RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/f1/3c5de9a705e3ba2d298f563ed911e7]
+Jul-13 16:18:44.421 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 6; name: RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1); status: RUNNING; exit: -; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/28/2ef1ab81dcbe88b68aedb55e2f71eb]
+Jul-13 16:23:44.459 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 6; name: RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1); status: RUNNING; exit: -; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/28/2ef1ab81dcbe88b68aedb55e2f71eb]
+Jul-13 16:27:30.846 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/28/2ef1ab81dcbe88b68aedb55e2f71eb]
+Jul-13 16:27:30.864 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jul-13 16:27:30.864 [Task submitter] INFO  nextflow.Session - [f3/05b438] Submitted process > RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES
+Jul-13 16:27:30.999 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 15; name: RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES; status: COMPLETED; exit: 125; error: -; workDir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/f3/05b4382dacc636a73532e8859d0cf7]
+Jul-13 16:27:31.001 [Task monitor] DEBUG nextflow.processor.TaskProcessor - Handling unexpected condition for
+  task: name=RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES; work-dir=/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/f3/05b4382dacc636a73532e8859d0cf7
+  error [nextflow.exception.ProcessFailedException]: Process `RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES` terminated with an error exit status (125)
+Jul-13 16:27:31.011 [Task monitor] ERROR nextflow.processor.TaskProcessor - Error executing process > 'RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES'
+
+Caused by:
+  Process `RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES` terminated with an error exit status (125)
+
+Command executed:
+
+  python3 /source/combine_files.py     "[CelFiE:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/3e/f229765c8d4df33508a3d157bec75b/results/1_tissue_proportions.txt, meth_atlas:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/37/eaa763babb9b09017d1d3d4702a2e8/test_samples_deconv_output.csv, CIBERSORT:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/77/04a48d6ae50faf4df91afa859f2052/test_samples_deconv_output.csv, EpiDISH:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/6e/b649619d4f7c46c880d6641ee8f1f5/epidish_res_RPC.csv, Methyl_Resolver:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/46/e5307f52e8f09f8a1a871f9243d66d/test_samples_deconv_output_alpha_0.5.csv, EpiSCORE:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/f1/3c5de9a705e3ba2d298f563ed911e7/test_samples_deconv_output_weight_0.4.csv, PRMeth:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/cb/9918798e1ca15e4384f8617d87a545/test_samples_deconv_output_mod_QP.csv, MeDeCom:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/28/2ef1ab81dcbe88b68aedb55e2f71eb/test_samples_deconv_output_lambda1e-05.csv, PRMeth_RF:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/32/032e4b89b8c97c480dff1878b1fc25/test_samples_deconv_output_mod_RF.csv]"     -o combined_results
+
+Command exit status:
+  125
+
+Command output:
+  (empty)
+
+Command error:
+  docker: invalid reference format.
+  See 'docker run --help'.
+
+Work dir:
+  /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/f3/05b4382dacc636a73532e8859d0cf7
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+Jul-13 16:27:31.013 [main] DEBUG nextflow.Session - Session await > all processes finished
+Jul-13 16:27:31.014 [Task monitor] DEBUG nextflow.Session - Session aborted -- Cause: Process `RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES` terminated with an error exit status (125)
+Jul-13 16:27:31.029 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jul-13 16:27:31.029 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+Jul-13 16:27:31.032 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=14; failedCount=1; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=25m 37s; failedDuration=50ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=8; peakCpus=8; peakMemory=0; ]
+Jul-13 16:27:31.032 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow completed -- saving trace file
+Jul-13 16:27:31.033 [main] DEBUG nextflow.trace.ReportObserver - Workflow completed -- rendering execution report
+Jul-13 16:27:31.868 [main] DEBUG nextflow.trace.TimelineObserver - Workflow completed -- rendering execution timeline
+Jul-13 16:27:31.957 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Jul-13 16:27:31.958 [main] INFO  org.pf4j.AbstractPluginManager - Stop plugin 'nf-schema@2.0.0'
+Jul-13 16:27:31.958 [main] DEBUG nextflow.plugin.BasePlugin - Plugin stopped nf-schema
+Jul-13 16:27:31.969 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
