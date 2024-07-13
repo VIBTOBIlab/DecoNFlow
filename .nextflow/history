@@ -1,0 +1,18 @@
+2024-07-13 14:52:15	9m 16s	thirsty_cray	ERR	3e76736075edfc95de9ab661bf765128	0522f643-1318-4258-ad33-6f5c4ddebdf3	nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark
+2024-07-13 15:07:58	11m 46s	disturbed_kilby	ERR	3e76736075edfc95de9ab661bf765128	00b76309-c5c6-4255-b8d4-6fec8a7d3651	nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark
+2024-07-13 15:21:03	15m 35s	agitated_minsky	ERR	3e76736075edfc95de9ab661bf765128	47cb0875-6652-487d-b6e3-8a4a8cb88a31	nextflow run main.nf -params-file params.yaml -profile docker,debug --benchmark
+2024-07-13 15:39:41	16m 39s	ecstatic_ritchie	ERR	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile docker,debug --benchmark
+2024-07-13 15:57:21	3.2s	suspicious_hugle	ERR	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark -resume
+2024-07-13 16:00:30	3s	nasty_jepsen	ERR	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark -resume
+2024-07-13 16:02:40	3.2s	wise_borg	ERR	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:02:55	3.3s	exotic_faraday	OK	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:08:18	2.6s	reverent_caravaggio	OK	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:08:31	3s	backstabbing_lorenz	OK	3e76736075edfc95de9ab661bf765128	81622baf-c36c-4e34-94d8-762d2bc39b87	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:08:43	18m 49s	cranky_mandelbrot	ERR	3e76736075edfc95de9ab661bf765128	fbc38cd7-09ca-4d3a-845f-4d8396379f9c	nextflow run main.nf -params-file params.yaml -profile docker --benchmark
+2024-07-13 16:28:35	2.9s	serene_legentil	ERR	3e76736075edfc95de9ab661bf765128	fbc38cd7-09ca-4d3a-845f-4d8396379f9c	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:29:09	3.8s	sharp_kare	OK	3e76736075edfc95de9ab661bf765128	fbc38cd7-09ca-4d3a-845f-4d8396379f9c	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:29:52	-	chaotic_lattes	-	3e76736075edfc95de9ab661bf765128	fbc38cd7-09ca-4d3a-845f-4d8396379f9c	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:30:02	3.2s	tiny_hugle	OK	3e76736075edfc95de9ab661bf765128	fbc38cd7-09ca-4d3a-845f-4d8396379f9c	nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+2024-07-13 16:30:12	3.2s	desperate_laplace	OK	3e76736075edfc95de9ab661bf765128	fbc38cd7-09ca-4d3a-845f-4d8396379f9c	nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark -resume
+2024-07-13 16:30:25	11m 14s	special_darwin	OK	3e76736075edfc95de9ab661bf765128	ae01abfe-5b37-4bf6-ab34-5e16f12d1493	nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark
+2024-07-13 16:42:12	8m	fabulous_euler	OK	3e76736075edfc95de9ab661bf765128	61e6c984-6a73-4d0f-aae2-7f1abf4b978f	nextflow run main.nf -params-file params.yaml -profile docker,debug --benchmark

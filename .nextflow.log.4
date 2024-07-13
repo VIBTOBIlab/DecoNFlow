@@ -1,0 +1,229 @@
+Jul-13 16:29:52.115 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf -params-file params.yaml -profile docker --benchmark -resume
+Jul-13 16:29:52.157 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 23.10.1
+Jul-13 16:29:52.171 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/Users/edoardogiuili/.nextflow/plugins; core-plugins: nf-amazon@2.1.4,nf-azure@1.3.3,nf-cloudcache@0.3.0,nf-codecommit@0.1.5,nf-console@1.0.6,nf-ga4gh@1.1.0,nf-google@1.8.3,nf-tower@1.6.3,nf-wave@1.0.1
+Jul-13 16:29:52.179 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jul-13 16:29:52.179 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jul-13 16:29:52.181 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jul-13 16:29:52.185 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jul-13 16:29:52.193 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/nextflow.config
+Jul-13 16:29:52.194 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/nextflow.config
+Jul-13 16:29:52.219 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `docker`
+Jul-13 16:29:52.659 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [debug, apptainer, singularity, arm, docker]
+Jul-13 16:29:52.676 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declararion
+Jul-13 16:29:52.685 [main] INFO  nextflow.cli.CmdRun - Launching `main.nf` [chaotic_lattes] DSL2 - revision: 3e76736075
+Jul-13 16:29:52.685 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins declared=[nf-schema@2.0.0]
+Jul-13 16:29:52.685 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jul-13 16:29:52.685 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[nf-schema@2.0.0]
+Jul-13 16:29:52.685 [main] DEBUG nextflow.plugin.PluginUpdater - Installing plugin nf-schema version: 2.0.0
+Jul-13 16:29:52.690 [main] INFO  org.pf4j.AbstractPluginManager - Plugin 'nf-schema@2.0.0' resolved
+Jul-13 16:29:52.690 [main] INFO  org.pf4j.AbstractPluginManager - Start plugin 'nf-schema@2.0.0'
+Jul-13 16:29:52.694 [main] DEBUG nextflow.plugin.BasePlugin - Plugin started nf-schema@2.0.0
+Jul-13 16:29:52.700 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /Users/edoardogiuili/.nextflow/secrets/store.json
+Jul-13 16:29:52.701 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@3e39baf0] - activable => nextflow.secret.LocalSecretsProvider@3e39baf0
+Jul-13 16:29:52.731 [main] DEBUG nextflow.Session - Session UUID: fbc38cd7-09ca-4d3a-845f-4d8396379f9c
+Jul-13 16:29:52.731 [main] DEBUG nextflow.Session - Run name: chaotic_lattes
+Jul-13 16:29:52.731 [main] DEBUG nextflow.Session - Executor pool size: 8
+Jul-13 16:29:52.735 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Jul-13 16:29:52.737 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=24; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jul-13 16:29:52.753 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 23.10.1 build 5891
+  Created: 12-01-2024 22:01 UTC (23:01 CEST)
+  System: Mac OS X 14.4.1
+  Runtime: Groovy 3.0.19 on OpenJDK 64-Bit Server VM 17.0.10+7
+  Encoding: UTF-8 (UTF-8)
+  Process: 14530@Edoardos-MacBook-Air.local [127.0.0.1]
+  CPUs: 8 - Mem: 16 GB (70.7 MB) - Swap: 4 GB (1.3 GB)
+Jul-13 16:29:52.763 [main] DEBUG nextflow.Session - Work-dir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work [Mac OS X]
+Jul-13 16:29:52.763 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/bin
+Jul-13 16:29:52.768 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jul-13 16:29:52.772 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jul-13 16:29:52.792 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jul-13 16:29:52.797 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 9; maxThreads: 1000
+Jul-13 16:29:52.851 [main] DEBUG nextflow.Session - Session start
+Jul-13 16:29:52.853 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/results/pipeline_info/execution_trace_20240713-162952.txt
+Jul-13 16:29:52.940 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jul-13 16:29:52.944 [main] DEBUG nextflow.script.IncludeDef - Loading included plugin extensions with names: [validateParameters:validateParameters, paramsHelp:paramsHelp, paramsSummaryLog:paramsSummaryLog, samplesheetToList:samplesheetToList]; plugin Id: nf-schema
+Jul-13 16:29:52.948 [main] DEBUG nextflow.validation.SchemaValidator - Starting parameters validation
+Jul-13 16:29:53.018 [main] DEBUG nextflow.validation.SchemaEvaluator - Started validating /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/reference.csv
+Jul-13 16:29:53.044 [main] DEBUG nextflow.validation.SchemaEvaluator - Validation of file './resources/reference.csv' passed!
+Jul-13 16:29:53.045 [main] DEBUG nextflow.validation.SchemaValidator - Finishing parameters validation
+Jul-13 16:29:53.047 [main] INFO  nextflow.Nextflow - [1mCore Nextflow options[0m
+  [0;34mrunName        : [0;32mchaotic_lattes[0m
+  [0;34mcontainerEngine: [0;32mdocker[0m
+  [0;34mlaunchDir      : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv[0m
+  [0;34mworkDir        : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work[0m
+  [0;34mprojectDir     : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv[0m
+  [0;34muserName       : [0;32medoardogiuili[0m
+  [0;34mprofile        : [0;32mdocker[0m
+  [0;34mconfigFiles    : [0;32m[0m
+
+[1mInput/output options[0m
+  [0;34minput          : [0;32m./resources/reference.csv[0m
+  [0;34mtest_set       : [0;32m./resources/test.csv[0m
+  [0;34moutdir         : [0;32m./results[0m
+
+[1mDeconvolution options[0m
+  [0;34mbenchmark      : [0;32mtrue[0m
+  [0;34mprmeth_rf      : [0;32mtrue[0m
+  [0;34mmethyl_atlas   : [0;32mtrue[0m
+
+[1mDMR analysis options[0m
+  [0;34mregions        : [0;32m./resources/RRBS_regions20-200.bed[0m
+
+[1mCelFiE parameters[0m
+  [0;34mnsamples       : [0;32m5[0m
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+-[2m----------------------------------------------------[0m-
+Jul-13 16:29:53.235 [main] INFO  nextflow.Nextflow - 
+==============================================================================================
+             _____  _   _                      _____
+            |  __ \| \ | |   /\               |  __ \
+            | |  | |  \| |  /  \   _ __ ___   | |  | | ___  ___ ___  _ ____   __
+            | |  | | . ` | / /\ \ | '_ ` _ \  | |  | |/ _ \/ __/ _ \| '_ \ \ / /
+            | |__| | |\  |/ ____ \| | | | | | | |__| |  __/ (_| (_) | | | \ V /
+            |_____/|_| \_/_/    \_\_| |_| |_| |_____/ \___|\___\___/|_| |_|\_/
+
+==============================================================================================
+
+Jul-13 16:29:53.719 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_424a3d730fabf8ae: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/test_preprocessing/main.nf
+  Script_73786a80b5d26556: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/DNAmDeconv.nf
+  Script_2aef39511cb3a932: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/celfie/deconv/main.nf
+  Script_1bf4a131413325e3: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/refFreeDeconv.nf
+  Script_2cdbd63ba995ca7b: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/prmeth/main.nf
+  Script_a9774fabc82deab2: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/limma/main.nf
+  Script_09cfb52cd4414824: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/refree_preprocessing/main.nf
+  Script_b62a1dc1ebf2688c: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/celfie.nf
+  Script_a108b79d6a219e0f: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/medecom/main.nf
+  Script_4584060f09923c52: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/methyl_atlas/main.nf
+  Script_942264538e833e4c: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/prmeth_rf/main.nf
+  Script_6d96782abdf5a6db: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/refBasedDeconv.nf
+  Script_afeac1cc7d84eec6: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../subworkflows/../modules/celfie/merge_tables/main.nf
+  Script_cb46a604725f4d1e: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/cibersort/main.nf
+  Script_da506cea4522317d: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/methyl_resolver/main.nf
+  Script_d329832d5c171887: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/main.nf
+  Script_097aaf2ef8d04e23: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/episcore/main.nf
+  Script_9aafd707dc5fe296: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/epidish/main.nf
+  Script_36ea94a70bb575dc: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/inHousePrep.nf
+  Script_91f34534c3451388: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/preprocessing/main.nf
+Jul-13 16:29:53.723 [main] ERROR nextflow.cli.Launcher - Module compilation error
+- file : /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/combine_files/main.nf
+- cause: Unexpected input: '{ def args +=' @ line 9, column 19.
+   } else { def args += '--bind'}
+                     ^
+
+1 error
+
+nextflow.exception.ScriptCompilationException: Module compilation error
+- file : /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/combine_files/main.nf
+- cause: Unexpected input: '{ def args +=' @ line 9, column 19.
+   } else { def args += '--bind'}
+                     ^
+
+1 error
+
+	at nextflow.script.ScriptParser.parse0(ScriptParser.groovy:196)
+	at nextflow.script.ScriptParser.parse(ScriptParser.groovy:206)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:221)
+	at nextflow.script.IncludeDef.memoizedMethodPriv$loadModule0PathMapSession(IncludeDef.groovy:151)
+	at nextflow.script.IncludeDef.access$0(IncludeDef.groovy)
+	at nextflow.script.IncludeDef$__clinit__closure2.doCall(IncludeDef.groovy)
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1030)
+	at groovy.lang.Closure.call(Closure.java:427)
+	at org.codehaus.groovy.runtime.memoize.Memoize$MemoizeFunction.lambda$call$0(Memoize.java:137)
+	at org.codehaus.groovy.runtime.memoize.ConcurrentCommonCache.getAndPut(ConcurrentCommonCache.java:137)
+	at org.codehaus.groovy.runtime.memoize.ConcurrentCommonCache.getAndPut(ConcurrentCommonCache.java:113)
+	at org.codehaus.groovy.runtime.memoize.Memoize$MemoizeFunction.call(Memoize.java:136)
+	at nextflow.script.IncludeDef.loadModule0(IncludeDef.groovy)
+	at nextflow.script.IncludeDef.load0(IncludeDef.groovy:123)
+	at nextflow.script.IncludeDef$load0$1.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:139)
+	at Script_73786a80b5d26556.runScript(Script_73786a80b5d26556:23)
+	at nextflow.script.BaseScript.run0(BaseScript.groovy:144)
+	at nextflow.script.BaseScript.run(BaseScript.groovy:192)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:236)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:222)
+	at nextflow.script.IncludeDef.memoizedMethodPriv$loadModule0PathMapSession(IncludeDef.groovy:151)
+	at nextflow.script.IncludeDef.access$0(IncludeDef.groovy)
+	at nextflow.script.IncludeDef$__clinit__closure2.doCall(IncludeDef.groovy)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1030)
+	at groovy.lang.Closure.call(Closure.java:427)
+	at org.codehaus.groovy.runtime.memoize.Memoize$MemoizeFunction.lambda$call$0(Memoize.java:137)
+	at org.codehaus.groovy.runtime.memoize.ConcurrentCommonCache.getAndPut(ConcurrentCommonCache.java:137)
+	at org.codehaus.groovy.runtime.memoize.ConcurrentCommonCache.getAndPut(ConcurrentCommonCache.java:113)
+	at org.codehaus.groovy.runtime.memoize.Memoize$MemoizeFunction.call(Memoize.java:136)
+	at nextflow.script.IncludeDef.loadModule0(IncludeDef.groovy)
+	at nextflow.script.IncludeDef.load0(IncludeDef.groovy:123)
+	at nextflow.script.IncludeDef$load0$1.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:139)
+	at Script_d329832d5c171887.runScript(Script_d329832d5c171887:53)
+	at nextflow.script.BaseScript.run0(BaseScript.groovy:144)
+	at nextflow.script.BaseScript.run(BaseScript.groovy:192)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:236)
+	at nextflow.script.ScriptRunner.run(ScriptRunner.groovy:242)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:137)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:372)
+	at nextflow.cli.Launcher.run(Launcher.groovy:500)
+	at nextflow.cli.Launcher.main(Launcher.groovy:672)
+Caused by: org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+Script_e747296c45c743bc: 9: Unexpected input: '{ def args +=' @ line 9, column 19.
+   } else { def args += '--bind'}
+                     ^
+
+1 error
+
+	at org.codehaus.groovy.control.ErrorCollector.failIfErrors(ErrorCollector.java:292)
+	at org.codehaus.groovy.control.ErrorCollector.addFatalError(ErrorCollector.java:148)
+	at org.apache.groovy.parser.antlr4.AstBuilder.collectSyntaxError(AstBuilder.java:4321)
+	at org.apache.groovy.parser.antlr4.AstBuilder.access$000(AstBuilder.java:176)
+	at org.apache.groovy.parser.antlr4.AstBuilder$1.syntaxError(AstBuilder.java:4332)
+	at groovyjarjarantlr4.v4.runtime.ProxyErrorListener.syntaxError(ProxyErrorListener.java:44)
+	at groovyjarjarantlr4.v4.runtime.Parser.notifyErrorListeners(Parser.java:543)
+	at groovyjarjarantlr4.v4.runtime.DefaultErrorStrategy.notifyErrorListeners(DefaultErrorStrategy.java:154)
+	at org.apache.groovy.parser.antlr4.internal.DescriptiveErrorStrategy.reportNoViableAlternative(DescriptiveErrorStrategy.java:92)
+	at groovyjarjarantlr4.v4.runtime.DefaultErrorStrategy.reportError(DefaultErrorStrategy.java:139)
+	at org.apache.groovy.parser.antlr4.GroovyParser.statement(GroovyParser.java:6931)
+	at org.apache.groovy.parser.antlr4.GroovyParser.ifElseStatement(GroovyParser.java:6055)
+	at org.apache.groovy.parser.antlr4.GroovyParser.conditionalStatement(GroovyParser.java:5954)
+	at org.apache.groovy.parser.antlr4.GroovyParser.statement(GroovyParser.java:6792)
+	at org.apache.groovy.parser.antlr4.GroovyParser.scriptStatement(GroovyParser.java:514)
+	at org.apache.groovy.parser.antlr4.GroovyParser.scriptStatements(GroovyParser.java:421)
+	at org.apache.groovy.parser.antlr4.GroovyParser.compilationUnit(GroovyParser.java:357)
+	at org.apache.groovy.parser.antlr4.AstBuilder.buildCST(AstBuilder.java:250)
+	at org.apache.groovy.parser.antlr4.AstBuilder.buildCST(AstBuilder.java:228)
+	at org.apache.groovy.parser.antlr4.AstBuilder.buildAST(AstBuilder.java:269)
+	at org.apache.groovy.parser.antlr4.Antlr4ParserPlugin.buildAST(Antlr4ParserPlugin.java:58)
+	at org.codehaus.groovy.control.SourceUnit.buildAST(SourceUnit.java:256)
+	at java.base/java.util.Iterator.forEachRemaining(Iterator.java:133)
+	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1845)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at org.codehaus.groovy.control.CompilationUnit.buildASTs(CompilationUnit.java:667)
+	at org.codehaus.groovy.control.CompilationUnit.compile(CompilationUnit.java:633)
+	at groovy.lang.GroovyClassLoader.doParseClass(GroovyClassLoader.java:389)
+	at groovy.lang.GroovyClassLoader.lambda$parseClass$3(GroovyClassLoader.java:332)
+	at org.codehaus.groovy.runtime.memoize.StampedCommonCache.compute(StampedCommonCache.java:163)
+	at org.codehaus.groovy.runtime.memoize.StampedCommonCache.getAndPut(StampedCommonCache.java:154)
+	at groovy.lang.GroovyClassLoader.parseClass(GroovyClassLoader.java:330)
+	at groovy.lang.GroovyShell.parseClass(GroovyShell.java:526)
+	at groovy.lang.GroovyShell.parse(GroovyShell.java:538)
+	at groovy.lang.GroovyShell.parse(GroovyShell.java:570)
+	at nextflow.script.ScriptParser.parse0(ScriptParser.groovy:175)
+	... 59 common frames omitted

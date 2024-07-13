@@ -1,0 +1,497 @@
+Jul-13 16:30:12.404 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf -params-file params.yaml -profile debug,docker --benchmark -resume
+Jul-13 16:30:12.442 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 23.10.1
+Jul-13 16:30:12.457 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/Users/edoardogiuili/.nextflow/plugins; core-plugins: nf-amazon@2.1.4,nf-azure@1.3.3,nf-cloudcache@0.3.0,nf-codecommit@0.1.5,nf-console@1.0.6,nf-ga4gh@1.1.0,nf-google@1.8.3,nf-tower@1.6.3,nf-wave@1.0.1
+Jul-13 16:30:12.466 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jul-13 16:30:12.466 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jul-13 16:30:12.468 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jul-13 16:30:12.472 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jul-13 16:30:12.478 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/nextflow.config
+Jul-13 16:30:12.479 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/nextflow.config
+Jul-13 16:30:12.502 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `debug,docker`
+Jul-13 16:30:12.910 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [debug, apptainer, singularity, arm, docker]
+Jul-13 16:30:12.925 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declararion
+Jul-13 16:30:12.933 [main] INFO  nextflow.cli.CmdRun - Launching `main.nf` [desperate_laplace] DSL2 - revision: 3e76736075
+Jul-13 16:30:12.933 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins declared=[nf-schema@2.0.0]
+Jul-13 16:30:12.933 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jul-13 16:30:12.933 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[nf-schema@2.0.0]
+Jul-13 16:30:12.933 [main] DEBUG nextflow.plugin.PluginUpdater - Installing plugin nf-schema version: 2.0.0
+Jul-13 16:30:12.937 [main] INFO  org.pf4j.AbstractPluginManager - Plugin 'nf-schema@2.0.0' resolved
+Jul-13 16:30:12.937 [main] INFO  org.pf4j.AbstractPluginManager - Start plugin 'nf-schema@2.0.0'
+Jul-13 16:30:12.941 [main] DEBUG nextflow.plugin.BasePlugin - Plugin started nf-schema@2.0.0
+Jul-13 16:30:12.946 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /Users/edoardogiuili/.nextflow/secrets/store.json
+Jul-13 16:30:12.947 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@6e829e50] - activable => nextflow.secret.LocalSecretsProvider@6e829e50
+Jul-13 16:30:12.972 [main] DEBUG nextflow.Session - Session UUID: fbc38cd7-09ca-4d3a-845f-4d8396379f9c
+Jul-13 16:30:12.972 [main] DEBUG nextflow.Session - Run name: desperate_laplace
+Jul-13 16:30:12.972 [main] DEBUG nextflow.Session - Executor pool size: 8
+Jul-13 16:30:12.975 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Jul-13 16:30:12.977 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=24; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jul-13 16:30:12.988 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 23.10.1 build 5891
+  Created: 12-01-2024 22:01 UTC (23:01 CEST)
+  System: Mac OS X 14.4.1
+  Runtime: Groovy 3.0.19 on OpenJDK 64-Bit Server VM 17.0.10+7
+  Encoding: UTF-8 (UTF-8)
+  Process: 14636@Edoardos-MacBook-Air.local [127.0.0.1]
+  CPUs: 8 - Mem: 16 GB (143.1 MB) - Swap: 4 GB (1.3 GB)
+Jul-13 16:30:12.997 [main] DEBUG nextflow.Session - Work-dir: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work [Mac OS X]
+Jul-13 16:30:12.997 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/bin
+Jul-13 16:30:13.002 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jul-13 16:30:13.006 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jul-13 16:30:13.028 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jul-13 16:30:13.033 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 9; maxThreads: 1000
+Jul-13 16:30:13.088 [main] DEBUG nextflow.Session - Session start
+Jul-13 16:30:13.091 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/results/pipeline_info/execution_trace_20240713-163012.txt
+Jul-13 16:30:13.179 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jul-13 16:30:13.184 [main] DEBUG nextflow.script.IncludeDef - Loading included plugin extensions with names: [validateParameters:validateParameters, paramsHelp:paramsHelp, paramsSummaryLog:paramsSummaryLog, samplesheetToList:samplesheetToList]; plugin Id: nf-schema
+Jul-13 16:30:13.187 [main] DEBUG nextflow.validation.SchemaValidator - Starting parameters validation
+Jul-13 16:30:13.255 [main] DEBUG nextflow.validation.SchemaEvaluator - Started validating /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/reference.csv
+Jul-13 16:30:13.280 [main] DEBUG nextflow.validation.SchemaEvaluator - Validation of file './resources/reference.csv' passed!
+Jul-13 16:30:13.281 [main] DEBUG nextflow.validation.SchemaValidator - Finishing parameters validation
+Jul-13 16:30:13.283 [main] INFO  nextflow.Nextflow - [1mCore Nextflow options[0m
+  [0;34mrunName        : [0;32mdesperate_laplace[0m
+  [0;34mcontainerEngine: [0;32mdocker[0m
+  [0;34mlaunchDir      : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv[0m
+  [0;34mworkDir        : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work[0m
+  [0;34mprojectDir     : [0;32m/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv[0m
+  [0;34muserName       : [0;32medoardogiuili[0m
+  [0;34mprofile        : [0;32mdebug,docker[0m
+  [0;34mconfigFiles    : [0;32m[0m
+
+[1mInput/output options[0m
+  [0;34minput          : [0;32m./resources/reference.csv[0m
+  [0;34mtest_set       : [0;32m./resources/test.csv[0m
+  [0;34moutdir         : [0;32m./results[0m
+
+[1mDeconvolution options[0m
+  [0;34mbenchmark      : [0;32mtrue[0m
+  [0;34mprmeth_rf      : [0;32mtrue[0m
+  [0;34mmethyl_atlas   : [0;32mtrue[0m
+
+[1mDMR analysis options[0m
+  [0;34mregions        : [0;32m./resources/RRBS_regions20-200.bed[0m
+
+[1mCelFiE parameters[0m
+  [0;34mnsamples       : [0;32m5[0m
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+-[2m----------------------------------------------------[0m-
+Jul-13 16:30:13.453 [main] INFO  nextflow.Nextflow - 
+==============================================================================================
+             _____  _   _                      _____
+            |  __ \| \ | |   /\               |  __ \
+            | |  | |  \| |  /  \   _ __ ___   | |  | | ___  ___ ___  _ ____   __
+            | |  | | . ` | / /\ \ | '_ ` _ \  | |  | |/ _ \/ __/ _ \| '_ \ \ / /
+            | |__| | |\  |/ ____ \| | | | | | | |__| |  __/ (_| (_) | | | \ V /
+            |_____/|_| \_/_/    \_\_| |_| |_| |_____/ \___|\___\___/|_| |_|\_/
+
+==============================================================================================
+
+Jul-13 16:30:13.874 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PREPROCESSING` matches process RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING
+Jul-13 16:30:13.877 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.877 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.880 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jul-13 16:30:13.882 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=16 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Jul-13 16:30:13.883 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Jul-13 16:30:13.912 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:LIMMA` matches process RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA
+Jul-13 16:30:13.913 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.913 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.914 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:TEST_PREPROCESSING` matches process RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING
+Jul-13 16:30:13.915 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.915 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.916 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:MERGE_TABLES` matches process RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES
+Jul-13 16:30:13.917 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.917 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.918 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:RUN_DECONV` matches process RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV
+Jul-13 16:30:13.919 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.919 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.941 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:METHYL_ATLAS` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS
+Jul-13 16:30:13.942 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.942 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.946 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:CIBERSORT` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT
+Jul-13 16:30:13.946 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.946 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.948 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:EPIDISH` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH
+Jul-13 16:30:13.949 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.949 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.952 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:METHYL_RESOLVER` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER
+Jul-13 16:30:13.952 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.952 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.956 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:EPISCORE` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE
+Jul-13 16:30:13.956 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.956 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.958 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PRMETH` matches process RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH
+Jul-13 16:30:13.958 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.958 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.960 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:REFREE_PREPROCESSING` matches process RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING
+Jul-13 16:30:13.961 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.961 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.962 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:MEDECOM` matches process RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM
+Jul-13 16:30:13.962 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.962 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.964 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PRMETH_RF` matches process RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF
+Jul-13 16:30:13.964 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.964 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.968 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:COMBINE_FILES` matches process RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES
+Jul-13 16:30:13.969 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jul-13 16:30:13.969 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jul-13 16:30:13.970 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING, RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV, RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS, CIBERSORT, PRMETH_RF, PREPROCESSING, RUN_DECONV, RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES, RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH, RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING, EPISCORE, RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING, MERGE_TABLES, REFREE_PREPROCESSING, LIMMA, RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH, METHYL_RESOLVER, PRMETH, RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES, TEST_PREPROCESSING, RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE, COMBINE_FILES, METHYL_ATLAS, EPIDISH, RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF, RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT, MEDECOM, RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM, RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER, RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA
+Jul-13 16:30:13.972 [main] DEBUG nextflow.Session - Igniting dataflow network (33)
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS
+Jul-13 16:30:13.975 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF
+Jul-13 16:30:13.976 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES
+Jul-13 16:30:13.977 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_424a3d730fabf8ae: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/test_preprocessing/main.nf
+  Script_73786a80b5d26556: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/DNAmDeconv.nf
+  Script_1bf4a131413325e3: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/refFreeDeconv.nf
+  Script_2aef39511cb3a932: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../subworkflows/../modules/celfie/deconv/main.nf
+  Script_2cdbd63ba995ca7b: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/prmeth/main.nf
+  Script_a9774fabc82deab2: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/limma/main.nf
+  Script_09cfb52cd4414824: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/refree_preprocessing/main.nf
+  Script_b62a1dc1ebf2688c: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/celfie.nf
+  Script_a108b79d6a219e0f: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/medecom/main.nf
+  Script_4584060f09923c52: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/methyl_atlas/main.nf
+  Script_942264538e833e4c: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/prmeth_rf/main.nf
+  Script_6d96782abdf5a6db: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/refBasedDeconv.nf
+  Script_afeac1cc7d84eec6: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/celfie/merge_tables/main.nf
+  Script_f185ff759dc8ad92: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../modules/combine_files/main.nf
+  Script_da506cea4522317d: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/methyl_resolver/main.nf
+  Script_cb46a604725f4d1e: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/cibersort/main.nf
+  Script_d329832d5c171887: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/main.nf
+  Script_097aaf2ef8d04e23: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/episcore/main.nf
+  Script_9aafd707dc5fe296: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/epidish/main.nf
+  Script_36ea94a70bb575dc: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/inHousePrep.nf
+  Script_91f34534c3451388: /Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/./workflows/../subworkflows/../modules/preprocessing/main.nf
+Jul-13 16:30:13.977 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jul-13 16:30:13.977 [main] DEBUG nextflow.Session - Session await
+Jul-13 16:30:14.023 [Actor Thread 13] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING (1)] cache hash: fac504f666d37e675b523e4b37993b35; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  2ba5678456c05fe3d72ceb64365f31b6 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING 
+  5ec11830bd45d42d975e946d3a4eef54 [java.lang.String] def args = "-n ${task.cpus}"
+if (params.celfie || params.benchmark) {
+        args += ' --celfie'
+    }
+"""
+    python3 /source/preprocessing.py \
+    -i ${file} \
+    -r ${regions} \
+    -c ${params.min_cpgs} \
+    -g ${params.min_counts} \
+    -f ${params.merging_approach} \
+    -k ${params.chunk_size} \
+    $args
+    """
+ 
+  ae9b5d014bbc06e9e55177c3f5d5f4ba [java.lang.String] docker.io/egiuili/preprocessing:v1.0 
+  f82beb47a1b529266f72ca50185d5def [java.lang.String] file 
+  cbe889cb6b8272d0fe0a8a6c4f2cf1f8 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/reference.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/reference.csv, stageName:reference.csv)] 
+  c187e49e2c9ca85c0cb9ee223c78ba6b [java.lang.String] regions 
+  57ad4d0e833a4c217ad12f52d2b7a96a [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/RRBS_regions20-200.bed, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/RRBS_regions20-200.bed, stageName:RRBS_regions20-200.bed)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  d0b9068650acfcb2682eba442b10c6a5 [java.util.HashMap$EntrySet] [params.celfie=false, params.min_cpgs=3, params.merging_approach=intersect, params.chunk_size=100, params.benchmark=true, params.min_counts=10] 
+
+Jul-13 16:30:14.023 [Actor Thread 9] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING (1)] cache hash: 872a4c3f182a3d65cce3cbf251ac0933; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  2a356111a412445f04ab1b9a39e3f9ee [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING 
+  35021ad436c4605ed1f818afd7b1eec0 [java.lang.String] def args = "-n ${task.cpus}"
+"""
+    python3 /source/preprocessing.py \
+    -i ${test} \
+    -r ${reference} \
+    -c ${params.refree_min_cpgs} \
+    -g ${params.refree_min_counts} \
+    -k ${params.chunk_size} \
+    $args
+    """
+ 
+  ee14cff9f5848b93189e0c609fadbd94 [java.lang.String] docker.io/egiuili/refree_preprocessing:v1 
+  ecfc6f622f81dcb3435c7f920df77ce2 [java.lang.String] test 
+  5709657f3fa719d386c4972d4c456b3a [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/test.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/test.csv, stageName:test.csv)] 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  57ad4d0e833a4c217ad12f52d2b7a96a [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/RRBS_regions20-200.bed, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/RRBS_regions20-200.bed, stageName:RRBS_regions20-200.bed)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  1fcce4c281488d35ee6241773b43b721 [java.util.HashMap$EntrySet] [params.chunk_size=100, params.refree_min_cpgs=3, params.refree_min_counts=10] 
+
+Jul-13 16:30:14.062 [Actor Thread 9] INFO  nextflow.processor.TaskProcessor - [7b/5e6f92] Cached process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:REFREE_PREPROCESSING (1)
+Jul-13 16:30:14.062 [Actor Thread 13] INFO  nextflow.processor.TaskProcessor - [47/371458] Cached process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:PREPROCESSING (1)
+Jul-13 16:30:14.075 [Actor Thread 12] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF (1)] cache hash: 7faf5471e9dc754fcab055837227403c; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  2a8a7b4889ecaa683954635e4df59eac [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF 
+  d1532be559e2e1fc376c0945612922e3 [java.lang.String] """
+    Rscript /source/run_prmeth.R \
+    -s ${samples} \
+    -m ${samples} \
+    -k ${params.clusters} \
+    -d RF
+    """
+ 
+  2d0a20a05d3a861cc3146df79e6e70d4 [java.lang.String] docker.io/egiuili/prmeth:v1 
+  5bfa1a9085747b0205d9071ca08ba042 [java.lang.String] samples 
+  afc3c9c55f26568ff9c33f1ecda258c9 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/7b/5e6f923d1dc237579e85105c47f8aa/regions.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/7b/5e6f923d1dc237579e85105c47f8aa/regions.csv, stageName:regions.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  0ebab9de84272435ada98880c7d9a20a [java.util.HashMap$EntrySet] [params.clusters=2] 
+
+Jul-13 16:30:14.077 [Actor Thread 12] INFO  nextflow.processor.TaskProcessor - [32/032e4b] Cached process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:PRMETH_RF (1)
+Jul-13 16:30:14.083 [Actor Thread 1] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1)] cache hash: ac63fc01fbdeb6003c0e91d3492c7716; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  4a475498091a2fdad2fdd2589fb3df69 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM 
+  762b8a9f7c3ded69fdcc37e0318e9d53 [java.lang.String] def args = "-c ${task.cpus}"
+"""
+    Rscript /source/run_medecom.R \
+    -m ${samples_path} \
+    -k ${params.clusters} \
+    -n ${params.ninit} \
+    -f ${params.nfold} \
+    -r ${params.itermax} \
+    $args
+    """
+ 
+  ecde6685628d1619483243c47b4a2b15 [java.lang.String] docker.io/egiuili/medecom:v1 
+  243c09640e8e3ef517bfc39327bcbbfb [java.lang.String] samples_path 
+  afc3c9c55f26568ff9c33f1ecda258c9 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/7b/5e6f923d1dc237579e85105c47f8aa/regions.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/7b/5e6f923d1dc237579e85105c47f8aa/regions.csv, stageName:regions.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  b688103995ad06972b3d74cf908be81a [java.util.HashMap$EntrySet] [params.clusters=2, params.nfold=10, params.ninit=10, params.itermax=300] 
+
+Jul-13 16:30:14.085 [Actor Thread 10] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA (1)] cache hash: 668af38c7566a8c88a3d0dd86224bfb4; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  7d13a71849d479febac3e4a714dcefdd [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA 
+  bb45c5adec1fccdcc1786cda1941a602 [java.lang.String] def args = ''
+if (params.direction) {
+        args += "-d ${params.direction}"
+        if (params.top) {
+        args += " -t ${params.top}"
+    }
+    }
+"""
+    Rscript /source/test_DMR.R \
+    -i ${clusters} \
+    -p ${params.adjp} \
+    -j ${params.adj_method} \
+    -c ${params.collapse_method} \
+    $args
+    """
+ 
+  7f870d5b412e36392b6dfadba7483af0 [java.lang.String] docker.io/egiuili/dmr_analysis:v1.0 
+  121312d15458585a4dc24d7f26191501 [java.lang.String] clusters 
+  c4a6afd97a1a243f03310d675bee030e [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/47/371458b2188a833313907d49930a8c/regions.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/47/371458b2188a833313907d49930a8c/regions.csv, stageName:regions.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  b4e405d601f36fdaaa736f2c6b1db532 [java.util.HashMap$EntrySet] [params.direction=null, params.top=null, params.collapse_method=mean, params.adj_method=BH, params.adjp=0.001] 
+
+Jul-13 16:30:14.086 [Actor Thread 1] INFO  nextflow.processor.TaskProcessor - [28/2ef1ab] Cached process > RUN_DNAmDeconv:DNAmDeconv:refFreeDeconv:MEDECOM (1)
+Jul-13 16:30:14.087 [Actor Thread 10] INFO  nextflow.processor.TaskProcessor - [17/3dbc75] Cached process > RUN_DNAmDeconv:DNAmDeconv:inHousePrep:LIMMA (1)
+Jul-13 16:30:14.095 [Actor Thread 12] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING (1)] cache hash: 4f83f600e409eb3f861f0ef825b0bc1a; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  1bdd91ed33bc739534d9ffb65f832bb5 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING 
+  7f7a5b9184bbb090ff3b75c114409f55 [java.lang.String] def args = "-n ${task.cpus}"
+if (params.celfie || params.benchmark) {
+        args += ' --celfie'
+    }
+"""
+    python3 /source/test_preprocessing.py \
+    -i ${test} \
+    -r ${reference} \
+    -k ${params.chunk_size} \
+    $args
+    """
+ 
+  339bec858f928b9bf8509605f014619c [java.lang.String] docker.io/egiuili/test_preprocessing:v1.0 
+  ecfc6f622f81dcb3435c7f920df77ce2 [java.lang.String] test 
+  5709657f3fa719d386c4972d4c456b3a [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/test.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/resources/test.csv, stageName:test.csv)] 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  233ccd5020232c64487c0e69ff32f8ce [java.util.HashMap$EntrySet] [params.celfie=false, params.chunk_size=100, params.benchmark=true] 
+
+Jul-13 16:30:14.097 [Actor Thread 12] INFO  nextflow.processor.TaskProcessor - [8f/0360c0] Cached process > RUN_DNAmDeconv:DNAmDeconv:TEST_PREPROCESSING (1)
+Jul-13 16:30:14.101 [Actor Thread 12] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS (1)] cache hash: 72a8719480398d9757f97ed0519d1603; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  bb6bcb133e00eda4795bd514b6a71cba [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS 
+  044416e617d288371dfb51b02e63fc9f [java.lang.String] """
+    python3 /source/run_deconv.py -a ${reference} ${samples} --residuals
+    """
+ 
+  a0b50c4e22dc96458f3d290d433364af [java.lang.String] docker.io/egiuili/methyl_atlas:v1.0 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  5bfa1a9085747b0205d9071ca08ba042 [java.lang.String] samples 
+  2c7f084a7e93886b2a7e977e3933a159 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, stageName:test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+
+Jul-13 16:30:14.101 [Actor Thread 15] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT (1)] cache hash: e01e3b4d9df661920a7148bf9c2195c1; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  dd31e7b4bbe91c77ae9a004257a2cc24 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT 
+  6f2aa3514fe616fe5edd2adbf8fabeeb [java.lang.String] """
+    Rscript /source/run_cibersort.R -s ${reference} -m ${samples}
+    """
+ 
+  65fe69a6367a048d781c564b707ce067 [java.lang.String] docker.io/egiuili/cibersort:v1 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  5bfa1a9085747b0205d9071ca08ba042 [java.lang.String] samples 
+  2c7f084a7e93886b2a7e977e3933a159 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, stageName:test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+
+Jul-13 16:30:14.102 [Actor Thread 9] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES (1)] cache hash: 47a1668e5ba833e8cd240d7ad401fceb; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  55d9e09ea41cbc7197e839c4d3e79f4b [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES 
+  48cc5eef02e526f8c499c2beb251fc62 [java.lang.String] """
+    python3 /source/merge_tables.py \
+    -i ${ref_matrix} \
+    -t ${test_matrix} \
+    """
+ 
+  9f630d497401fbdb2e16bb0da14bcf80 [java.lang.String] docker.io/egiuili/celfie:v1.0 
+  49acd2d0ab84f5df0baf84fc8cfa701d [java.lang.String] ref_matrix 
+  36d3cea5f184754311c754e62f8ccc2a [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/47/371458b2188a833313907d49930a8c/celfie_regions.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/47/371458b2188a833313907d49930a8c/celfie_regions.csv, stageName:celfie_regions.csv)] 
+  fb456e4327c3400521bbdaedf35a9cf1 [java.lang.String] test_matrix 
+  55ece114027dabac11389c9a92651bc8 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/celfie_test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/celfie_test_samples.csv, stageName:celfie_test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+
+Jul-13 16:30:14.103 [Actor Thread 9] INFO  nextflow.processor.TaskProcessor - [b3/21761c] Cached process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:MERGE_TABLES (1)
+Jul-13 16:30:14.104 [Actor Thread 15] INFO  nextflow.processor.TaskProcessor - [77/04a48d] Cached process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:CIBERSORT (1)
+Jul-13 16:30:14.105 [Actor Thread 12] INFO  nextflow.processor.TaskProcessor - [37/eaa763] Cached process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_ATLAS (1)
+Jul-13 16:30:14.106 [Actor Thread 16] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE (1)] cache hash: cba45e95b6b727b63af4b8d8088b09ee; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  d49b25ad6c6e016b3ca2c7d02ffe03aa [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE 
+  fa6e9a0e719e6a987a49e4188eff52db [java.lang.String] """
+    Rscript /source/run_episcore.R -s ${reference} -m ${samples} -w ${params.weight}
+    """
+ 
+  707b6525bceeb38779b25e925e22ae2f [java.lang.String] docker.io/egiuili/episcore:v1 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  5bfa1a9085747b0205d9071ca08ba042 [java.lang.String] samples 
+  2c7f084a7e93886b2a7e977e3933a159 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, stageName:test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  a6184f38789cbf6c9ca34cd4e311af13 [java.util.HashMap$EntrySet] [params.weight=0.4] 
+
+Jul-13 16:30:14.107 [Actor Thread 17] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH (1)] cache hash: 9029a608f3f24cb19d048bd1b7ed49dc; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  bee936eac61a6153fbf3bfba229e1af2 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH 
+  134d1e6ceb91d8a3dadabd188b5271e8 [java.lang.String] """
+    Rscript /source/EpiDISH.R -s ${ref_path} -m ${samples_path} -d ${params.mod}
+    """
+ 
+  d3bd8a78f0a84fcc1e1e8078a6309fdd [java.lang.String] docker.io/egiuili/epidish:v1 
+  21bc9ea8260f7006eb99de22f7a8374a [java.lang.String] ref_path 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  243c09640e8e3ef517bfc39327bcbbfb [java.lang.String] samples_path 
+  2c7f084a7e93886b2a7e977e3933a159 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, stageName:test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  671eced8efac25ddfa0a6e4db67dab33 [java.util.HashMap$EntrySet] [params.mod=RPC] 
+
+Jul-13 16:30:14.107 [Actor Thread 6] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER (1)] cache hash: 5e46b9a129b05f38017fd2ecb3d3de6b; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  581390f3c3f32d17fc5c6f0062cb528d [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER 
+  bb35d6c1d2254dfe72538621d20fe308 [java.lang.String] """
+    Rscript /source/run_methylresolver.R -s ${reference} -m ${samples} -a ${params.alpha}
+    """
+ 
+  9afba9cf178ad5f813ab4d9d36476471 [java.lang.String] docker.io/egiuili/methylresolver:v1 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  5bfa1a9085747b0205d9071ca08ba042 [java.lang.String] samples 
+  2c7f084a7e93886b2a7e977e3933a159 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, stageName:test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  92e55240d473b8284949756263862ae2 [java.util.HashMap$EntrySet] [params.alpha=0.5] 
+
+Jul-13 16:30:14.108 [Actor Thread 16] INFO  nextflow.processor.TaskProcessor - [f1/3c5de9] Cached process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPISCORE (1)
+Jul-13 16:30:14.109 [Actor Thread 17] INFO  nextflow.processor.TaskProcessor - [6e/b64961] Cached process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:EPIDISH (1)
+Jul-13 16:30:14.110 [Actor Thread 6] INFO  nextflow.processor.TaskProcessor - [46/e5307f] Cached process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:METHYL_RESOLVER (1)
+Jul-13 16:30:14.110 [Actor Thread 18] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH (1)] cache hash: 0579441c65ecc48bf4b1f764753237d3; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  3da678eac916f0ea0ea0577d10ca98fd [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH 
+  92d4c22d4eb64ee88976cdf8f552770f [java.lang.String] """
+    Rscript /source/run_prmeth.R \
+    -s ${reference} \
+    -m ${samples} \
+    -k ${params.clusters} \
+    -d ${params.prmeth_mod}
+    """
+ 
+  2d0a20a05d3a861cc3146df79e6e70d4 [java.lang.String] docker.io/egiuili/prmeth:v1 
+  fec83c41a7c57f821d28e6b995ac3b35 [java.lang.String] reference 
+  3603a057f7f666d9d9ac9907a67bc2f0 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/17/3dbc75eb2de2ca5126d0d15ac97063/reference_matrix_0.001_BH_mean.csv, stageName:reference_matrix_0.001_BH_mean.csv)] 
+  5bfa1a9085747b0205d9071ca08ba042 [java.lang.String] samples 
+  2c7f084a7e93886b2a7e977e3933a159 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/8f/0360c0befd2130346a6110549ea168/test_samples.csv, stageName:test_samples.csv)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  bd7d7e5fbd88c7219b460b65486a2945 [java.util.HashMap$EntrySet] [params.clusters=2, params.prmeth_mod=QP] 
+
+Jul-13 16:30:14.112 [Actor Thread 18] INFO  nextflow.processor.TaskProcessor - [cb/991879] Cached process > RUN_DNAmDeconv:DNAmDeconv:refBasedDeconv:PRMETH (1)
+Jul-13 16:30:14.123 [Actor Thread 19] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV (1)] cache hash: ce0a9a25c589ea6f282f9b92bd7e574b; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  a03bf34222d19235c0a52d3a5535d714 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV 
+  7b9f0beae6cb670c12ae06ac8e56335c [java.lang.String] """
+    python3 /source/celfie.py \
+    ${merged_table} \
+    ${params.outdir} \
+    ${params.nsamples} \
+    -m ${params.celfie_maxiter} \
+    -u ${params.unknown} \
+    -c ${params.converg} \
+    -r ${params.celfie_randrest} \
+    -p ${params.parall_job} \
+    """
+ 
+  9f630d497401fbdb2e16bb0da14bcf80 [java.lang.String] docker.io/egiuili/celfie:v1.0 
+  2206a555fee82d72cdfb0edc8607fb59 [java.lang.String] merged_table 
+  a83fe865da12c73f19af15873503aff2 [nextflow.util.ArrayBag] [FileHolder(sourceObj:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/b3/21761c161710c938dfdc06e880afa9/celfie_matrix.txt, storePath:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/b3/21761c161710c938dfdc06e880afa9/celfie_matrix.txt, stageName:celfie_matrix.txt)] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+  d391a493ce54755c6dfdba9146029399 [java.util.HashMap$EntrySet] [params.outdir=./results, params.nsamples=5, params.celfie_randrest=10, params.parall_job=1, params.celfie_maxiter=1000, params.converg=0.0001, params.unknown=0] 
+
+Jul-13 16:30:14.126 [Actor Thread 19] INFO  nextflow.processor.TaskProcessor - [3e/f22976] Cached process > RUN_DNAmDeconv:DNAmDeconv:CELFIE:RUN_DECONV (1)
+Jul-13 16:30:14.129 [Actor Thread 15] INFO  nextflow.processor.TaskProcessor - [RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES] cache hash: 75ca4a9ccfed570be88a210aca20128f; mode: STANDARD; entries: 
+  50eb61a2a3fd7e644c04fbb7f22035b0 [java.util.UUID] fbc38cd7-09ca-4d3a-845f-4d8396379f9c 
+  e7a640adad07c186b998981d95436953 [java.lang.String] RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES 
+  738a9412602d244d0d45b72f7075802e [java.lang.String] """
+    python3 /source/combine_files.py \
+    "${files}" \
+    -o combined_results
+    """
+ 
+  9a2477eead7f5f4f7d8097139fbce6e6 [java.lang.String] docker.io/egiuili/combine_files:v1 
+  88168219f4aebddbdff2734bf7f9d98c [java.lang.String] files 
+  bcbd5c68a1008846747b5aef95505524 [nextflow.util.ArrayBag] [CelFiE:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/3e/f229765c8d4df33508a3d157bec75b/results/1_tissue_proportions.txt, meth_atlas:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/37/eaa763babb9b09017d1d3d4702a2e8/test_samples_deconv_output.csv, CIBERSORT:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/77/04a48d6ae50faf4df91afa859f2052/test_samples_deconv_output.csv, EpiDISH:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/6e/b649619d4f7c46c880d6641ee8f1f5/epidish_res_RPC.csv, Methyl_Resolver:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/46/e5307f52e8f09f8a1a871f9243d66d/test_samples_deconv_output_alpha_0.5.csv, EpiSCORE:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/f1/3c5de9a705e3ba2d298f563ed911e7/test_samples_deconv_output_weight_0.4.csv, PRMeth:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/cb/9918798e1ca15e4384f8617d87a545/test_samples_deconv_output_mod_QP.csv, MeDeCom:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/28/2ef1ab81dcbe88b68aedb55e2f71eb/test_samples_deconv_output_lambda1e-05.csv, PRMeth_RF:/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/DNAmDeconv/work/32/032e4b89b8c97c480dff1878b1fc25/test_samples_deconv_output_mod_RF.csv] 
+  4f9d4b0d22865056c37fb6d9c2a04a67 [java.lang.String] $ 
+  16fe7483905cce7a85670e43e4678877 [java.lang.Boolean] true 
+
+Jul-13 16:30:14.132 [Actor Thread 15] INFO  nextflow.processor.TaskProcessor - [df/986765] Cached process > RUN_DNAmDeconv:DNAmDeconv:COMBINE_FILES
+Jul-13 16:30:14.135 [Actor Thread 15] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'PublishDir' minSize=10; maxSize=24; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jul-13 16:30:14.136 [main] DEBUG nextflow.Session - Session await > all processes finished
+Jul-13 16:30:14.200 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+Jul-13 16:30:14.200 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jul-13 16:30:14.202 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'PublishDir' shutdown completed (hard=false)
+Jul-13 16:30:14.204 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=0; failedCount=0; ignoredCount=0; cachedCount=15; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=0ms; failedDuration=0ms; cachedDuration=25m 37s;loadCpus=0; loadMemory=0; peakRunning=0; peakCpus=0; peakMemory=0; ]
+Jul-13 16:30:14.204 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow completed -- saving trace file
+Jul-13 16:30:14.205 [main] DEBUG nextflow.trace.ReportObserver - Workflow completed -- rendering execution report
+Jul-13 16:30:14.976 [main] DEBUG nextflow.trace.TimelineObserver - Workflow completed -- rendering execution timeline
+Jul-13 16:30:15.200 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Jul-13 16:30:15.200 [main] INFO  org.pf4j.AbstractPluginManager - Stop plugin 'nf-schema@2.0.0'
+Jul-13 16:30:15.200 [main] DEBUG nextflow.plugin.BasePlugin - Plugin stopped nf-schema
+Jul-13 16:30:15.209 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+Jul-13 16:30:15.209 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
