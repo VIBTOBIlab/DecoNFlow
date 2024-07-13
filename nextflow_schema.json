@@ -59,8 +59,8 @@
                 }
             }
         },
-        "benchmarking_options": {
-            "title": "Benchmarking options",
+        "deconvolution_options": {
+            "title": "Deconvolution options",
             "type": "object",
             "description": "",
             "default": "",
@@ -327,7 +327,7 @@
             "$ref": "#/defs/generic_options"
         },
         {
-            "$ref": "#/defs/benchmarking_options"
+            "$ref": "#/defs/deconvolution_options"
         },
         {
             "$ref": "#/defs/dmr_analysis_options"

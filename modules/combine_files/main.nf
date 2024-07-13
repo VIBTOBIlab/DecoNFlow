@@ -1,11 +1,14 @@
 #!/usr/bin/env nextflow
 
+// Define mounting option
+def args = workflow.profile == 'docker' ? '--volume' : '--bind'
+
 process COMBINE_FILES {
     container 'egiuili/combine_files:v1'
 
-    label 'process_low'
+    containerOptions "$args ${projectDir}:${projectDir}"
 
-    containerOptions "--volume ${projectDir}:${projectDir}"
+    label 'process_low'
 
     input:
     val files
