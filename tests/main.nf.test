@@ -1,0 +1,27 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("DNAmDeconv pipeline") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert new File( "$outputDir/final_outputs/combined_results.csv" ).exists()},
+                
+                { assert snapshot(
+                    path("$outputDir/final_outputs/combined_results.csv" )
+                    ).match()}
+            )
+        }
+
+    }
+
+}

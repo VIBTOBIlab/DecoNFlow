@@ -4,7 +4,9 @@
 def args = ''
 if (workflow.profile=='docker'||
     workflow.profile=='debug,docker' ||
-    workflow.profile=='docker,debug') {
+    workflow.profile=='docker,debug' ||
+    workflow.profile=='test,docker' ||
+    workflow.profile=='docker,test') {
     args += '--volume'
 } else { args += '--bind'}
 

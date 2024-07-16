@@ -1,11 +1,9 @@
 ![Presentation1](docs/images/logo.jpg)
 
-# Table of Contents
-1. [Introduction](#Introduction)
-2. [Usage](#Usage)
-3. [Credits](#Credits)
-4. [License](#License)
-5. [Citations](#Citations)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
+[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
+[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
+[![nf-test](https://img.shields.io/badge/tested_with-nf--test-337ab7.svg)](https://github.com/askimed/nf-test)
 
 # Introduction
 DNAmDeconv is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It allows deconvolution of samples using both reference-based and reference-free deconvolution tools. It also allows benchmarking of the different tools included in the pipeline.
@@ -47,7 +45,7 @@ test4,/path/to/the/files/file4.cov.gz
 ```
 Each row represents a sample, defined by a name (first column) and the sample path to the coverage file (second column).
 
-## Region file
+## Regions file
 > **NOTE** The chromosome must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represent just by the number, without the "chr" string).
 
 Second, prepare a .tsv or .bed file that includes the pre-defined regions according to which the single CpGs in the coverage files will be clustered. The file looks as follow:
@@ -64,7 +62,7 @@ Second, prepare a .tsv or .bed file that includes the pre-defined regions accord
 ```
 Each row represents a region, defined by chromosome (first column), starting position (second column) and ending position (third column). 
 
-## Reference dataset
+## Input file (reference dataset)
 > **NOTE** This step can be skipped if no reference samples are available, or if you want to run reference-free deconvolution tools.
 
 Finally, prepare a samplesheet with your reference samples to build the reference matrix. This step is necessary if you want to use reference-based deconvolution tools. The file looks as follows:
@@ -82,6 +80,8 @@ file6,nbl,/path/to/the/file/file6.cov.gz
 Each row represents a coverage file, with the first column representing the sample name, the second column representing the name of the cell type and the last column representing the path where the coverage file is stored.
 
 ## Run the pipeline
+> **NOTE** For more information, please refer to the [docs](docs/README.md).
+
 Now you can run the NextFlow (>=23.10.1) pipeline. If in the params.yaml you specify the input file (`--input`) but no tools, the pipeline will automatically deconvolve the samples using meth_atlas.
 
 Alternatively, if you do not specify the input file, the pipeline will automatically run the reference-free deconvolution workflow and deconvolve the samples using PRMeth (with reference-free modality).

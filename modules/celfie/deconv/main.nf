@@ -9,7 +9,7 @@ process RUN_DECONV {
     path merged_table
 
     output:
-    path '*/*tissue_proportions.txt', emit: res
+    path '*tissue_proportions.txt', emit: res
 
     script:
     """
