@@ -12,7 +12,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/).
 If `--save_intermeds` flag is not specified, the pipeline will produce two folders inside the outdir specified using the `--outdir` flag:
 
 
-**Pipeline info directory: `results/piepline_info`**
+**Pipeline info directory: `results/pipeline_info`**
 
 - Contains the information regarding the pipeline (timeline, dag, report).
 
