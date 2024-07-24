@@ -6,21 +6,20 @@ process MEDECOM {
     label 'process_high'
 
     input:
-    path samples_path
+    path(matrix)
 
     output:
     path '*deconv_output*.csv', emit: output
 
     script:
-    def args = "-c ${task.cpus}"
     """
     Rscript /source/run_medecom.R \
-    -m ${samples_path} \
+    -m ${matrix} \
     -k ${params.clusters} \
     -n ${params.ninit} \
     -f ${params.nfold} \
     -r ${params.itermax} \
-    $args
+    -c 8 \
     """
 
 }

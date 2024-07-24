@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process LIMMA {
-    container 'egiuili/dmr_analysis:v1.0'
+    container 'egiuili/dmr_analysis:v2.0'
 
     label 'process_low'
 
@@ -9,7 +9,8 @@ process LIMMA {
     path clusters
 
     output:
-    path 'reference_matrix*.csv', emit: reference
+    path 'reference_matrix*.csv', emit: reference_csv
+    path 'reference_matrix*.tsv', emit: reference_tsv
     path 'dmrs*.csv'
     path '*.out'
 

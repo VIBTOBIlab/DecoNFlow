@@ -2,19 +2,31 @@
 
 include { PREPROCESSING                                     } from "../modules/preprocessing/main" 
 include { LIMMA                                             } from "../modules/limma/main"
+include { MERGE_SAMPLES                                     } from "../modules/merge_samples/main"
+
 
 workflow inHousePrep {
         take:
-        samples
-        regions
+        samples         // channel: [ val(meta), val(entity), path(cov) ]
+        regions         // channel: path(regions)
 
         main:
+
         // Pass the input data and region file to the preprocessing module
-        PREPROCESSING(samples, regions)
+        PREPROCESSING(samples, regions.first())
+        
+        // Merge the samples in a unique matrix
+        procSamples = PREPROCESSING
+                        .out
+                        .filt_sample
+                        .collect()
+        MERGE_SAMPLES('ref_based', procSamples)
+
         // Pass the regions for the DMR analysis
-        LIMMA(PREPROCESSING.out.clusters)
+        LIMMA(MERGE_SAMPLES.out.fin_matrix)
 
         emit:
-        dmrs                    = LIMMA.out.reference
-        celfie_ref              = PREPROCESSING.out.celfie_ref
+        atlas_csv                 = LIMMA.out.reference_csv
+        atlas_tsv                 = LIMMA.out.reference_tsv
+        celfie_ref_samples        = PREPROCESSING.out.filt_celfie_sample.collect()
 }
