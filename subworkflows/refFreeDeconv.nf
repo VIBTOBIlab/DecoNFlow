@@ -4,6 +4,7 @@
 include { REFREE_PREPROCESSING                              } from "../modules/refree_preprocessing/main"
 include { PRMETH_RF                                         } from "../modules/prmeth_rf/main"
 include { MEDECOM                                           } from "../modules/medecom/main"
+include { MERGE_SAMPLES                                     } from "../modules/merge_samples/main"
 
 
 workflow refFreeDeconv {
@@ -13,21 +14,30 @@ workflow refFreeDeconv {
     regions
 
     main:
-
+    test
     // Preprocess testing samples for reference-free deconvolution tools
     REFREE_PREPROCESSING(test, regions)
-    refree_procTest = REFREE_PREPROCESSING.out.preprocessed_refree
+
+    // Collect the different preprocessed samples
+    refree_procTest = REFREE_PREPROCESSING
+        .out
+        .preprocessed_refree
+        .map{sample,cov -> [cov]}
+        .collect()
     
+    // Merge the samples in a unique matrix
+    MERGE_SAMPLES('ref_free',refree_procTest)
+
     // List to collect output channels
     refree_outputChannels = Channel.empty()
     
     // Run deconvolution tool(s)
     if (params.medecom || params.benchmark) {
-        MEDECOM(refree_procTest)
+        MEDECOM(MERGE_SAMPLES.out.fin_matrix)
         refree_outputChannels = refree_outputChannels.concat( Channel.of( 'MeDeCom' ).combine( MEDECOM.out.output) )
     }  
     if (params.prmeth_rf || params.benchmark) {
-        PRMETH_RF(refree_procTest)
+        PRMETH_RF(MERGE_SAMPLES.out.fin_matrix)
         refree_outputChannels = refree_outputChannels.concat( Channel.of( 'PRMeth_RF' ).combine( PRMETH_RF.out.output ) )
     }   
 
