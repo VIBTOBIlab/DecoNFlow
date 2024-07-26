@@ -15,12 +15,14 @@ log.info """
 
 
 // include processes and subworkflows to make them available for use in this script 
-include { inHousePrep                                       } from "../subworkflows/inHousePrep"
-include { refBasedDeconv                                    } from "../subworkflows/refBasedDeconv"
-include { refFreeDeconv                                     } from "../subworkflows/refFreeDeconv"
-include { CELFIE                                            } from "../subworkflows/celfie"
-include { TEST_PREPROCESSING                                } from "../modules/test_preprocessing/main"
-include { COMBINE_FILES                                     } from "../modules/combine_files/main"
+include { samplesheetToList                      } from 'plugin/nf-schema'
+include { inHousePrep                            } from "../subworkflows/inHousePrep"
+include { refBasedDeconv                         } from "../subworkflows/refBasedDeconv"
+include { refFreeDeconv                          } from "../subworkflows/refFreeDeconv"
+include { CELFIE                                 } from "../subworkflows/celfie"
+include { TEST_PREPROCESSING                     } from "../modules/test_preprocessing/main"
+include { COMBINE_FILES                          } from "../modules/combine_files/main"
+include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
 
 
 workflow DNAmDeconv{
@@ -29,10 +31,45 @@ workflow DNAmDeconv{
     proportion_ch = Channel.empty()
 
     // Set the testing samples channel
-    test_ch = Channel.fromPath(params.test_set)
+    test_ch = Channel.fromList(
+        samplesheetToList(params.test_set, "assets/schema_testset.json"))
+        .map { meta, cov -> tuple(meta.id, cov) }
 
     if (params.input) {
-        samples_ch = Channel.fromPath(params.input)
+        Channel.fromList(
+            samplesheetToList(params.input, "assets/schema_input.json"))
+            .map { 
+                meta, entity, cov ->
+                meta_entity = meta.clone()
+                meta_entity.entity = entity
+                meta_entity.id = meta.id
+                tuple(meta_entity.id, meta_entity.entity, cov) }
+            .set{ samples_ch_original }
+
+
+        // Add index to the second (entity) column
+        def counterMap = [:]
+        def samples_ch = samples_ch_original
+            .map { entry -> 
+
+                def label = entry[1]
+            
+                if (!counterMap.containsKey(label)) {
+                    counterMap[label] = 0
+                }
+                counterMap[label]++
+
+                def newLabel = "${label}${counterMap[label]}"
+
+                def newEntry = [
+                    entry[0],           // Original first column
+                    newLabel,           // Modified second column with index
+                    entry[2]            // Original third column
+                ]
+
+                return newEntry
+            }
+
 
         /*
          * SUBWORKFLOW:
@@ -40,9 +77,11 @@ workflow DNAmDeconv{
          *     - Other DMRselection tools else
          */
         if (params.DMRselection=="custom") {
-            regions_ch = Channel.fromPath(params.regions)
+            regions_ch = Channel.fromPath(params.regions).first()
             inHousePrep(samples_ch, regions_ch)
-            dmrs = inHousePrep.out.dmrs
+            atlas_tsv = inHousePrep.out.atlas_tsv
+            atlas_csv = inHousePrep.out.atlas_csv
+
         } 
         
         //else if (params.regions=="DMRfinder"){ 
@@ -51,16 +90,24 @@ workflow DNAmDeconv{
         //}
 
         // Preprocess test samples
-        TEST_PREPROCESSING(test_ch, dmrs)
-        test = TEST_PREPROCESSING.out.preprocessed_test
+        TEST_PREPROCESSING(test_ch, atlas_tsv)
+        test = TEST_PREPROCESSING
+                .out
+                .preprocessed_test
+                .collect()
+    
+        // Merge the samples in a unique matrix
+        MERGE_SAMPLES('test',test)
 
 
         /*
          * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE
          */
         if (params.celfie || params.benchmark) {
-            test_celfie = TEST_PREPROCESSING.out.celfie_test
-            CELFIE(inHousePrep.out.celfie_ref, test_celfie)
+            // Merge the samples in a unique matrix compatible with CelFiE
+            ref_celfie = inHousePrep.out.celfie_ref_samples
+            test_celfie = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
+            CELFIE(ref_celfie, test_celfie)
             proportion_ch = proportion_ch.concat( Channel.of( 'CelFiE' ).combine( CELFIE.out.output ) )
         }   
 
@@ -68,7 +115,7 @@ workflow DNAmDeconv{
         /*
          * SUBWORKFLOW: Reference-based cellular deconvolution 
          */
-        refBasedDeconv(dmrs, test)
+        refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
         proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
             
     }
@@ -80,7 +127,7 @@ workflow DNAmDeconv{
      */
     if (!(params.input) || (params.benchmark)) {
         if (params.regions) {
-            regions_ch = Channel.fromPath(params.regions)
+            regions_ch = Channel.fromPath(params.regions).first()
             refFreeDeconv(test_ch, regions_ch)
             proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)
         } else {

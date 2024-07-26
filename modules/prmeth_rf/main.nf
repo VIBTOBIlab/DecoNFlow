@@ -6,16 +6,16 @@ process PRMETH_RF {
     label 'process_medium'
 
     input:
-    path samples
+    path(matrix)
 
     output:
-    path '*_deconv_output*.csv', emit: output
+    path "*deconv_output*.csv", emit: output
 
     script:
     """
     Rscript /source/run_prmeth.R \
-    -s ${samples} \
-    -m ${samples} \
+    -s ${matrix} \
+    -m ${matrix} \
     -k ${params.clusters} \
     -d RF
     """

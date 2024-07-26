@@ -15,7 +15,7 @@ nextflow.enable.dsl = 2
     VALIDATE & PRINT PARAMETER SUMMARY
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { validateParameters; paramsHelp; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
+include { validateParameters; paramsHelp; paramsSummaryLog} from 'plugin/nf-schema'
 
 // Print help message, supply typical command line usage for the pipeline
 if (params.help) {
@@ -36,12 +36,6 @@ if (params.benchmark & !(params.input)) {
 
 // Print summary of supplied parameters
 log.info paramsSummaryLog(workflow)
-
-// Create a new channel of metadata from a sample sheet passed to the pipeline through the --input parameter
-if (params.input) {
-    ch_input = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
-}
-ch_test = Channel.fromList(samplesheetToList(params.test_set, "assets/schema_testset.json"))
 
 
 /*

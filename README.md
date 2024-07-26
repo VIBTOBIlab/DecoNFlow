@@ -8,10 +8,10 @@
 # Introduction
 DNAmDeconv is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It allows deconvolution of samples using both reference-based and reference-free deconvolution tools. It also allows benchmarking of the different tools included in the pipeline.
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
+The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
 
 # Pipeline Summary
-The pipeline allows you to run both reference-based and reference-free deconvolution tools. Visit docs for more information.
+This pipeline runs with Nextflow version. The pipeline allows you to run both reference-based and reference-free deconvolution tools. Visit docs for more information.
 
 | Reference-based deconvolution tools |
 |-------------------------------------|

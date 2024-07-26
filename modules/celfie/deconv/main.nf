@@ -7,6 +7,7 @@ process RUN_DECONV {
     
     input:
     path merged_table
+    val nsamples
 
     output:
     path '*tissue_proportions.txt', emit: res
@@ -16,7 +17,7 @@ process RUN_DECONV {
     python3 /source/celfie.py \
     ${merged_table} \
     ${params.outdir} \
-    ${params.nsamples} \
+    ${nsamples} \
     -m ${params.celfie_maxiter} \
     -u ${params.unknown} \
     -c ${params.converg} \

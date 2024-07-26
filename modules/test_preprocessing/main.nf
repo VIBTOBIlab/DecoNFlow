@@ -1,30 +1,53 @@
 #!/usr/bin/env nextflow
 
 process TEST_PREPROCESSING {
-    container 'egiuili/test_preprocessing:v1.0'
+    container 'egiuili/bedtools_preprocessing:v1'
 
     label 'process_high_memory'
 
+
     input:
-    path test
+    tuple val(meta), path(covs)
     path reference
 
     output:
-    path 'test_samples.csv', emit: preprocessed_test
-    path 'celfie*.csv', emit: celfie_test, optional: true
-    path '*.out'
+    path("${meta}_sample_mix.csv") , emit: preprocessed_test
+    path("${meta}_sample_celfie_mix.csv") , emit: preprocessed_celfie_test
 
     script:
-    def args = "-n ${task.cpus}"
-    if (params.celfie || params.benchmark) {
-        args += ' --celfie'
-    }
     """
-    python3 /source/test_preprocessing.py \
-    -i ${test} \
-    -r ${reference} \
-    -k ${params.chunk_size} \
-    $args
+    bedtools intersect \\
+    -a ${reference} \\
+    -b ${covs} \\
+    -wa -wb > ${meta}.bed \\
+
+    bedtools groupby \\
+    -i ${meta}.bed \\
+    -g 1,2,3 \\
+    -c 10,11 > ${meta}_sum.bed \\
+
+    echo "chr,start,end,${meta}" > "${meta}_sample_mix.csv"
+    awk 'BEGIN {OFS=","}
+        {
+            chr=\$1 
+            start=\$2 
+            end=\$3 
+            methylation=\$4 / (\$4 + \$5)
+            print NR, chr, start, end, methylation
+
+        }' ${meta}_sum.bed >> ${meta}_sample_mix.csv
+    
+    echo ",chr,start,end,${meta}_meth,${meta}_depth" > "${meta}_sample_celfie_mix.csv"
+    awk 'BEGIN {OFS=","}
+        {
+            chr=\$1 
+            start=\$2 
+            end=\$3 
+            methylation=\$4 
+            depth= (\$4 + \$5)
+            print NR, chr, start, end, methylation, depth
+
+        }' ${meta}_sum.bed >> ${meta}_sample_celfie_mix.csv
     """
     
 }
