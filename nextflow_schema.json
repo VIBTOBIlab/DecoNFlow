@@ -168,16 +168,6 @@
                     "type": "integer",
                     "default": 3,
                     "description": "Minimum number of CpGs per region"
-                },
-                "merging_approach": {
-                    "type": "string",
-                    "default": "intersect",
-                    "description": "Approach adopted to merge the reference coverage files. Alternative is 'union' (less stringent approach)"
-                },
-                "chunk_size": {
-                    "type": "integer",
-                    "default": 100,
-                    "description": "Size of the chunks that are used to reduce the memory required."
                 }
             }
         },
@@ -287,10 +277,6 @@
             "description": "",
             "default": "",
             "properties": {
-                "nsamples": {
-                    "type": "integer",
-                    "description": "Number of samples to deconvolve"
-                },
                 "celfie_maxiter": {
                     "type": "integer",
                     "default": 1000,
