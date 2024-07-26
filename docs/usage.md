@@ -235,9 +235,6 @@ MeDeCom number of folds for cross-validation (def. 10).
 ### `--itermax`
 MeDeCom max number of iterations (def. 300).
 
-### `--nsamples`
-CelFiE: number of samples to deconvolve (to be specified).
-
 ### `--celfie_maxiter`
 How long the EM should iterate before stopping, unless convergence criteria is met (def. 1000).
 
