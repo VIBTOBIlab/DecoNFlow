@@ -82,7 +82,7 @@ Each row represents a coverage file, with the first column representing the samp
 ## Run the pipeline
 > **NOTE** For more information, please refer to the [docs](docs/README.md).
 
-Now you can run the NextFlow (>=23.10.1) pipeline. If in the params.yaml you specify the input file (`--input`) but no tools, the pipeline will automatically deconvolve the samples using meth_atlas.
+Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. If in the params.yaml you specify the input file (`--input`) but no tools, the pipeline will automatically deconvolve the samples using meth_atlas.
 
 Alternatively, if you do not specify the input file, the pipeline will automatically run the reference-free deconvolution workflow and deconvolve the samples using PRMeth (with reference-free modality).
 

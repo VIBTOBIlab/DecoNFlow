@@ -1,8 +1,9 @@
 #!/usr/bin/env nextflow
 
 process REFREE_PREPROCESSING {
-
     container 'egiuili/bedtools_preprocessing:v1'
+
+    label 'process_medium'
 
     input:
     tuple val(meta), path(covs)
