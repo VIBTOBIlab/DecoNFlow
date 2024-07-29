@@ -3,7 +3,7 @@
 process PREPROCESSING {
     container 'egiuili/bedtools_preprocessing:v1'
 
-    label 'process_high_memory'
+    label 'process_medium'
 
     input:
     tuple val(meta),val(entity),path(cov) 

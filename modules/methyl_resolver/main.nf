@@ -3,7 +3,7 @@
 process METHYL_RESOLVER {
     container 'egiuili/methylresolver:v1'
 
-    label 'process_medium'
+    label 'process_low'
 
     input:
     path reference

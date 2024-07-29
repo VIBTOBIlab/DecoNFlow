@@ -3,7 +3,7 @@
 process EPIDISH {
     container 'egiuili/epidish:v1'
 
-    label 'process_medium'
+    label 'process_low'
 
     input:
     path ref_path
