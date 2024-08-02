@@ -39,6 +39,20 @@ class NfcoreTemplate {
 
         return version_string
     }
+    
+    //
+    // Dump pipeline parameters in a json file
+    //
+    public static void dump_parameters(workflow, params) {
+        def timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
+        def filename   = "params_${timestamp}.json"
+        def temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
+        def jsonStr    = JsonOutput.toJson(params)
+        temp_pf.text   = JsonOutput.prettyPrint(jsonStr)
+
+        FilesEx.copyTo(temp_pf.toPath(), "${params.outdir}/pipeline_info/params_${timestamp}.json")
+        temp_pf.delete()
+    }
 
     //
     // Print pipeline summary on completion
