@@ -187,9 +187,6 @@ Minimum number of counts to keep a CpG position. Default 10.
 ### `--min_cpgs`
 Minimum number of CpGs per region. Default 3.
 
-### `--merging_approach`
-How to merge the CpGs of the coverage files of the reference samples. Default is 'intersection', alternative is 'union' (less stringent approach).
-
 ### `--chunk_size`
 Size of the chunks that are used to reduce the memory required. Default is 100.
 
