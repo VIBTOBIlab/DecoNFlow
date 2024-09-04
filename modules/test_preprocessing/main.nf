@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process TEST_PREPROCESSING {
-    container 'egiuili/bedtools_preprocessing:v1'
+    container 'egiuili/bedtools_preprocessing:v2'
 
     label 'process_medium'
 

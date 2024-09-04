@@ -1,4 +1,12 @@
 # DNAmDeconv Pipeline
+## [v1.0.2](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.2) -
+### Bugs fixed
+- Fixed problems with _check_max_ function and _base.config_ file not properly imported in _nextflow.config_
+- Removed _merging_approach_ flag from the documentation.
+- Updated *bedtools* container version to the latest one to fix a bug present in the previous version (see [#643](https://github.com/arq5x/bedtools2/issues/643)).
+### Small new features
+Added _lib_ directory with two functions for parameters checking, string citations, string version, for dumping parameters .json file and for nfcore logo.
+
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 ### Parameters changes
 - `nsamples` parameter has been removed (it's now automatically computed)
