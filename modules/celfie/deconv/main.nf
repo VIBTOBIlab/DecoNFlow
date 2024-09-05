@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process RUN_DECONV {
-    container 'egiuili/celfie:v1.0'
+    container 'egiuili/celfie:v3.0'
 
     label 'process_low'    
     
