@@ -45,25 +45,8 @@ test4,/path/to/the/files/file4.cov.gz
 ```
 Each row represents a sample, defined by a name (first column) and the sample path to the coverage file (second column).
 
-## Regions file
-> **NOTE** The chromosome must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represent just by the number, without the "chr" string).
-
-Second, prepare a .tsv or .bed file that includes the pre-defined regions according to which the single CpGs in the coverage files will be clustered. The file looks as follow:
-
-`regions.bed`
-```plaintext:
-1   10497       10588
-1   10589       10640
-1   10641       10669
-... ...         ...
-22  50064015    50064037
-22  50064064    50064084
-22  50064090    50064112
-```
-Each row represents a region, defined by chromosome (first column), starting position (second column) and ending position (third column). 
-
 ## Input file (reference dataset)
-> **NOTE** This step can be skipped if no reference samples are available, or if you want to run reference-free deconvolution tools.
+> **NOTE** This step can be skipped if no reference samples are available, or if you want to run reference-free deconvolution tools. For more information, please refer to the [docs](docs/README.md).
 
 Finally, prepare a samplesheet with your reference samples to build the reference matrix. This step is necessary if you want to use reference-based deconvolution tools. The file looks as follows:
 
@@ -102,7 +85,6 @@ The params.yaml file looks like the following:
 ```plaintext: 
 input: ./resources/reference.csv
 output_dir: ./results
-regions_file: ./resources/RRBS_regions20-200.bed
 test_samples: ./resources/test.csv
 ```
 All the parameters specified in the file can also be specified in the command line using the corresponding flags.
