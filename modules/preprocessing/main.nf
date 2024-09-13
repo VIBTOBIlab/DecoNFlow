@@ -11,7 +11,6 @@ process PREPROCESSING {
 
     output:
     path "*sample_mix.csv", emit: filt_sample
-    path "*sample_celfie_mix.csv", emit: filt_celfie_sample
     
     script:
     """
@@ -37,18 +36,6 @@ process PREPROCESSING {
     -a ${entity}_sum.bed \\
     -b ${entity}_counts.bed \\
     -wa -wb | awk -v OFS='\\t' '{print \$1, \$2, \$3, \$4, \$5}'> ${entity}_final.bed \\
-
-    echo ",chr,start,end,${entity}_meth,${entity}_depth" > "${entity}_sample_celfie_mix.csv"
-    awk 'BEGIN {OFS=","}
-        {
-            chr=\$1 
-            start=\$2 
-            end=\$3 
-            methylation=\$4 
-            depth= (\$4 + \$5)
-            print NR, chr, start, end, methylation, depth
-
-        }' ${entity}_final.bed >> ${entity}_sample_celfie_mix.csv
 
     echo ",chr,start,end,${entity}-V" > "${entity}_sample_mix.csv"
     awk 'BEGIN {OFS=","}
