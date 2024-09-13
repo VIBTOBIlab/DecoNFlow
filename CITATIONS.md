@@ -29,7 +29,9 @@
 * <u>[limma](https://academic.oup.com/nar/article/43/7/e47/2414268)</u>
     >Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015
 * <u>[BEDTools](https://academic.oup.com/bioinformatics/article/26/6/841/244688)</u>
-    >Aaron R. Quinlan, Ira M. Hall, BEDTools: a flexible suite of utilities for comparing genomic features, Bioinformatics, Volume 26, Issue 6, March 2010, Pages 841–842,
+    >Aaron R. Quinlan, Ira M. Hall, BEDTools: a flexible suite of utilities for comparing genomic features, Bioinformatics, Volume 26, Issue 6, March 2010, Pages 841–842
+* <u>[DSS](https://academic.oup.com/bioinformatics/article/32/10/1446/1743267?login=false)</u>
+    >Yongseok Park, Hao Wu, Differential methylation analysis for BS-seq data under general experimental design, Bioinformatics, Volume 32, Issue 10, May 2016, Pages 1446–1453
 ## Software packaging/containerisation tools
 * <u>[Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)</u>
     >Merkel, D. (2014). Docker: lightweight linux containers for consistent development and deployment. Linux Journal, 2014(239), 2

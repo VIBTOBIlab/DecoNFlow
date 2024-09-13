@@ -37,12 +37,14 @@ log.info """
 
 include { samplesheetToList                      } from 'plugin/nf-schema'
 include { inHousePrep                            } from "../subworkflows/inHousePrep"
+include { DSSPrep                                } from "../subworkflows/DSSPrep"
 include { refBasedDeconv                         } from "../subworkflows/refBasedDeconv"
 include { refFreeDeconv                          } from "../subworkflows/refFreeDeconv"
 include { CELFIE                                 } from "../subworkflows/celfie"
 include { TEST_PREPROCESSING                     } from "../modules/test_preprocessing/main"
 include { COMBINE_FILES                          } from "../modules/combine_files/main"
 include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
+include { CELFIE_PREPROCESSING                   } from "../modules/celfie_preprocessing/main"
 
 
 /*
@@ -107,13 +109,12 @@ workflow DNAmDeconv{
             inHousePrep(samples_ch, regions_ch)
             atlas_tsv = inHousePrep.out.atlas_tsv
             atlas_csv = inHousePrep.out.atlas_csv
-
         } 
-        
-        //else if (params.regions=="DMRfinder"){ 
-        //    println "No regions: specify them (or wait for modules reference = DMRfinder, DSS, etc)"
-            // dmrs = DMRfinder()
-        //}
+        else if (params.DMRselection=="DSS"){ 
+            DSSPrep(samples_ch)
+            atlas_tsv = DSSPrep.out.atlas_tsv
+            atlas_csv = DSSPrep.out.atlas_csv
+        }
 
         // Preprocess test samples
         TEST_PREPROCESSING(test_ch, atlas_tsv)
@@ -131,8 +132,9 @@ workflow DNAmDeconv{
          */
         if (params.celfie || params.benchmark) {
             // Merge the samples in a unique matrix compatible with CelFiE
-            ref_celfie = inHousePrep.out.celfie_ref_samples
             test_celfie = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
+            CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
+            ref_celfie = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
             CELFIE(ref_celfie, test_celfie)
             proportion_ch = proportion_ch.concat( Channel.of( 'CelFiE' ).combine( CELFIE.out.output ) )
         }   

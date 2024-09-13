@@ -18,7 +18,7 @@ DNAmDeconv is a bioinformatics analysis pipeline used for computational deconvol
 The pipeline is built using [Nextflow](https://www.nextflow.io/) (>= 23.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
 
 ## Reference-based deconvolution
-If you want to deconvolve the samples using reference-based deconvolution tools, you will need to create a samplesheet (`reference.csv`) with information about the samples that will build your reference matrix, a samplesheet (`test.csv`) with information about the samples you would like to deconvolve and a bed file (e.g.: `RRBS_regions20-200.bed`) containing the regions to cluster the single CpGs accordingly. 
+If you want to deconvolve the samples using reference-based deconvolution tools, you will need to create a samplesheet (`reference.csv`) with information about the samples that will build your reference matrix and a samplesheet (`test.csv`) with information about the samples you would like to deconvolve.
 
 ### Input file 
 Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
@@ -66,28 +66,6 @@ name,sample
 ```
 An [example samplesheet](../assets/test.csv) has been provided with the pipeline.
 
-### Regions file
-> **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented just by the number, without the "chr" string).
-
-Use this paramater to specify the regions file. It has to be a tab-separated file with three columns, and no header as shown in the example below.
-
-```bash
---regions '[path to regions file]'
-```
-where the samplesheet file looks like the following:
-
-`RRBS_regions20-200.bed`
-```plaintext:
-1   10497       10588
-1   10589       10640
-1   10641       10669
-... ...         ...
-22  50064015    50064037
-22  50064064    50064084
-22  50064090    50064112
-```
-An [example regions file](../assets/RRBS_regions20-200.bed) has been provided with the pipeline.
-
 ## Reference-free deconvolution
 For the reference-free deconvolution tools, the required files are the [regions file](../assets/RRBS_regions20-200.bed) and the [test samplesheet](../assets/test.csv).
 
@@ -95,7 +73,7 @@ For the reference-free deconvolution tools, the required files are the [regions 
 The typical command for running the pipeline is the following:
 
 ```bash
-nextflow run main.nf --input assets/reference.csv --test_set assets/test.csv --regions assets/RRBS_regions20-200.bed --outdir ./results  -profile docker
+nextflow run main.nf --input assets/reference.csv --test_set assets/test.csv --outdir ./results  -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -124,7 +102,6 @@ with `params.yaml` containing:
 ```yaml
 input: 'assets/reference.csv'
 test_set: 'assets/test.csv'
-regions: 'RRBS_regions20-200.bed'
 outdir: './results/'
 <...>
 ```
@@ -170,7 +147,29 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 ## Custom configuration
 
 ### `--DMRselection`
-Default is 'custom'. More features will be added (DSS, DMRfinder).
+Default is 'DSS'. Alternative is 'custom'. If using 'custom' DMR selection, a region file must be specified using the flag `--regions` (read below).
+
+### `--regions`
+> **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented just by the number, without the "chr" string).
+
+If _custom_ `--DMRselection` or a reference-free tool have been specified, you must provide also a regions file using this paramater. It has to be a tab-separated file with three columns, and no header as shown in the example below.
+
+```bash
+--regions '[path to regions file]'
+```
+where the samplesheet file looks like the following:
+
+`RRBS_regions20-200.bed`
+```plaintext:
+1   10497       10588
+1   10589       10640
+1   10641       10669
+... ...         ...
+22  50064015    50064037
+22  50064064    50064084
+22  50064090    50064112
+```
+An [example regions file](../assets/RRBS_regions20-200.bed) has been provided with the pipeline.
 
 ### `--save_intermeds`
 If the flag is specified, all the output files will be saved.

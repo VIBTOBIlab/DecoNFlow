@@ -153,6 +153,44 @@
                 }
             }
         },
+        "dss_options": {
+            "title": "DSS options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "smoothing": {
+                    "type": "boolean",
+                    "default": "true",
+                    "description": "Apply smoothing"
+                },
+                "smoothing_span": {
+                    "type": "number",
+                    "default": 500,
+                    "description": "Size of smoothing window in base pairs"
+                },
+                "delta": {
+                    "type": "number",
+                    "default": 0.1,
+                    "description": "Threshold for calling DMRs"
+                },
+                "min_len": {
+                    "type": "number",
+                    "default": 50,
+                    "description": "Minimum length in base pairs for DMR"
+                },
+                "dis_merge": {
+                    "type": "number",
+                    "default": 50,
+                    "description": "Maximum distance between DMRs to merge"
+                },
+                "pct_sign": {
+                    "type": "number",
+                    "default": 0.5,
+                    "description": "Minimum percentage of significant CpGs within a DMR"
+                }
+            }
+        },
         "options_for_the_preprocessing_of_the_reference_samples": {
             "title": "Options for the preprocessing of the reference samples",
             "type": "object",

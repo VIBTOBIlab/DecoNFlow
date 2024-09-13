@@ -28,5 +28,4 @@ workflow inHousePrep {
         emit:
         atlas_csv                 = LIMMA.out.reference_csv
         atlas_tsv                 = LIMMA.out.reference_tsv
-        celfie_ref_samples        = PREPROCESSING.out.filt_celfie_sample.collect()
 }
