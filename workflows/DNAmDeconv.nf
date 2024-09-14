@@ -45,6 +45,7 @@ include { TEST_PREPROCESSING                     } from "../modules/test_preproc
 include { COMBINE_FILES                          } from "../modules/combine_files/main"
 include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
 include { CELFIE_PREPROCESSING                   } from "../modules/celfie_preprocessing/main"
+include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_matrix/main"
 
 
 /*
@@ -98,23 +99,33 @@ workflow DNAmDeconv{
                 return newEntry
             }
 
-
         /*
-         * SUBWORKFLOW:
-         *     - inHousePrep if regions specified
-         *     - Other DMRselection tools else
+         * If reference matrix has been specified, skip the preprocessing step
          */
-        if (params.DMRselection=="custom") {
-            regions_ch = Channel.fromPath(params.regions).first()
-            inHousePrep(samples_ch, regions_ch)
-            atlas_tsv = inHousePrep.out.atlas_tsv
-            atlas_csv = inHousePrep.out.atlas_csv
-        } 
-        else if (params.DMRselection=="DSS"){ 
-            DSSPrep(samples_ch)
-            atlas_tsv = DSSPrep.out.atlas_tsv
-            atlas_csv = DSSPrep.out.atlas_csv
+        if (params.ref_matrix) {
+            atlas_tsv = Channel.fromPath(params.ref_matrix)
+            PROCESS_REF_MATRIX(atlas_tsv)
+            atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
         }
+        else {
+            /*
+             * SUBWORKFLOW:
+             *     - inHousePrep if regions specified
+             *     - Other DMRselection tools else
+             */
+            if (params.DMRselection=="custom") {
+                regions_ch = Channel.fromPath(params.regions).first()
+                inHousePrep(samples_ch, regions_ch)
+                atlas_tsv = inHousePrep.out.atlas_tsv
+                atlas_csv = inHousePrep.out.atlas_csv
+            } 
+            else if (params.DMRselection=="DSS"){ 
+                DSSPrep(samples_ch)
+                atlas_tsv = DSSPrep.out.atlas_tsv
+                atlas_csv = DSSPrep.out.atlas_csv
+            }
+        }
+    
 
         // Preprocess test samples
         TEST_PREPROCESSING(test_ch, atlas_tsv)
@@ -130,7 +141,7 @@ workflow DNAmDeconv{
         /*
          * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE
          */
-        if (params.celfie || params.benchmark) {
+        if ((params.celfie || params.benchmark) & !(params.ref_matrix)) {
             // Merge the samples in a unique matrix compatible with CelFiE
             test_celfie = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
             CELFIE_PREPROCESSING(samples_ch, atlas_tsv)

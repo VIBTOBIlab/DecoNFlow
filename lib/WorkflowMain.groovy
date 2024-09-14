@@ -42,8 +42,8 @@ class WorkflowMain {
         if (params.DMRselection=="custom" & !(params.regions)) {
             Nextflow.error "With custom DMR selection a cluster file is required (--regions)"
         }
-        if (params.benchmark & !(params.input)) {
-            Nextflow.error "With benchmark option, the reference set (--input) is required"
+        if (params.benchmark & (!(params.input) & !(params.ref_matrix))) {
+            Nextflow.error "With benchmark option, the reference set (--input) or the reference matrix (--ref_matrix) are required"
         }
     }
 }
