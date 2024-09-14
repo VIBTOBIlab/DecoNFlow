@@ -192,20 +192,42 @@ Size of the chunks that are used to reduce the memory required. Default is 100.
 ### `--refree_min_cpgs`, `--refree_min_counts`
 Same as min_cpgs and min_counts but for reference-free deconvolution.
 
-### `--adjp`
+### Custom DMR selection params
+
+## `--adjp`
 Adjusted p-value threshold for the DMR selection. Default 0.001.
 
 ### `--adj_method`
 Multiple testing correction method. Default is 'BH'. Look at limma documentation for other methods.
 
-### `--collapse_method`
+## `--collapse_method`
 Method adopted to collapse the samples values for each region. Default is 'mean', alternative is 'median'.
 
-### `--direction`
+## `--direction`
 Direction of methylation: can be either "hypo","hyper","both" or "random" (def. null, takes all the regions).
 
-### `--top`
+## `--top`
 Take the top x number (integer) of DMRs per cell state (def. null): it can be used only if direction flag is specified.
+
+### DSS DMR selection params
+
+## `--smoothing`
+Apply smoothing (default: TRUE).
+
+## `--smoothing_span`
+Size of smoothing window in base pairs (default: 500).
+
+## `--delta`
+Threshold for calling DMRs (default: 0.1).
+
+## `--min_len`
+Minimum length in base pairs for DMR (default: 50).
+
+## `--dis_merge`
+Maximum distance between DMRs to merge (default: 50).
+
+## `--pct_sign`
+Minimum percentage of significant CpGs within a DMR (default: 0.5).
 
 ### `--mod`
 EpiDISH modality to be used. Default is 'RPC'. Alternatives are [CBS, CP_ineq, CP_eq].

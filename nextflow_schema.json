@@ -35,6 +35,12 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "ref_matrix": {
+                    "type": "string",
+                    "pattern": "^\\S+\\.(bed|tsv|txt)$",
+                    "format": "file-path",
+                    "description": "The path of the reference matrix that you want to use for ref-based deconvolution."
                 }
             }
         },
