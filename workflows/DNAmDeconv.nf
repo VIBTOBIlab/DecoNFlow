@@ -41,10 +41,10 @@ include { DSSPrep                                } from "../subworkflows/DSSPrep
 include { refBasedDeconv                         } from "../subworkflows/refBasedDeconv"
 include { refFreeDeconv                          } from "../subworkflows/refFreeDeconv"
 include { CELFIE                                 } from "../subworkflows/celfie"
+include { CELFIE_PREPROCESSING                   } from "../modules/celfie/preprocessing/main"
 include { TEST_PREPROCESSING                     } from "../modules/test_preprocessing/main"
 include { COMBINE_FILES                          } from "../modules/combine_files/main"
 include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
-include { CELFIE_PREPROCESSING                   } from "../modules/celfie_preprocessing/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_matrix/main"
 
 
@@ -165,13 +165,9 @@ workflow DNAmDeconv{
      * SUBWORKFLOW: Reference-free cellular deconvolution 
      */
     if (!(params.input) || (params.benchmark)) {
-        if (params.regions) {
-            regions_ch = Channel.fromPath(params.regions).first()
-            refFreeDeconv(test_ch, regions_ch)
-            proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)
-        } else {
-            println "Region file is required for ref-free deconvolution"
-        }
+        regions_ch = Channel.fromPath(params.regions).first()
+        refFreeDeconv(test_ch, regions_ch)
+        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)    
     }
 
 
