@@ -41,6 +41,12 @@
                     "pattern": "^\\S+\\.(bed|tsv|txt)$",
                     "format": "file-path",
                     "description": "The path of the reference matrix that you want to use for ref-based deconvolution."
+                },
+                "merged_matrix": {
+                    "type": "string",
+                    "pattern": "^\\S+\\.(csv)$",
+                    "format": "file-path",
+                    "description": "The path of a matrix containing regions and samples where to perform DMR selection."
                 }
             }
         },
