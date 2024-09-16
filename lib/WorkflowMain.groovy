@@ -45,5 +45,8 @@ class WorkflowMain {
         if (params.benchmark & (!(params.input) & !(params.ref_matrix))) {
             Nextflow.error "With benchmark option, the reference set (--input) or the reference matrix (--ref_matrix) are required"
         }
+        if (!(params.input) || (params.benchmark) & !(params.regions)) {
+            Nextflow.error "Region file is required for ref-free deconvolution."
+        }
     }
 }

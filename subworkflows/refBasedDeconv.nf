@@ -1,12 +1,11 @@
 #!/usr/bin/env nextflow
 
-include { METHYL_ATLAS                                      } from "../modules/methyl_atlas/main"
-include { CIBERSORT                                         } from "../modules/cibersort/main"
-include { EPIDISH                                           } from "../modules/epidish/main"
-include { METHYL_RESOLVER                                   } from "../modules/methyl_resolver/main"
-include { EPISCORE                                          } from "../modules/episcore/main"
-include { PRMETH                                            } from "../modules/prmeth/main"
-include { CELFIE                                            } from "../subworkflows/celfie"
+include { METHYL_ATLAS                                      } from "../modules/refbased_tools/methyl_atlas/main"
+include { CIBERSORT                                         } from "../modules/refbased_tools/cibersort/main"
+include { EPIDISH                                           } from "../modules/refbased_tools/epidish/main"
+include { METHYL_RESOLVER                                   } from "../modules/refbased_tools/methyl_resolver/main"
+include { EPISCORE                                          } from "../modules/refbased_tools/episcore/main"
+include { PRMETH                                            } from "../modules/refbased_tools/prmeth/main"
 
 
 workflow refBasedDeconv {

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
-include { PREPROCESSING                                     } from "../modules/preprocessing/main" 
-include { LIMMA                                             } from "../modules/limma/main"
+include { PREPROCESSING                                     } from "../modules/dmr_selection_limma/preprocessing/main" 
+include { LIMMA                                             } from "../modules/dmr_selection_limma/limma/main"
 include { MERGE_SAMPLES                                     } from "../modules/merge_samples/main"
 
 

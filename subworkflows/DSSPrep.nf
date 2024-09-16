@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
-include { DSS_PREPROCESSING                                               } from "../modules/dss_preprocessing/main"
-include { DSS_SELECTION                                                   } from "../modules/dss_selection/main"
+include { DSS_PREPROCESSING                         } from "../modules/dmr_selection_dss/preprocessing/main"
+include { DSS_SELECTION                             } from "../modules/dmr_selection_dss/dss/main"
 
 workflow DSSPrep {
         take:

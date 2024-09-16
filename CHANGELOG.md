@@ -9,6 +9,7 @@
 ### Small new features
 Added _lib_ directory with two functions for parameters checking, string citations, string version, for dumping parameters .json file and for nfcore logo.
 Added DSS as an alternative DMR selection tool.
+Added possibility to start from a reference matrix already built
 
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 ### Parameters changes
