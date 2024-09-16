@@ -39,7 +39,7 @@ class WorkflowMain {
         if (!params.test_set) {
             Nextflow.error "Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv'"
         }
-        if (params.DMRselection=="custom" & !(params.regions)) {
+        if (params.DMRselection=="limma" & !(params.regions)) {
             Nextflow.error "With custom DMR selection a cluster file is required (--regions)"
         }
         if (params.benchmark & (!(params.input) & !(params.ref_matrix))) {

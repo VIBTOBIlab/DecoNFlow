@@ -113,7 +113,7 @@ workflow DNAmDeconv{
              *     - inHousePrep if regions specified
              *     - Other DMRselection tools else
              */
-            if (params.DMRselection=="custom") {
+            if (params.DMRselection=="limma") {
                 regions_ch = Channel.fromPath(params.regions).first()
                 inHousePrep(samples_ch, regions_ch)
                 atlas_tsv = inHousePrep.out.atlas_tsv
