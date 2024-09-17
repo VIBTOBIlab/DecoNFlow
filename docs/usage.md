@@ -7,7 +7,16 @@
 - [Running the pipeline](#pipeline-run)
     - [Default behaviours](#default-behaviours)
 - [Core Nextflow arguments](#core-nextflow-arguments)
-- [Custom configuration](#custom-configuration)
+- [DMR selection arguments](#dmr-selection-arguments)
+  - [DSS arguments](#dss-arguments)
+  - [limma arguments](#limma-arguments)
+- [Deconvolution parameters](#deconvolution-parameters)
+  - [EpiDISH params](#epidish-params)
+  - [MethylResolver params](#methylresolver-params)
+  - [ EpiSCORE params](#episcore-params)
+  - [PRMeth params](#prmeth-params)
+  - [MeDeCom params](#medecom-params)
+  - [CelFiE params](#celfie-params)
 - [Resource requests](#resource-requests)
 - [Running in the background](#running-in-the-background)
 
@@ -108,7 +117,7 @@ outdir: './results/'
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
 
-### Default behaviours
+## Default behaviours
 By default, when the `--input` is specified, the pipeline will run the reference-based deconvolution workflow and deconvolve the samples given with the `--test_set` parameter using `meth_atlas`. If the `--input` file is not specified, the pipeline will deconvolve the samples using the `PRMeth` tool with the reference-free modality.
 
 ## Core Nextflow arguments
@@ -144,15 +153,52 @@ You can also supply a run name to resume a specific run: `-resume [run-name]`. U
 
 Specify the path to a specific config file (this is a core Nextflow command). See the [nf-core website documentation](https://nf-co.re/usage/configuration) for more information.
 
-## Custom configuration
+## DMR selection arguments
 
 ### `--DMRselection`
-Default is 'DSS'. Alternative is 'custom'. If using 'custom' DMR selection, a region file must be specified using the flag `--regions` (read below).
+Default is 'DSS'. Alternative is 'limma'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
 
-### `--regions`
+### `--adjp`
+Adjusted p-value threshold for the DMR selection. Default 0.001.
+
+### `--adj_method`
+Multiple testing correction method. Default is 'BH'. Look at limma documentation for other methods.
+
+### `--collapse_method`
+Method adopted to collapse the samples values for each region. Default is 'mean', alternative is 'median'.
+
+### `--direction`
+Direction of methylation: can be either "hypo","hyper","both" or "random" (def. null, takes all the regions).
+
+### `--top`
+Take the top x number (integer) of DMRs per cell state (def. null): it can be used only if direction flag is specified.
+
+### DSS arguments
+
+#### `--smoothing`
+Apply smoothing (default: TRUE).
+
+#### `--smoothing_span`
+Size of smoothing window in base pairs (default: 500).
+
+#### `--delta`
+Threshold for calling DMRs (default: 0.1).
+
+#### `--min_len`
+Minimum length in base pairs for DMR (default: 50).
+
+#### `--dis_merge`
+Maximum distance between DMRs to merge (default: 50).
+
+#### `--pct_sign`
+Minimum percentage of significant CpGs within a DMR (default: 0.5).
+
+### limma arguments
+
+#### `--regions`
 > **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented just by the number, without the "chr" string).
 
-If _custom_ `--DMRselection` or a reference-free tool have been specified, you must provide also a regions file using this paramater. It has to be a tab-separated file with three columns, and no header as shown in the example below.
+If _limma_ `--DMRselection`, you must provide also a regions file using this paramater. It has to be a tab-separated file with three columns, and no header as shown in the example below.
 
 ```bash
 --regions '[path to regions file]'
@@ -171,6 +217,14 @@ where the samplesheet file looks like the following:
 ```
 An [example regions file](../assets/RRBS_regions20-200.bed) has been provided with the pipeline.
 
+#### `--min_counts`
+Minimum number of counts to keep a CpG position. Default 10.
+
+#### `--min_cpgs`
+Minimum number of CpGs per region. Default 3.
+
+## Deconvolution parameters
+
 ### `--save_intermeds`
 If the flag is specified, all the output files will be saved.
 
@@ -180,93 +234,88 @@ If specified, all the tools and modalities in the pipeline are run.
 ### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--prmeth_rf`,`--medecom`, `--celfie`,`--methyl_atlas`,`--cibersort`
 If specified, they run the corresponding tool. By default, `--methyl_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
 
-### `--min_counts`
-Minimum number of counts to keep a CpG position. Default 10.
-
-### `--min_cpgs`
-Minimum number of CpGs per region. Default 3.
-
-### `--chunk_size`
-Size of the chunks that are used to reduce the memory required. Default is 100.
-
 ### `--refree_min_cpgs`, `--refree_min_counts`
 Same as min_cpgs and min_counts but for reference-free deconvolution.
-
-### Custom DMR selection params
-
-## `--adjp`
-Adjusted p-value threshold for the DMR selection. Default 0.001.
-
-### `--adj_method`
-Multiple testing correction method. Default is 'BH'. Look at limma documentation for other methods.
-
-## `--collapse_method`
-Method adopted to collapse the samples values for each region. Default is 'mean', alternative is 'median'.
-
-## `--direction`
-Direction of methylation: can be either "hypo","hyper","both" or "random" (def. null, takes all the regions).
-
-## `--top`
-Take the top x number (integer) of DMRs per cell state (def. null): it can be used only if direction flag is specified.
-
-### DSS DMR selection params
-
-## `--smoothing`
-Apply smoothing (default: TRUE).
-
-## `--smoothing_span`
-Size of smoothing window in base pairs (default: 500).
-
-## `--delta`
-Threshold for calling DMRs (default: 0.1).
-
-## `--min_len`
-Minimum length in base pairs for DMR (default: 50).
-
-## `--dis_merge`
-Maximum distance between DMRs to merge (default: 50).
-
-## `--pct_sign`
-Minimum percentage of significant CpGs within a DMR (default: 0.5).
-
-### `--mod`
-EpiDISH modality to be used. Default is 'RPC'. Alternatives are [CBS, CP_ineq, CP_eq].
-
-### `--alpha`
-MethylResolver alpha parameter. Default is 0.5, can go from 0.5 to 0.9.
-
-### `--weight`
-EpiSCORE weight parameter. Default is 0.4, can go from 0.05 to 0.9.
 
 ### `--clusters`
 Number of expected cell types required by the reference-free deconvolution tools. Default is 2.
 
-### `--prmeth_mod`
+### EpiDISH params
+#### `--mod`
+EpiDISH modality to be used. Default is 'RPC'. Alternatives are [CBS, CP_ineq, CP_eq].
+
+### MethylResolver params
+#### `--alpha`
+MethylResolver alpha parameter. Default is 0.5, can go from 0.5 to 0.9.
+
+### EpiSCORE params
+#### `--weight`
+EpiSCORE weight parameter. Default is 0.4, can go from 0.05 to 0.9.
+
+### PRMeth params
+#### `--prmeth_mod`
 Modality to be used for the PRMeth tool. Default is 'QP' (reference-based), alternative is 'NMF' (partial reference-based). PRMeth_RF runs always with 'RF' (reference-free) modality.
 
-### `--ninit`
+### MeDeCom params
+#### `--ninit`
 MeDeCom number of random initializations (def. 10).
 
-### `--nfold`
+#### `--nfold`
 MeDeCom number of folds for cross-validation (def. 10).
 
-### `--itermax`
+#### `--itermax`
 MeDeCom max number of iterations (def. 300).
 
-### `--celfie_maxiter`
+### CelFiE params
+#### `--celfie_maxiter`
 How long the EM should iterate before stopping, unless convergence criteria is met (def. 1000).
 
-### `--unknown`
+#### `--unknown`
 Number of unknown categories to be estimated along with the reference data (def. 0).
 
-### `--parallel_job`
+#### `--parallel_job`
 CelFiE: Replicate number in a simulation experiment (def. 1).
 
-### `--converg`
+#### `--converg`
 CelFiE: Convergence criteria for EM (def. 0.0001)
 
-### `--celfie_randrest`
+#### `--celfie_randrest`
 CelFiE will perform several random restarts and select the one with the highest log-likelihood (def. 10).
+
+## Other parameters
+
+### `--ref_matrix`
+> **NOTE** The chromosome name must be consistent among coverage files to deconvolve and reference matrix. Always use the same format (in the example below the chromosome name is represented just by the number, without the "chr" string).
+
+If this parameter is specified, the pipeline skips the preprocessing and DMR selection steps, and immediately deconvolves the samples given the reference matrix provided. Below you can find an example of the structure of the reference matrix:
+
+`reference_matrix.tsv`
+```plaintext:
+chr   start     end         entity1 entity2     entity3
+14	89493501	89493545	0       0.9897      0
+15	89922039	89922098	0.0021  0.9898      0
+17	27945066	27945109	0       0.9861      0.0012
+2	96811100	96811138	0       0           0.9857
+15	28352514	28352560	0       0.0013      0.9843
+10	73846983	73847022	0       0.9840      0
+3	48693689	48693754	0.9838  0           0.0021
+14	89493868	89493895    0.9833  0           0
+```
+The file needs to be a tab separated (.tsv/.bed) file. The values in the matrix are methylation beta values.
+
+### `--merged_matrix`
+If this parameter is specified, the pipeline skips the preprocessing step and immediately performs limma DMR selection step. The merged matrix corresponds to a matrix composed of one column corresponding to the DMR coordinates collapsed and the remaining columns to the individual samples containing methylation beta values. These columns need to have column names that end with "-V". Below you can find an example of the structure of the merged matrix:
+
+`merged_matrix.tsv`
+```plaintext:
+,chr,start,end,healthy3-V,nbl2-V,nbl3-V,healthy1-V,healthy2-V,nbl1-V
+0,1,10497,10588,0.902439,0.968421,0.946197,0.938053,0.820513,0.972149
+1,1,136876,136924,0.959184,0.972678,0.989583,0.884181,0.934272,0.926941
+2,1,661865,661927,1.0,1.0,0.972222,0.986111,0.927536,0.885965
+3,1,662657,662705,0.936508,0.97037,0.977778,0.961905,0.979798,0.922705
+4,1,714254,714299,0.0,0.0162162,0.0252101,0.00319489,0.0,0.0240964
+```
+The file needs to be a comma separated (.csv) file. The values in the matrix are methylation beta values.
 
 ## Resource requests
 Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the steps in the pipeline, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher requests (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
