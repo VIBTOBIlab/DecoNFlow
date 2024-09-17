@@ -2,15 +2,18 @@
 ## [v1.0.2](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.2) -
 ### Bugs fixed
 - Fixed problems with _check_max_ function and _base.config_ file not properly imported in _nextflow.config_
-- Removed _merging_approach_ flag from the documentation.
 - Updated *bedtools* container version to the version 2.29.2 to fix a bug present in the previous version (see [#643](https://github.com/arq5x/bedtools2/issues/643)).
 - Updated CelFiE container adding random seeds to make it generating reproducible results.
-- Minor restructuring of the pipeline structure
-### Small new features
-Added _lib_ directory with two functions for parameters checking, string citations, string version, for dumping parameters .json file and for nfcore logo.
-Added DSS as an alternative DMR selection tool. (add docu)
-Added possibility to start from a reference matrix already built (add docu)
-Added possibility to start from a merged matrix with reference samples on columns and regions on rows (and methylation values). (add docu)
+### New features
+- Added _lib_ directory with two functions for parameters checking, string citations, string version, for dumping parameters .json file and for nfcore logo.
+- Added DSS as an alternative DMR selection tool.
+- Added possibility to start from a reference matrix already built.
+- Added possibility to start from a merged matrix with reference samples on columns and regions on rows.
+### Minor changes
+- Restructuring of the pipeline structure
+- Removed `merging_approach` and `chunk_size` flags from the documentation (not used anymore).
+- Changed parameter *custom* of the flag `DMRselection` into *limma*.
+
 
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 ### Parameters changes
