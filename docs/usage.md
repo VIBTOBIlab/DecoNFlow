@@ -306,7 +306,7 @@ The file needs to be a tab separated (.tsv/.bed) file. The values in the matrix 
 ### `--merged_matrix`
 If this parameter is specified, the pipeline skips the preprocessing step and immediately performs limma DMR selection step. The merged matrix corresponds to a matrix composed of one column corresponding to the DMR coordinates collapsed and the remaining columns to the individual samples containing methylation beta values. These columns need to have column names that end with "-V". Below you can find an example of the structure of the merged matrix:
 
-`merged_matrix.tsv`
+`merged_matrix.csv`
 ```plaintext:
 ,chr,start,end,healthy3-V,nbl2-V,nbl3-V,healthy1-V,healthy2-V,nbl1-V
 0,1,10497,10588,0.902439,0.968421,0.946197,0.938053,0.820513,0.972149
