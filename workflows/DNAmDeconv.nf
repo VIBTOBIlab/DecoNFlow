@@ -46,6 +46,8 @@ include { TEST_PREPROCESSING                     } from "../modules/test_preproc
 include { COMBINE_FILES                          } from "../modules/combine_files/main"
 include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_matrix/main"
+include { LIMMA                                  } from "../modules/dmr_selection_limma/limma/main"
+
 
 
 /*
@@ -56,99 +58,104 @@ include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_
 
 workflow DNAmDeconv{
 
-    // List to collect cellular proportion channels
+    // List to collect cellular proportion channels and samples channel
     proportion_ch = Channel.empty()
+    samples_ch = Channel.empty()
 
     // Set the testing samples channel
     test_ch = Channel.fromList(
         samplesheetToList(params.test_set, "assets/schema_testset.json"))
         .map { meta, cov -> tuple(meta.id, cov) }
 
-    if (params.input) {
-        Channel.fromList(
-            samplesheetToList(params.input, "assets/schema_input.json"))
-            .map { 
-                meta, entity, cov ->
-                meta_entity = meta.clone()
-                meta_entity.entity = entity
-                meta_entity.id = meta.id
-                tuple(meta_entity.id, meta_entity.entity, cov) }
-            .set{ samples_ch_original }
 
-
-        // Add index to the second (entity) column
-        def counterMap = [:]
-        def samples_ch = samples_ch_original
-            .map { entry -> 
-
-                def label = entry[1]
-            
-                if (!counterMap.containsKey(label)) {
-                    counterMap[label] = 0
-                }
-                counterMap[label]++
-
-                def newLabel = "${label}${counterMap[label]}"
-
-                def newEntry = [
-                    entry[0],           // Original first column
-                    newLabel,           // Modified second column with index
-                    entry[2]            // Original third column
-                ]
-
-                return newEntry
-            }
-
+    if (params.input || params.ref_matrix || params.merged_matrix) {
         /*
-         * If reference matrix has been specified, skip the preprocessing step
+         *  If input samplesheet has been specified, run preprocessing and DMR selection steps 
          */
-        if (params.ref_matrix) {
-            atlas_tsv = Channel.fromPath(params.ref_matrix)
-            PROCESS_REF_MATRIX(atlas_tsv)
-            atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
-        }
-        else {
-            /*
-             * SUBWORKFLOW:
-             *     - inHousePrep if regions specified
-             *     - Other DMRselection tools else
-             */
+        if (params.input) {
+            Channel.fromList(
+                samplesheetToList(params.input, "assets/schema_input.json"))
+                .map { 
+                    meta, entity, cov ->
+                    meta_entity = meta.clone()
+                    meta_entity.entity = entity
+                    meta_entity.id = meta.id
+                    tuple(meta_entity.id, meta_entity.entity, cov) }
+                .set{ samples_ch_original }
+
+
+            // Add index to the second (entity) column
+            def counterMap = [:]
+            samples_ch = samples_ch_original
+                .map { entry -> 
+
+                    def label = entry[1]
+                
+                    if (!counterMap.containsKey(label)) {
+                        counterMap[label] = 0
+                    }
+                    counterMap[label]++
+
+                    def newLabel = "${label}${counterMap[label]}"
+
+                    def newEntry = [
+                        entry[0],           // Original first column
+                        newLabel,           // Modified second column with index
+                        entry[2]            // Original third column
+                    ]
+
+                    return newEntry
+                }
+
+
+            // Limma DMR selection
             if (params.DMRselection=="limma") {
                 regions_ch = Channel.fromPath(params.regions).first()
                 inHousePrep(samples_ch, regions_ch)
                 atlas_tsv = inHousePrep.out.atlas_tsv
                 atlas_csv = inHousePrep.out.atlas_csv
-            } 
+            }
+            // DSS DMR selection
             else if (params.DMRselection=="DSS"){ 
                 DSSPrep(samples_ch)
                 atlas_tsv = DSSPrep.out.atlas_tsv
                 atlas_csv = DSSPrep.out.atlas_csv
             }
         }
-    
 
-        // Preprocess test samples
+
+        /*
+         * If samplesheet has not been specified and 
+         * reference matrix yes, skip the preprocessing and DMR selection steps
+         */
+        else if (params.ref_matrix) {
+            atlas_tsv = Channel.fromPath(params.ref_matrix)
+            PROCESS_REF_MATRIX(atlas_tsv)
+            atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
+        }
+
+
+        /*
+         * If only the merged matrix has been specified, skip the preprocessing step
+         */
+        else if (params.merged_matrix) {
+            fin_matrix = Channel.fromPath(params.merged_matrix)
+            LIMMA(fin_matrix)
+            atlas_tsv = LIMMA.out.reference_tsv
+            atlas_csv = LIMMA.out.reference_csv
+        }
+
+
+        /*
+         * Preprocess test samples
+         * And merge them in a unique matrix
+         */
         TEST_PREPROCESSING(test_ch, atlas_tsv)
         test = TEST_PREPROCESSING
                 .out
                 .preprocessed_test
-                .collect()
-    
-        // Merge the samples in a unique matrix
+                .collect()                    
         MERGE_SAMPLES('test',test)
-
-
-        /*
-         * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE
-         */
-        if ((params.celfie || params.benchmark) & !(params.ref_matrix)) {
-            // Merge the samples in a unique matrix compatible with CelFiE
-            test_celfie = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
-            CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
-            ref_celfie = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
-            CELFIE(ref_celfie, test_celfie)
-            proportion_ch = proportion_ch.concat( Channel.of( 'CelFiE' ).combine( CELFIE.out.output ) )
-        }   
 
 
         /*
@@ -157,17 +164,35 @@ workflow DNAmDeconv{
         refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
         proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
             
+            
+        /*
+         * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE
+         */
+        if (params.benchmark || params.celfie) {
+            if (samples_ch.ifEmpty('empty')!='empty') {
+                test_celfie = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
+                CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
+                ref_celfie = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
+                CELFIE(ref_celfie, test_celfie)
+                proportion_ch = proportion_ch.concat( Channel.of( 'CelFiE' ).combine( CELFIE.out.output ) )
+            }
+        }   
     }
 
 
-
     /*
-     * SUBWORKFLOW: Reference-free cellular deconvolution 
+     * SUBWORKFLOW: If nothing has been specified,
+     * Or if benchmark parameter has been specified, run ref-free deconvolution
      */
-    if (!(params.input) || (params.benchmark)) {
+    else {
         regions_ch = Channel.fromPath(params.regions).first()
         refFreeDeconv(test_ch, regions_ch)
-        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)    
+        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)  
+    }
+    if (params.benchmark) {
+        regions_ch = Channel.fromPath(params.regions).first()
+        refFreeDeconv(test_ch, regions_ch)
+        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)  
     }
 
 
@@ -175,7 +200,9 @@ workflow DNAmDeconv{
      * PROCESS: Combine results in a unique table 
      */
     COMBINE_FILES( proportion_ch.collect { t -> t[0] + ':' + t[1] } )
+
 }
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

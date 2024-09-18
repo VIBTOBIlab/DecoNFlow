@@ -12,28 +12,18 @@ workflow inHousePrep {
 
         main:
 
-        /*
-         * If the merged matrix has been specified, then skip the preprocessing step
-         * Otherwise, do it and then run limma for DMR selection
-         */
-        if (!params.merged_matrix) {
-                // Pass the input data and region file to the preprocessing module
-                PREPROCESSING(samples, regions.first())
-                
-                // Merge the samples in a unique matrix
-                procSamples = PREPROCESSING
-                                .out
-                                .filt_sample
-                                .collect()
-                MERGE_SAMPLES('ref_based', procSamples)
-                fin_matrix = MERGE_SAMPLES.out.fin_matrix
-        }
-        else {
-                fin_matrix = Channel.fromPath(params.merged_matrix)
-        }
+        // Pass the input data and region file to the preprocessing module
+        PREPROCESSING(samples, regions)
+        
+        // Merge the samples in a unique matrix
+        procSamples = PREPROCESSING
+                        .out
+                        .filt_sample
+                        .collect()
+        MERGE_SAMPLES('ref_based', procSamples)
 
         // Pass the regions for the DMR analysis
-        LIMMA(fin_matrix)
+        LIMMA(MERGE_SAMPLES.out.fin_matrix)
 
         emit:
         atlas_csv                 = LIMMA.out.reference_csv
