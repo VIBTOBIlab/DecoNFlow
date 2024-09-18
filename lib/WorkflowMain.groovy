@@ -42,10 +42,10 @@ class WorkflowMain {
         if (params.DMRselection=="limma" & !(params.regions)) {
             Nextflow.error "With custom DMR selection a cluster file is required (--regions)"
         }
-        if (params.benchmark & (!(params.input) & !(params.ref_matrix))) {
-            Nextflow.error "With benchmark option, the reference set (--input) or the reference matrix (--ref_matrix) are required"
+        if (params.benchmark & (!(params.input) & !(params.ref_matrix) & !(params.merged_matrix))) {
+            Nextflow.error "With benchmark option, the reference set (--input) or the reference matrix (--ref_matrix) or the merged matrix (--merged_matrix) are required"
         }
-        if (!(params.input) || (params.benchmark) & !(params.regions)) {
+        if ((!(params.input) || (params.benchmark)) & (!(params.regions) & !(params.merged_matrix) & !(params.ref_matrix))) {
             Nextflow.error "Region file is required for ref-free deconvolution."
         }
     }
