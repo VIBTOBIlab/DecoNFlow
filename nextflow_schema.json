@@ -120,6 +120,14 @@
                 "cibersort": {
                     "type": "boolean",
                     "description": "Run the corresponding tool"
+                },
+                "uxm": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "metdecode": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
                 }
             }
         },
@@ -200,6 +208,63 @@
                     "type": "number",
                     "default": 0.5,
                     "description": "Minimum percentage of significant CpGs within a DMR"
+                }
+            }
+        },
+        "wgbs_tools_options": {
+            "title": "DSS options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "ref_bams": {
+                    "type": "string",
+                    "format": "file-path",
+                    "schema": "assets/schema_refbams.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the reference bam samples.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "groups_file": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "File (.csv) of the groups.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "fasta": {
+                    "type":"string",
+                    "description": "Path to the genome fasta file used to align samples."
+                },
+                "genome": {
+                    "type":"string",
+                    "default": "hg19",
+                    "description": "Name of the genome that you want to initialize."
+                },
+                "max_bp": {
+                    "type": "integer",
+                    "description": "Maximum length in bp for the blocks.",
+                    "default": 2000,
+                    "fa_icon": "fas fa-microchip"
+                },
+                "min_cpg_uxm": {
+                    "type": "integer",
+                    "description": "Minimum number of CpGs for the blocks.",
+                    "default": 3,
+                    "fa_icon": "fas fa-microchip"
+                },
+                "rlen": {
+                    "type": "integer",
+                    "description":"Minimal CpGs per read required to consider the reads.",
+                    "default": 3,
+                    "fa_icon": "fas fa-microchip"
+                },
+                "only_hypo": {
+                    "type": "boolean",
+                    "description":"Take only hypomethylated markers."
                 }
             }
         },
@@ -351,6 +416,74 @@
                     "type": "integer",
                     "default": 10,
                     "description": "CelFiE will perform several random restarts and select the one with the highest log-likelihood"
+                }
+            }
+        },
+        "uxm_parameters": {
+            "title": "UXM parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "test_bams": {
+                    "type": "string",
+                    "format": "file-path",
+                    "schema": "assets/schema_testbams.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the bam samples to deconvolve.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "uxm_atlas": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to the uxm-like atlas."
+                }
+            }
+        },
+        "metdecode_parameters": {
+            "title": "MetDecode parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "unknown_tissues": {
+                    "type": "integer",
+                    "description": "Number of unknown entities.",
+                    "fa_icon": "fas fa-microchip"
+                },
+                "sum1": {
+                    "type": "boolean",
+                    "description": "If specified, it makes the sum of the proportions to 1."
+                },
+                "no_coverage": {
+                    "type": "boolean",
+                    "description": "Disable CpG coverage factor."
+                },
+                "supervised": {
+                    "type": "boolean",
+                    "description": "Disable the unsupervised refinment of the proportions."
+                }
+            }
+        },
+        "bismark_parameters": {
+            "title": "Bismark parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "bismark_multicore": {
+                    "type": "boolean",
+                    "description": "If true, activate multicore option"
+                },
+                "single_end": {
+                    "type": "boolean",
+                    "description": "If true, bismark will run under 'single_end' option"
+                },
+                "bismark_buffer_size": {
+                    "type": "boolean",
+                    "description": "If true, bismark will run with buffer_size option"
                 }
             }
         },

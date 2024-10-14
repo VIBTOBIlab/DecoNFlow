@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process PRMETH {
-    container 'egiuili/prmeth:v1'
+    container 'egiuili/prmeth:v2'
 
     label 'process_medium'
 

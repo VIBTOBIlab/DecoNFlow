@@ -10,10 +10,11 @@
 - [DMR selection arguments](#dmr-selection-arguments)
   - [DSS arguments](#dss-arguments)
   - [limma arguments](#limma-arguments)
+  - [wgbs_tools](#wgbs_tools-arguments)
 - [Deconvolution parameters](#deconvolution-parameters)
   - [EpiDISH params](#epidish-params)
   - [MethylResolver params](#methylresolver-params)
-  - [ EpiSCORE params](#episcore-params)
+  - [EpiSCORE params](#episcore-params)
   - [PRMeth params](#prmeth-params)
   - [MeDeCom params](#medecom-params)
   - [CelFiE params](#celfie-params)
@@ -173,6 +174,9 @@ Direction of methylation: can be either "hypo","hyper","both" or "random" (def. 
 ### `--top`
 Take the top x number (integer) of DMRs per cell state (def. null): it can be used only if direction flag is specified.
 
+### `--delta`
+Threshold for calling DMRs (default: 0.1).
+
 ### DSS arguments
 
 #### `--smoothing`
@@ -180,9 +184,6 @@ Apply smoothing (default: TRUE).
 
 #### `--smoothing_span`
 Size of smoothing window in base pairs (default: 500).
-
-#### `--delta`
-Threshold for calling DMRs (default: 0.1).
 
 #### `--min_len`
 Minimum length in base pairs for DMR (default: 50).
@@ -222,6 +223,58 @@ Minimum number of counts to keep a CpG position. Default 10.
 
 #### `--min_cpgs`
 Minimum number of CpGs per region. Default 3.
+
+### wgbs_tools arguments
+Alternatively to DSS and limma DMR selection, one can choose to use wgbs_tools, a software developed by the same authors of [UXM](https://www.nature.com/articles/s41586-022-05580-6). This software is necessary to perform the preprocessing and generate a UXM-like atlas. However, this atlas will automatically be converted into a standard atlas that can be used by "classical" deconvolution tools when these are specified with the corresponding flag. To use _wgbs_tools_ selection, you will need to create a samplesheet (`--ref_bams`) similar to `--input` but with paths to `bam` (and .bam.bai) files instead of .cov files:
+
+`ref_bams.csv`
+```plaintext:
+name,type,bam,bai
+DNA097385,healthy,DNA097385_S10.bam,DNA097385_S10.bam.bai
+DNA097389,healthy,DNA097389_S14.bam,DNA097389_S14.bam.bai
+DNA097393,healthy,DNA097393_S18.bam,DNA097393_S18.bam.bai
+DNA041087,nbl,DNA041087_S27.bam,DNA041087_S27.bam.bai
+DNA044133,nbl,DNA044133_S31.bam,DNA044133_S31.bam.bai
+DNA044134,nbl,DNA044134_S32.bam,DNA044134_S32.bam.bai
+```
+| Column      | Description |
+| ----------- | ----------- |
+| `name`  | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
+| `type` | Cell type name |
+| `bam` | Full path to .bam file. |
+| `bai` | Full path to .bam.bai file. |
+
+An [example samplesheet](../assets/ref_bam.csv) has been provided with the pipeline.
+
+### `--genome` and `--fasta`
+Genome name to use. It must be the same genome used to align both the reference samples and the samples to deconvolve. It can be either 'hg19' or 'hg38'. If `--fasta` flag is not specified, it will download the corresponding fasta file and initialize the genome, otherwise it will use the genome fasta file specified and initialize it.
+
+### `--groups_file`
+File (.csv) linking each file to a group (or entity) to perform DMR selection using the `find_markers` module. The file need to be in the following format:
+
+`groups.csv`
+```plaintext:
+name,group
+DNA097385,healthy
+DNA097389,healthy
+DNA097393,healthy
+DNA041087,nbl
+DNA044133,nbl
+DNA044134,nbl
+```
+An [example group file](../assets/groups.csv) has been provided with the pipeline.
+
+### `--max_bp`
+Max bp length of the blocks used for DMR analysis (def. 2000).
+
+### `min_cpg_uxm`
+Minimum number of CpGs for the blocks (def. 3).
+
+### `--rlen`
+Minimal number of CpGs per read required to consider the read (def. 3).
+
+### `--only_hypo`
+If true, it takes only hypomethylated markers (def. false).
 
 ## Deconvolution parameters
 
@@ -281,6 +334,55 @@ CelFiE: Convergence criteria for EM (def. 0.0001)
 
 #### `--celfie_randrest`
 CelFiE will perform several random restarts and select the one with the highest log-likelihood (def. 10).
+
+### UXM params
+
+#### `--test_bams`
+To use _uxm_ deconvolution, you will need to create a samplesheet (`--test_bams`) similar to `--ref_bams` (read _wgbs_tools_ documentation above) without the _type_ column:
+
+`test_bams.csv`
+```plaintext:
+name,type,bam,bai
+DNA097385,DNA097385_S10.bam,DNA097385_S10.bam.bai
+DNA097389,DNA097389_S14.bam,DNA097389_S14.bam.bai
+DNA097393,DNA097393_S18.bam,DNA097393_S18.bam.bai
+DNA041087,DNA041087_S27.bam,DNA041087_S27.bam.bai
+DNA044133,DNA044133_S31.bam,DNA044133_S31.bam.bai
+DNA044134,DNA044134_S32.bam,DNA044134_S32.bam.bai
+```
+| Column      | Description |
+| ----------- | ----------- |
+| `name`  | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
+| `bam` | Full path to .bam file. |
+| `bai` | Full path to .bam.bai file. |
+
+An [example samplesheet](../assets/test_bam.csv) has been provided with the pipeline.
+
+#### `--uxm_atlas`
+If you want to avoid DMR selection because you already have a UXM-like atlas, you can specify it using this flag. 
+
+### MetDecode params
+
+#### `--unknown_tissues`
+Number of unknown entities (def. null, it must be an integer)
+
+#### `--sum1`
+If specified, it makes the sum of the proportions to 1 (def. false).
+
+#### `--no_coverage`
+If specified, it disables CpG coverage factor (def. false).
+
+#### `--supervised`
+If specified, it disables the unsupervised refinment of the proportions (def. false).
+
+### Bismark parameters
+
+#### `--bismark_multicore`
+If true, activate multicore option (def. false).
+#### `--single_end`
+If true, bismark will run under 'single_end' option (def. false).
+#### `--bismark_buffer_size`
+If true, bismark will run using buffer_size option (def.false).
 
 ## Other parameters
 

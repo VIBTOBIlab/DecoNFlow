@@ -8,24 +8,46 @@ include { MERGE_SAMPLES                                     } from "../modules/m
 workflow inHousePrep {
         take:
         samples         // channel: [ val(meta), val(entity), path(cov) ]
-        regions         // channel: path(regions)
 
         main:
 
-        // Pass the input data and region file to the preprocessing module
-        PREPROCESSING(samples, regions)
-        
-        // Merge the samples in a unique matrix
-        procSamples = PREPROCESSING
-                        .out
-                        .filt_sample
-                        .collect()
-        MERGE_SAMPLES('ref_based', procSamples)
 
-        // Pass the regions for the DMR analysis
-        LIMMA(MERGE_SAMPLES.out.fin_matrix)
+        /*
+         * If only the merged matrix has been specified, skip the preprocessing step
+         */
+        if (params.merged_matrix) {
+                fin_matrix = Channel.fromPath(params.merged_matrix)
+                LIMMA(fin_matrix)
+                atlas_tsv = LIMMA.out.reference_tsv
+                atlas_csv = LIMMA.out.reference_csv
+        }
+
+
+        /*
+         * Otherwise run everything
+         */
+        else {
+                
+                // Read the cluster file
+                regions_ch = Channel.fromPath(params.regions).first()
+
+                // Pass the input data and region file to the preprocessing module
+                PREPROCESSING(samples, regions_ch) 
+                
+                // Merge the samples in a unique matrix
+                procSamples = PREPROCESSING
+                                .out
+                                .filt_sample
+                                .collect()
+                MERGE_SAMPLES('ref_based', procSamples)
+
+                // Pass the regions for the DMR analysis
+                LIMMA(MERGE_SAMPLES.out.fin_matrix)
+                atlas_csv = LIMMA.out.reference_csv
+                atlas_tsv = LIMMA.out.reference_tsv
+        }
 
         emit:
-        atlas_csv                 = LIMMA.out.reference_csv
-        atlas_tsv                 = LIMMA.out.reference_tsv
+        atlas_csv                 = atlas_csv
+        atlas_tsv                 = atlas_tsv
 }

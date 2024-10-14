@@ -35,18 +35,14 @@ class WorkflowMain {
         // Check that a -profile or Nextflow config has been provided to run the pipeline
         NfcoreTemplate.checkConfigProvided(workflow, log)
 
-        // Check input has been provided
-        if (!params.test_set) {
-            Nextflow.error "Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv'"
+        if (!params.medecom & !params.prmeth_rf & !params.uxm & !params.methyl_atlas & !params.celfie & !params.metdecode & !params.epidish & !params.prmeth & !params.methyl_resolver & !params.episcore & !params.cibersort & !params.benchmark) {
+            Nextflow.error "\n----> ERROR: specify at least one deconvolution tool. <----\n"
         }
-        if (params.DMRselection=="limma" & !(params.regions)) {
-            Nextflow.error "With custom DMR selection a cluster file is required (--regions)"
+        if ((params.celfie || params.metdecode) & !params.input) {
+            Nextflow.error "\n----> ERROR: you need to specify the reference samples (--input) when using CelFiE. <----\n"
         }
-        if (params.benchmark & (!(params.input) & !(params.ref_matrix) & !(params.merged_matrix))) {
-            Nextflow.error "With benchmark option, the reference set (--input) or the reference matrix (--ref_matrix) or the merged matrix (--merged_matrix) are required"
-        }
-        if ((!(params.input) || (params.benchmark)) & (!(params.regions) & !(params.merged_matrix) & !(params.ref_matrix))) {
-            Nextflow.error "Region file is required for ref-free deconvolution."
+        if (params.DMRselection!="wgbstools" & params.DMRselection!="DSS" & params.DMRselection!="limma") {
+            Nextflow.error "\n----> ERROR: you need to specify one DMR selection approach (--DMRselection). <----\n"
         }
     }
 }

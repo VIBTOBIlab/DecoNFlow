@@ -4,9 +4,12 @@
 - Fixed problems with _check_max_ function and _base.config_ file not properly imported in _nextflow.config_
 - Updated *bedtools* container version to the version 2.29.2 to fix a bug present in the previous version (see [#643](https://github.com/arq5x/bedtools2/issues/643)).
 - Updated CelFiE container adding random seeds to make it generating reproducible results.
+- Updated the PRMeth container to solve a bug on the number of cells (ncells) parameters when using the NMF modality.
 ### New features
 - Added _lib_ directory with two functions for parameters checking, string citations, string version, for dumping parameters .json file and for nfcore logo.
 - Added DSS as an alternative DMR selection tool.
+- Added UXM deconvolution tool, wgbs_tools as DMR selection tool and other modules to convert the structure from uxm-like to standard ref-based structure
+- Added MetDecode tool
 - Added possibility to start from a reference matrix already built.
 - Added possibility to start from a merged matrix with reference samples on columns and regions on rows.
 ### Minor changes
