@@ -1,5 +1,7 @@
 #!/usr/bin/env nextflow
 
+import nextflow.Nextflow
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     PRINT PARAMS SUMMARY
@@ -34,7 +36,6 @@ log.info """
     IMPORT NF-CORE MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
 include { samplesheetToList                      } from 'plugin/nf-schema'
 include { inHousePrep                            } from "../subworkflows/inHousePrep"
 include { DSSPrep                                } from "../subworkflows/DSSPrep"
@@ -45,9 +46,11 @@ include { CELFIE_PREPROCESSING                   } from "../modules/celfie/prepr
 include { TEST_PREPROCESSING                     } from "../modules/test_preprocessing/main"
 include { COMBINE_FILES                          } from "../modules/combine_files/main"
 include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
-include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_matrix/main"
 include { LIMMA                                  } from "../modules/dmr_selection_limma/limma/main"
-
+include { UXM                                    } from "../subworkflows/uxm"
+include { WGBSTOOLS                              } from "../subworkflows/wgbstools"
+include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_matrix/main"
+include { METDECODE                              } from "../subworkflows/metdecode"
 
 
 /*
@@ -58,93 +61,152 @@ include { LIMMA                                  } from "../modules/dmr_selectio
 
 workflow DNAmDeconv{
 
-    // List to collect cellular proportion channels and samples channel
+    /*
+     * Initiliaze the channels
+     */
     proportion_ch = Channel.empty()
     samples_ch = Channel.empty()
-
-    // Set the testing samples channel
-    test_ch = Channel.fromList(
-        samplesheetToList(params.test_set, "assets/schema_testset.json"))
-        .map { meta, cov -> tuple(meta.id, cov) }
+    atlas_tsv = Channel.empty()
 
 
-    if (params.input || params.ref_matrix || params.merged_matrix) {
-        /*
-         *  If input samplesheet has been specified, run preprocessing and DMR selection steps 
-         */
-        if (params.input) {
-            Channel.fromList(
-                samplesheetToList(params.input, "assets/schema_input.json"))
-                .map { 
-                    meta, entity, cov ->
-                    meta_entity = meta.clone()
-                    meta_entity.entity = entity
-                    meta_entity.id = meta.id
-                    tuple(meta_entity.id, meta_entity.entity, cov) }
-                .set{ samples_ch_original }
+    /*
+     * If reference matrix has been specified, and neither 
+     * CelFiE or MetDecode have been specified, then:
+     * skip the preprocessing and DMR selection steps
+     */
+    if (params.ref_matrix) {
+        atlas_tsv = Channel.fromPath(params.ref_matrix)
+        PROCESS_REF_MATRIX(atlas_tsv)
+        atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
+    }
 
 
-            // Add index to the second (entity) column
-            def counterMap = [:]
-            samples_ch = samples_ch_original
-                .map { entry -> 
+    if (params.input) {
 
-                    def label = entry[1]
+        Channel.fromList(
+            samplesheetToList(params.input, "assets/schema_input.json"))
+            .map { 
+                meta, entity, cov ->
+                meta_entity = meta.clone()
+                meta_entity.entity = entity
+                meta_entity.id = meta.id
+                tuple(meta_entity.id, meta_entity.entity, cov) }
+            .set{ samples_ch_original }
+
+        // Add index to the second (entity) column
+        def counterMap = [:]
+        samples_ch = samples_ch_original
+            .map { entry -> 
+        
+                def label = entry[1]
                 
-                    if (!counterMap.containsKey(label)) {
-                        counterMap[label] = 0
-                    }
-                    counterMap[label]++
-
-                    def newLabel = "${label}${counterMap[label]}"
-
-                    def newEntry = [
-                        entry[0],           // Original first column
-                        newLabel,           // Modified second column with index
-                        entry[2]            // Original third column
-                    ]
-
-                    return newEntry
+                if (!counterMap.containsKey(label)) {
+                    counterMap[label] = 0
                 }
+                counterMap[label]++
+
+                def newLabel = "${label}${counterMap[label]}"
+
+                def newEntry = [
+                    entry[0],           // Original first column
+                    newLabel,           // Modified second column with index
+                    entry[2]            // Original third column
+                ]
+
+                return newEntry
+            }
+    }
 
 
-            // Limma DMR selection
-            if (params.DMRselection=="limma") {
-                regions_ch = Channel.fromPath(params.regions).first()
-                inHousePrep(samples_ch, regions_ch)
-                atlas_tsv = inHousePrep.out.atlas_tsv
-                atlas_csv = inHousePrep.out.atlas_csv
-            }
-            // DSS DMR selection
-            else if (params.DMRselection=="DSS"){ 
-                DSSPrep(samples_ch)
-                atlas_tsv = DSSPrep.out.atlas_tsv
-                atlas_csv = DSSPrep.out.atlas_csv
-            }
+    /*
+     *  Run limma DMR selection
+     */
+    if (params.DMRselection=="limma") {
+
+        if (!params.merged_matrix & (!params.regions || !params.input)) {
+            Nextflow.error "\n----> ERROR: With limma DMR selection either a cluster file (--regions) + reference samples (--input) or a merged matrix (--merged_matrix) is required  <----\n"
         }
 
+        inHousePrep(samples_ch)
+        atlas_tsv = inHousePrep.out.atlas_tsv
+        atlas_csv = inHousePrep.out.atlas_csv
+    }
+
+
+    /*
+     *  Run DSS DMR selection
+     */
+    else if (params.DMRselection=="DSS"){ 
+        DSSPrep(samples_ch)
+        atlas_tsv = DSSPrep.out.atlas_tsv
+        atlas_csv = DSSPrep.out.atlas_csv
+    }
+
+
+    /*
+     * Run wgbstools DMR selection
+     */
+    else if (params.DMRselection=="wgbstools" || params.uxm) {
+
+        if (!params.ref_bams) {
+            Nextflow.error "\n----> ERROR: With wgbstools DMR selection you must specify the --ref_bams flag. <---- \n"
+        }
+        if (!params.groups_file) {
+            Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using wgbstools DMR selection. <---- \n"
+        }
+        WGBSTOOLS(atlas_tsv)
+        wgbstools_atlas = WGBSTOOLS.out.output
+        atlas_csv = WGBSTOOLS.out.atlas_csv
+        atlas_tsv = WGBSTOOLS.out.atlas_tsv
+    }
+
+
+    /*
+     * SUBWORKFLOW: Reference-based cellular deconvolution using UXM
+     */
+    if (params.uxm || params.benchmark) {
+
+        if (!params.test_bams) {
+            Nextflow.error "\n----> ERROR: The flag --test_bams (.csv file) is required for UXM tool. <----\n"
+        }
+        test_bams = Channel.fromList(
+        samplesheetToList(params.test_bams, "assets/schema_testbams.json"))
+            .map { 
+            meta, bam, bai ->
+            meta_entity = meta.clone()
+            meta_entity.id = meta.id
+            entity = null
+            tuple(meta_entity.id, entity, bam, bai) }
 
         /*
-         * If samplesheet has not been specified and 
-         * reference matrix yes, skip the preprocessing and DMR selection steps
-         */
-        else if (params.ref_matrix) {
-            atlas_tsv = Channel.fromPath(params.ref_matrix)
-            PROCESS_REF_MATRIX(atlas_tsv)
-            atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
+         * If wgbstools DMR selection, use the atlas generated 
+         * Otherwise, convert the DSS or limma atlas 
+         * and convert it into a UXM-like format
+         */    
+        if (params.DMRselection=="wgbstools") {
+            UXM(test_bams, wgbstools_atlas)
+        }
+        else {
+            UXM(test_bams, atlas_tsv)
         }
 
+        proportion_ch = proportion_ch.concat(UXM.out.uxm_proportions)
+    }   
 
-        /*
-         * If only the merged matrix has been specified, skip the preprocessing step
-         */
-        else if (params.merged_matrix) {
-            fin_matrix = Channel.fromPath(params.merged_matrix)
-            LIMMA(fin_matrix)
-            atlas_tsv = LIMMA.out.reference_tsv
-            atlas_csv = LIMMA.out.reference_csv
+
+    /*
+     * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools
+     */
+    if (params.methyl_atlas || params.celfie || params.metdecode || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+
+        if (!params.test_set) {
+            Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
         }
 
+        // Set the testing samples channel
+        test_ch = Channel.fromList(
+            samplesheetToList(params.test_set, "assets/schema_testset.json"))
+            .map { meta, cov -> tuple(meta.id, cov) }
 
         /*
          * Preprocess test samples
@@ -157,41 +219,56 @@ workflow DNAmDeconv{
                 .collect()                    
         MERGE_SAMPLES('test',test)
 
+        /*
+         * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE or MetDecode
+         * Note that CELFIE_PREPROCESSING performs the preprocessing that can be used by
+         * both CelFiE and MetDecode (similar structure)
+         */
+        if (params.celfie || params.metdecode || params.benchmark) {
 
-        /*
-         * SUBWORKFLOW: Reference-based cellular deconvolution 
-         */
-        refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
-        proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
-            
-            
-        /*
-         * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE
-         */
-        if (params.benchmark || params.celfie) {
-            if (samples_ch.ifEmpty('empty')!='empty') {
-                test_celfie = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
-                CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
-                ref_celfie = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
-                CELFIE(ref_celfie, test_celfie)
+            // Generate CelFiE (or MetDecode) like matrices
+            test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
+            CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
+            ref_celfie_format = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
+
+            // Run the subworkflows based on the parameters specified
+            if (params.celfie || params.benchmark) {
+                CELFIE(ref_celfie_format, test_celfie_format)
                 proportion_ch = proportion_ch.concat( Channel.of( 'CelFiE' ).combine( CELFIE.out.output ) )
             }
-        }   
-    }
+            if (params.metdecode || params.benchmark) {
+                METDECODE(ref_celfie_format, test_celfie_format)
+                proportion_ch = proportion_ch.concat( Channel.of( 'MetDecode' ).combine( METDECODE.out.output ) )
+            }
+        }
 
+        /*
+         * If not MetDecode or CelFiE, run "classical" deconvolution tools
+         */
+        if (params.methyl_atlas || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+            refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
+            proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
+        }
+    }
+   
 
     /*
-     * SUBWORKFLOW: If nothing has been specified,
-     * Or if benchmark parameter has been specified, run ref-free deconvolution
+     * SUBWORKFLOW: If reference-free deconvolution tools
+     * have been specified, run ref-free deconvolution
      */
-    else {
-        regions_ch = Channel.fromPath(params.regions).first()
-        refFreeDeconv(test_ch, regions_ch)
-        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)  
-    }
-    if (params.benchmark) {
-        regions_ch = Channel.fromPath(params.regions).first()
-        refFreeDeconv(test_ch, regions_ch)
+    if (params.medecom || params.prmeth_rf || params.benchmark) {
+        if (!params.regions) {
+            Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
+        }
+        if (!params.test_set) {
+            Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
+        }
+        // Set the testing samples channel
+        test_ch = Channel.fromList(
+            samplesheetToList(params.test_set, "assets/schema_testset.json"))
+            .map { meta, cov -> tuple(meta.id, cov) }
+        regions_ch = Channel.fromPath(params.regions)
+        refFreeDeconv(test_ch, regions_ch.first())
         proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)  
     }
 

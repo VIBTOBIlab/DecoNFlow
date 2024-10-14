@@ -22,6 +22,8 @@ This pipeline runs with Nextflow version. The pipeline allows you to run both re
 | EpiSCORE             |
 | PRMeth               | 
 | CelFiE               |
+| UXM                  |
+| MetDecode            |
 
 | Reference-free deconvolution tools |
 |-------------------------------------|
