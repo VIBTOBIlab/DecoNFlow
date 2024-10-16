@@ -16,15 +16,17 @@ process TEST_PREPROCESSING {
 
     script:
     """
+    cut -f1-3 ${reference} > regions.bed
+
     bedtools intersect \\
-    -a ${reference} \\
+    -a regions.bed \\
     -b ${covs} \\
     -wa -wb > ${meta}.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\
     -g 1,2,3 \\
-    -c 10,11 > ${meta}_sum.bed \\
+    -c 8,9 > ${meta}_sum.bed \\
 
     echo "chr,start,end,${meta}" > "${meta}_sample_mix.csv"
     awk 'BEGIN {OFS=","}

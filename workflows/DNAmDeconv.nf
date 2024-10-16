@@ -147,13 +147,6 @@ workflow DNAmDeconv{
      * Run wgbstools DMR selection
      */
     else if (params.DMRselection=="wgbstools" || params.uxm) {
-
-        if (!params.ref_bams) {
-            Nextflow.error "\n----> ERROR: With wgbstools DMR selection you must specify the --ref_bams flag. <---- \n"
-        }
-        if (!params.groups_file) {
-            Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using wgbstools DMR selection. <---- \n"
-        }
         WGBSTOOLS(atlas_tsv)
         wgbstools_atlas = WGBSTOOLS.out.output
         atlas_csv = WGBSTOOLS.out.atlas_csv

@@ -26,17 +26,16 @@ process BETA_TO_TABLE {
     path "regions_table.tsv", emit: beta_table
 
     script:
-    """
-    awk 'BEGIN{FS=OFS="\\t"} NR>1 {\$1="chr"\$1; print}' $regions > regions_chr.bed
-    
+    """    
     wgbstools convert \
-    -L regions_chr.bed \
+    -L $regions \
     -o blocks.bed \
 
     wgbstools beta_to_table \
     --groups_file $groups \
     --betas $betas \
     --output regions_table.tsv \
+    -c 0 \
     blocks.bed \
     """
 }
