@@ -21,42 +21,53 @@ workflow WGBSTOOLS {
 
     main:
 
+    if (!params.ref_bams & !params.uxm_atlas) {
+        Nextflow.error "\n----> ERROR: With wgbstools you must specify the --ref_bams flag or the --uxm_atlas. <---- \n"
+    }
+    if (!params.groups_file & !params.uxm_atlas) {
+        Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using wgbstools. <---- \n"
+    }
+
     /*
      * Initialize the channels
      */
     fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
     reference_csv = Channel.empty()
     reference_tsv = Channel.empty()
-    samples_ch_original = Channel.fromList(
-        samplesheetToList(params.ref_bams, "assets/schema_refbams.json"))
-        .map { 
-        meta, entity, bam, bai ->
-        meta_entity = meta.clone()
-        meta_entity.id = meta.id
-        tuple(meta_entity.id, entity, bam, bai) }
 
-    def counterMap = [:]
-    ref_bams = samples_ch_original
-        .map { entry -> 
+    if (params.ref_bams) {
+        samples_ch_original = Channel.fromList(
+            samplesheetToList(params.ref_bams, "assets/schema_refbams.json"))
+            .map { 
+            meta, entity, bam, bai ->
+            meta_entity = meta.clone()
+            meta_entity.id = meta.id
+            tuple(meta_entity.id, entity, bam, bai) }
 
-            def label = entry[1]
-            
-            if (!counterMap.containsKey(label)) {
-                counterMap[label] = 0
+        def counterMap = [:]
+        ref_bams = samples_ch_original
+            .map { entry -> 
+
+                def label = entry[1]
+                
+                if (!counterMap.containsKey(label)) {
+                    counterMap[label] = 0
+                }
+                counterMap[label]++
+
+                def newLabel = "${label}${counterMap[label]}"
+
+                def newEntry = [
+                    entry[0],           // Original first column
+                    newLabel,           // Modified second column with index
+                    entry[2],           // Original third column
+                    entry[3]            // Original fourth column
+                ]
+
+                return newEntry
             }
-            counterMap[label]++
+    }
 
-            def newLabel = "${label}${counterMap[label]}"
-
-            def newEntry = [
-                entry[0],           // Original first column
-                newLabel,           // Modified second column with index
-                entry[2],           // Original third column
-                entry[3]            // Original fourth column
-            ]
-
-            return newEntry
-        }
         
     /*
      * If an uxm-like atlas has been specified, skip the the processing step
@@ -126,8 +137,12 @@ workflow WGBSTOOLS {
      * If other deconvolution tools have been specified, 
      * generate an atlas that can be used with these tools
      */
-    if (params.methyl_atlas || params.celfie || params.metdecode || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort) {
+    if (params.methyl_atlas || params.metdecode || params.celfie || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
 
+        if (!params.ref_bams) {
+            Nextflow.error "\n----> ERROR: If you want to use a UXM-like atlas in combination with another more classical deconvolution tool you must specifiy the --ref_bams flag <---- \n"
+        }
+        
         SELECT_REGIONS(wgbstools_atlas)
         regions = SELECT_REGIONS.out.regions
 
@@ -137,7 +152,7 @@ workflow WGBSTOOLS {
     
         PREPROCESSING( // Pass the input data and region file to the preprocessing module
             BISMARK_METHYLATIONEXTRACTOR.out.coverage,
-            regions
+            regions.first()
         )
 
         procSamples = PREPROCESSING     // Merge the samples in a unique matrix

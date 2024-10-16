@@ -1,6 +1,8 @@
 # DNAmDeconv Pipeline
 ## [v1.0.2](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.2) -
 ### Bugs fixed
+- Thanks to [@kaschoof](https://github.ugent.be/kaschoof), major bug has been fixed
+ in the TEST_PROCESSING module that was grouping according to wrong columns when more than 2 cell types are specified in the atlas. 
 - Fixed problems with _check_max_ function and _base.config_ file not properly imported in _nextflow.config_
 - Updated *bedtools* container version to the version 2.29.2 to fix a bug present in the previous version (see [#643](https://github.com/arq5x/bedtools2/issues/643)).
 - Updated CelFiE container adding random seeds to make it generating reproducible results.
