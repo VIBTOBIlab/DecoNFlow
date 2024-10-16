@@ -35,7 +35,6 @@ process BETA_TO_TABLE {
     --groups_file $groups \
     --betas $betas \
     --output regions_table.tsv \
-    -c 0 \
     blocks.bed \
     """
 }
