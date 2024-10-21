@@ -1,0 +1,40 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("DMRselection: none (ref_matrix)") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                ref_matrix = "${projectDir}/assets/reference_matrix_1_BH_mean.tsv"
+                save_intermeds = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert new File( "$outputDir/refree_preprocessing/ref_free_matrix.csv" ).exists()},
+                { assert new File( "$outputDir/test_preprocessing/test_matrix.csv" ).exists()},
+                { assert new File( "$outputDir/celfie/celfie_matrix.txt" ).exists()},
+                { assert new File( "$outputDir/epidish/epidish_res_RPC.csv" ).exists()},
+                { assert new File( "$outputDir/episcore/test_samples_deconv_output_weight_0.4.csv" ).exists()},
+                { assert new File( "$outputDir/metdecode/output.csv" ).exists()},
+                { assert new File( "$outputDir/methyl_atlas/test_matrix_deconv_output.csv" ).exists()},
+                { assert new File( "$outputDir/prmeth/test_samples_deconv_output_mod_QP.csv" ).exists()},
+
+                { assert snapshot(
+                    path("$outputDir/refree_preprocessing/ref_free_matrix.csv"),
+                    path("$outputDir/test_preprocessing/test_matrix.csv"),
+                    path("$outputDir/celfie/celfie_matrix.txt"),
+                    path("$outputDir/epidish/epidish_res_RPC.csv"),
+                    path("$outputDir/episcore/test_samples_deconv_output_weight_0.4.csv"),
+                    path("$outputDir/metdecode/output.csv"),
+                    path("$outputDir/methyl_atlas/test_matrix_deconv_output.csv"),
+                    path("$outputDir/prmeth/test_samples_deconv_output_mod_QP.csv")).match() }
+            )
+        }
+    }
+}

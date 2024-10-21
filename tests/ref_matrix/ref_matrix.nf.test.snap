@@ -1,0 +1,19 @@
+{
+    "DMRselection: none (ref_matrix)": {
+        "content": [
+            "ref_free_matrix.csv:md5,dac28f8230b70a8d959805cdd409ada3",
+            "test_matrix.csv:md5,6ebe04466b1258a1a75e0a8727979162",
+            "celfie_matrix.txt:md5,f6f834e9b84a21baea29fcb8d8bc2d91",
+            "epidish_res_RPC.csv:md5,f6dfdc8f4ed2323c94e282a73e28b2d7",
+            "test_samples_deconv_output_weight_0.4.csv:md5,368a309356af0881fb03980b3343e960",
+            "output.csv:md5,692d7814ad576ff7a28189a1e912d1e0",
+            "test_matrix_deconv_output.csv:md5,cfa43854b949598dfd2d468b22c8622c",
+            "test_samples_deconv_output_mod_QP.csv:md5,4fdd5d0341818911a61afc7cc5486d2e"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-10-20T17:01:19.430326"
+    }
+}

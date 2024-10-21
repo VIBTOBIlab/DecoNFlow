@@ -16,11 +16,11 @@ workflow DSSPrep {
         dssSamples = DSS_PREPROCESSING
                         .out
                         .dss_format_sample
-                        .collect()
+                        .collect( sort: true )
         dssEntity = DSS_PREPROCESSING
                         .out
                         .entity
-                        .collect()
+                        .collect( sort: true )
         
         // Pass the samples for the DMR analysis
         DSS_SELECTION(dssSamples,dssEntity)

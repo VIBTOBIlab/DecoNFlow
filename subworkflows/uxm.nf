@@ -87,7 +87,7 @@ workflow UXM {
         // Convert the regions into a wgbstools-like table
         BETA_TO_TABLE(
             SELECT_REGIONS.out.regions,
-            BAM2PAT_REF.out.beta_file.collect(),
+            BAM2PAT_REF.out.beta_file.collect( sort: true ),
             group_ch
         )
 
@@ -95,15 +95,15 @@ workflow UXM {
         FINDMARKERS(
             BETA_TO_TABLE.out.beta_table,
             group_ch,
-            BAM2PAT_REF.out.beta_file.collect()
+            BAM2PAT_REF.out.beta_file.collect( sort: true )
         )
 
         // Build the atlas
         BUILD(
             FINDMARKERS.out.markers, 
             group_ch, 
-            BAM2PAT_REF.out.pat.collect(), 
-            BAM2PAT_REF.out.pat_index.collect()
+            BAM2PAT_REF.out.pat.collect( sort: true ), 
+            BAM2PAT_REF.out.pat_index.collect( sort: true )
         )
         atlas = BUILD.out.atlas
     }
@@ -116,11 +116,11 @@ workflow UXM {
     pats = BAM2PAT_TEST
         .out
         .pat
-        .collect()
+        .collect( sort: true )
     pat_indeces = BAM2PAT_TEST
         .out
         .pat_index
-        .collect()
+        .collect( sort: true )
 
 
     /*

@@ -98,7 +98,7 @@ workflow WGBSTOOLS {
         betas = BAM2PAT
             .out
             .beta_file
-            .collect()
+            .collect( sort: true )
         SEGMENT(betas)
 
         /*
@@ -117,11 +117,11 @@ workflow WGBSTOOLS {
         pats = BAM2PAT
             .out
             .pat
-            .collect()
+            .collect( sort: true )
         pat_indeces = BAM2PAT
             .out
             .pat_index
-            .collect()
+            .collect( sort: true )
         BUILD(
             FINDMARKERS.out.markers, 
             group_ch, 
@@ -158,7 +158,7 @@ workflow WGBSTOOLS {
         procSamples = PREPROCESSING     // Merge the samples in a unique matrix
                         .out
                         .filt_sample
-                        .collect()
+                        .collect( sort: true )
         MERGE_SAMPLES(
             'ref_based', 
             procSamples
