@@ -16,7 +16,7 @@ If `--save_intermeds` flag is not specified, the pipeline will produce two folde
 
 - Contains the information regarding the pipeline (timeline, dag, report).
 
-**Final output directory: `results/final_outputs`**
+**Final output directory: `results/deconvolution`**
 
 - Contains a .csv file with the cell type proportions estimated. Each row contains the information on the cell type proportion estimated by one single tool (specified in the column tool) for a single sample.
 
