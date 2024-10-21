@@ -1,7 +1,7 @@
 name,type,file
-DNA097385,healthy,https://github.com/edogiuili/test-datasets/raw/main/cov/DNA097385.cov.gz
-DNA097389,healthy,https://github.com/edogiuili/test-datasets/raw/main/cov/DNA097389.cov.gz
-DNA097393,healthy,https://github.com/edogiuili/test-datasets/raw/main/cov/DNA097393.cov.gz
-DNA041087,nbl,https://github.com/edogiuili/test-datasets/raw/main/cov/DNA041087.cov.gz
-DNA044133,nbl,https://github.com/edogiuili/test-datasets/raw/main/cov/DNA044133.cov.gz
-DNA044134,nbl,https://github.com/edogiuili/test-datasets/raw/main/cov/DNA044134.cov.gz
+DNA097385,healthy,/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/test-datasets/cov/DNA097385.cov.gz
+DNA097389,healthy,/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/test-datasets/cov/DNA097389.cov.gz
+DNA097393,healthy,/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/test-datasets/cov/DNA097393.cov.gz
+DNA041087,nbl,/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/test-datasets/cov/DNA041087.cov.gz
+DNA044133,nbl,/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/test-datasets/cov/DNA044133.cov.gz
+DNA044134,nbl,/Users/edoardogiuili/Library/CloudStorage/OneDrive-UGent/Projects/Maisa_deconv_benchmark/test-datasets/cov/DNA044134.cov.gz

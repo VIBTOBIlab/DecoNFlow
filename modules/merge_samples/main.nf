@@ -3,7 +3,7 @@
 process MERGE_SAMPLES {
     container 'egiuili/merge_samples:v2'
 
-    label 'process_low'
+    label 'process_medium'
 
     input:
     val(step)

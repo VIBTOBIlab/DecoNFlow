@@ -19,6 +19,7 @@
 - Removed `merging_approach` and `chunk_size` flags from the documentation (not used anymore).
 - Changed parameter *custom* of the flag `DMRselection` into *limma*.
 - Sort the columns of the matrices in MERGE_SAMPLES module to make the files always the same
+- Updated MERGE_SAMPLES container to always output sorted samples for reproducibility
 
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 ### Parameters changes
