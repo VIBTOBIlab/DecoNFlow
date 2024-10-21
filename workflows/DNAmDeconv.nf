@@ -75,7 +75,7 @@ workflow DNAmDeconv{
      * skip the preprocessing and DMR selection steps
      */
     if (params.ref_matrix) {
-        atlas_tsv = Channel.fromPath(params.ref_matrix)
+        atlas_tsv = Channel.fromPath(params.ref_matrix).first()
         PROCESS_REF_MATRIX(atlas_tsv)
         atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
     }
@@ -146,7 +146,7 @@ workflow DNAmDeconv{
     /*
      * Run wgbstools DMR selection
      */
-    else if (params.DMRselection=="wgbstools" || params.uxm) {
+    else if (params.DMRselection=="wgbstools") {
         WGBSTOOLS(atlas_tsv)
         wgbstools_atlas = WGBSTOOLS.out.output
         atlas_csv = WGBSTOOLS.out.atlas_csv
@@ -220,9 +220,9 @@ workflow DNAmDeconv{
         if (params.celfie || params.metdecode || params.benchmark) {
 
             // Generate CelFiE (or MetDecode) like matrices
-            test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
+            test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect( sort: true )
             CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
-            ref_celfie_format = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
+            ref_celfie_format = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect( sort: true )
 
             // Run the subworkflows based on the parameters specified
             if (params.celfie || params.benchmark) {

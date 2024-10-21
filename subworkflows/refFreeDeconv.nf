@@ -23,7 +23,7 @@ workflow refFreeDeconv {
         .out
         .preprocessed_refree
         .map{sample,cov -> [cov]}
-        .collect()
+        .collect( sort: true )
     
     // Merge the samples in a unique matrix
     MERGE_SAMPLES('ref_free',refree_procTest)

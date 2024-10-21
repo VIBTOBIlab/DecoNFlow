@@ -1,0 +1,20 @@
+{
+    "DMRselection: wgbstools": {
+        "content": [
+            "Atlas.l3.tsv:md5,2e7e561ac9efaf6e6f3a5f2489aa4bad",
+            "ref_free_matrix.csv:md5,dac28f8230b70a8d959805cdd409ada3",
+            "test_matrix.csv:md5,e3b1f416340313517d9fa51d2b3c0507",
+            "celfie_matrix.txt:md5,9acf5a5f310dd3be9d704d9d65adfea5",
+            "epidish_res_RPC.csv:md5,352dbf4f1433c06407dc3084c1fb7740",
+            "test_samples_deconv_output_weight_0.4.csv:md5,2f9a4d6e5dc6c53712af1720b772ba8d",
+            "output.csv:md5,3c46393f2f2fc716e5f8a7c2f5dfe5bc",
+            "test_matrix_deconv_output.csv:md5,2634e3952f1087f3ad38b03f6e4acf07",
+            "test_samples_deconv_output_mod_QP.csv:md5,4b17a30bb56bf7763b85f98dba3c150a"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-10-19T17:36:29.183896"
+    }
+}

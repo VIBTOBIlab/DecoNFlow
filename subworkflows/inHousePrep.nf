@@ -38,7 +38,7 @@ workflow inHousePrep {
                 procSamples = PREPROCESSING
                                 .out
                                 .filt_sample
-                                .collect()
+                                .collect()                              
                 MERGE_SAMPLES('ref_based', procSamples)
 
                 // Pass the regions for the DMR analysis
