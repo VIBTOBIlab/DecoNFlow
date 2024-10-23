@@ -19,7 +19,7 @@ process PREPROCESSING {
     bedtools intersect \\
     -a ${regions} \\
     -b ${entity}_filtered.cov.gz \\
-    -wa -wb > ${entity}.bed \\
+    -wa -wb -sorted > ${entity}.bed \\
 
     bedtools groupby \\
     -i ${entity}.bed \\
