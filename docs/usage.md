@@ -157,7 +157,7 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 ## DMR selection arguments
 
 ### `--DMRselection`
-Default is 'DSS'. Alternative is 'limma'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
+Choose one of the following: 'limma', 'DSS', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
 
 ### `--adjp`
 Adjusted p-value threshold for the DMR selection. Default 0.001.

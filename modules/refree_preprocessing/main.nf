@@ -19,7 +19,7 @@ process REFREE_PREPROCESSING {
     bedtools intersect \\
     -a $reference \\
     -b ${meta}_filtered.cov.gz \\
-    -wa -wb > ${meta}.bed \\
+    -wa -wb -sorted > ${meta}.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\

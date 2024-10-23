@@ -146,7 +146,7 @@ workflow DNAmDeconv{
     /*
      * Run wgbstools DMR selection
      */
-    else if (params.DMRselection=="wgbstools") {
+    else if (params.DMRselection=="wgbstools" || params.uxm_atlas) {
         WGBSTOOLS(atlas_tsv)
         wgbstools_atlas = WGBSTOOLS.out.output
         atlas_csv = WGBSTOOLS.out.atlas_csv
@@ -176,7 +176,7 @@ workflow DNAmDeconv{
          * Otherwise, convert the DSS or limma atlas 
          * and convert it into a UXM-like format
          */    
-        if (params.DMRselection=="wgbstools") {
+        if (params.DMRselection=="wgbstools" || params.uxm_atlas) {
             UXM(test_bams, wgbstools_atlas)
         }
         else {

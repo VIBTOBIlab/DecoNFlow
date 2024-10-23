@@ -25,7 +25,7 @@ workflow UXM {
      * If a DMR selection different than wgbstools has been specified
      * convert the atlas into a wgbstools-like atlas
      */
-    if (params.DMRselection!="wgbstools") {
+    if (params.DMRselection!="wgbstools" & params.DMRselection!=null) {
         if (!params.ref_bams) {
             Nextflow.error "\n----> ERROR: With UXM deconvolution tool you must specify the --ref_bams flag. <---- \n"
         }

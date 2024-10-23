@@ -21,7 +21,7 @@ process TEST_PREPROCESSING {
     bedtools intersect \\
     -a regions.bed \\
     -b ${covs} \\
-    -wa -wb > ${meta}.bed \\
+    -wa -wb -sorted > ${meta}.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\

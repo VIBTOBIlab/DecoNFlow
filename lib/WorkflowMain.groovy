@@ -41,7 +41,7 @@ class WorkflowMain {
         if ((params.celfie || params.metdecode) & !params.input) {
             Nextflow.error "\n----> ERROR: you need to specify the reference samples (--input) when using CelFiE. <----\n"
         }
-        if (params.DMRselection!="wgbstools" & params.DMRselection!="DSS" & params.DMRselection!="limma" & !params.ref_matrix) {
+        if (params.DMRselection!="wgbstools" & params.DMRselection!="DSS" & params.DMRselection!="limma" & !params.ref_matrix & !params.uxm_atlas) {
             Nextflow.error "\n----> ERROR: you need to specify one DMR selection approach (--DMRselection). <----\n"
         }
     }

@@ -1,7 +1,7 @@
 /*
  * wgbstools subworkflow
  */
-
+import nextflow.Nextflow
 include { INIT_GENOME                               } from '../modules/wgbstools/init_genome/main'
 include { BAM2PAT                                   } from '../modules/wgbstools/bam2pat/main'
 include { SEGMENT                                   } from '../modules/wgbstools/segment/main'
