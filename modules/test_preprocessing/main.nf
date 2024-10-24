@@ -5,7 +5,6 @@ process TEST_PREPROCESSING {
 
     label 'process_medium'
 
-
     input:
     tuple val(meta), path(covs)
     path reference
@@ -15,13 +14,17 @@ process TEST_PREPROCESSING {
     path("${meta}_sample_celfie_mix.csv") , emit: preprocessed_celfie_test
 
     script:
+    def args = ""
+    if (params.big_covs) {
+        args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
+    }
     """
-    cut -f1-3 ${reference} > regions.bed
+    cut -f1-3 ${reference} | sort -V > regions.bed
 
     bedtools intersect \\
     -a regions.bed \\
     -b ${covs} \\
-    -wa -wb -sorted > ${meta}.bed \\
+    -wa -wb $args > ${meta}.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\

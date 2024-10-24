@@ -13,13 +13,17 @@ process REFREE_PREPROCESSING {
     tuple val(meta), path("${meta}_sample_mix.csv") , emit: preprocessed_refree
 
     script:
+    def args = ""
+    if (params.big_covs) {
+        args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
+    }
     """
     zcat $covs | awk -v OFS='\\t' '\$5 + \$6 >= ${params.refree_min_counts}' | gzip > ${meta}_filtered.cov.gz 
 
     bedtools intersect \\
     -a $reference \\
     -b ${meta}_filtered.cov.gz \\
-    -wa -wb -sorted > ${meta}.bed \\
+    -wa -wb $args > ${meta}.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\

@@ -128,7 +128,7 @@ workflow DNAmDeconv{
         }
 
         inHousePrep(samples_ch)
-        atlas_tsv = inHousePrep.out.atlas_tsv.first()
+        atlas_tsv = inHousePrep.out.atlas_tsv
         atlas_csv = inHousePrep.out.atlas_csv
     }
 
