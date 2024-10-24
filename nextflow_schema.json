@@ -178,7 +178,7 @@
                 "genome_order": {
                     "type": "string",
                     "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
-                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm8,mouse.mm9,mouse.mm10,mouse.mm8.nochr,mouse.mm9.nochr,mouse.mm10.nochr]"
+                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]"
                 }
             }
         },

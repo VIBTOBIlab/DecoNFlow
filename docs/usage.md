@@ -197,7 +197,7 @@ Minimum percentage of significant CpGs within a DMR (default: 0.5).
 ### limma arguments
 
 #### `--regions`
-> **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented just by the number, without the "chr" string).
+> **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented by the "chr" string + the chromosome number).
 
 If _limma_ `--DMRselection`, you must provide also a regions file using this paramater. It has to be a tab-separated file with three columns, and no header as shown in the example below.
 
@@ -206,23 +206,31 @@ If _limma_ `--DMRselection`, you must provide also a regions file using this par
 ```
 where the samplesheet file looks like the following:
 
-`RRBS_regions20-200.bed`
+`RRBS_regions20-200_chr.bed`
 ```plaintext:
-1   10497       10588
-1   10589       10640
-1   10641       10669
-... ...         ...
-22  50064015    50064037
-22  50064064    50064084
-22  50064090    50064112
+chr1   10497       10588
+chr1   10589       10640
+chr1   10641       10669
+...    ...         ...
+chr22  50064015    50064037
+chr22  50064064    50064084
+chr22  50064090    50064112
 ```
-An [example regions file](../assets/RRBS_regions20-200.bed) has been provided with the pipeline.
+An [example regions file](../assets/RRBS_regions20-200_chr.bed) has been provided with the pipeline.
 
 #### `--min_counts`
 Minimum number of counts to keep a CpG position. Default 10.
 
 #### `--min_cpgs`
 Minimum number of CpGs per region. Default 3.
+
+#### `--big_covs`
+If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files before using limma running with a memory-efficient algorithm. When specifying this flag, it's necessary to specify the `--genome_order` flag as well.
+
+#### `--genome_order`
+> **NOTE** The coverage files are expected to be in a natural sort order (chr1, chr2, chr3) instead of this (chr1, chr10, chr11) order.
+
+When `--big_covs` is specified, you need to specify the genome version of the files and if the chromosome name is represented just by the number (e.g. human.hg38.nochr) or with the "chr" string (e.g. human.38). You can choose among the following parameters: [`human.hg19`, `human.hg38`, `human.hg19.nochr`, `human.hg38.nochr`, `mouse.mm9`, `mouse.mm10`, `mouse.mm9.nochr`, `mouse.mm10.nochr`].
 
 ### wgbs_tools arguments
 Alternatively to DSS and limma DMR selection, one can choose to use wgbs_tools, a software developed by the same authors of [UXM](https://www.nature.com/articles/s41586-022-05580-6). This software is necessary to perform the preprocessing and generate a UXM-like atlas. However, this atlas will automatically be converted into a standard atlas that can be used by "classical" deconvolution tools when these are specified with the corresponding flag. To use _wgbs_tools_ selection, you will need to create a samplesheet (`--ref_bams`) similar to `--input` but with paths to `bam` (and .bam.bai) files instead of .cov files:
