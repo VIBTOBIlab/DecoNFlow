@@ -138,7 +138,7 @@
             "properties": {
                 "DMRselection": {
                     "type": "string",
-                    "default": "custom",
+                    "default": "limma",
                     "description": "DMR selection approach adopted"
                 },
                 "regions": {
@@ -169,6 +169,16 @@
                     "type": "integer",
                     "description": "Take the top x number of DMRs per cell state.",
                     "help_text": "Default is \"None\". It can be used only if \"direction\" flag is specified."
+                },
+                "big_covs": {
+                    "type": "boolean",
+                    "description": "If specified, it makes the preprocessing running with a memory-efficient algorithm. Suggested to activate it when using whole-genome coverage files.",
+                    "help_text": "Default is false."
+                },
+                "genome_order": {
+                    "type": "string",
+                    "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
+                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm8,mouse.mm9,mouse.mm10,mouse.mm8.nochr,mouse.mm9.nochr,mouse.mm10.nochr]"
                 }
             }
         },

@@ -13,13 +13,18 @@ process PREPROCESSING {
     path "*sample_mix.csv", emit: filt_sample
     
     script:
+    def args = ""
+    if (params.big_covs) {
+        args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
+    }
     """
     zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | gzip > ${entity}_filtered.cov.gz 
+    cut -f1-3 ${regions} | sort -V > regions.bed
 
     bedtools intersect \\
-    -a ${regions} \\
+    -a regions.bed \\
     -b ${entity}_filtered.cov.gz \\
-    -wa -wb -sorted > ${entity}.bed \\
+    -wa -wb $args > ${entity}.bed \\
 
     bedtools groupby \\
     -i ${entity}.bed \\
