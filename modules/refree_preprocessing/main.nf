@@ -19,9 +19,10 @@ process REFREE_PREPROCESSING {
     }
     """
     zcat $covs | awk -v OFS='\\t' '\$5 + \$6 >= ${params.refree_min_counts}' | gzip > ${meta}_filtered.cov.gz 
+    cut -f1-3 ${reference} | sort -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
-    -a $reference \\
+    -a regions.bed \\
     -b ${meta}_filtered.cov.gz \\
     -wa -wb $args > ${meta}.bed \\
 

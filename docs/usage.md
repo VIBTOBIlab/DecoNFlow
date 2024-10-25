@@ -228,7 +228,7 @@ Minimum number of CpGs per region. Default 3.
 If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files before using limma running with a memory-efficient algorithm. When specifying this flag, it's necessary to specify the `--genome_order` flag as well.
 
 #### `--genome_order`
-> **NOTE** The coverage files are expected to be in a natural sort order (chr1, chr2, chr3) instead of this (chr1, chr10, chr11) order.
+> **NOTE** The coverage files are expected to be sorted by chromosome position (chr1, chr11, chr12) instead of this natural order (chr1, chr2, chr3) order. You can achieve this using the UNIX sort utility to sort cov files by chromosome and then by position. That is, *sort -k1,1 -k2,2n in.cov > in.sorted.cov* .
 
 When `--big_covs` is specified, you need to specify the genome version of the files and if the chromosome name is represented just by the number (e.g. human.hg38.nochr) or with the "chr" string (e.g. human.38). You can choose among the following parameters: [`human.hg19`, `human.hg38`, `human.hg19.nochr`, `human.hg38.nochr`, `mouse.mm9`, `mouse.mm10`, `mouse.mm9.nochr`, `mouse.mm10.nochr`].
 

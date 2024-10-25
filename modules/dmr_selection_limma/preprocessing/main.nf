@@ -19,7 +19,7 @@ process PREPROCESSING {
     }
     """
     zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | gzip > ${entity}_filtered.cov.gz 
-    cut -f1-3 ${regions} | sort -V > regions.bed
+    cut -f1-3 ${regions} | sort -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
     -a regions.bed \\
