@@ -19,7 +19,7 @@ process TEST_PREPROCESSING {
         args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
     }
     """
-    cut -f1-3 ${reference} | sort -V > regions.bed
+    cut -f1-3 ${reference} | sort -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
     -a regions.bed \\
