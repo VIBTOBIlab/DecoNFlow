@@ -18,7 +18,10 @@ process PREPROCESSING {
         args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
     }
     """
-    zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | gzip > ${entity}_filtered.cov.gz 
+    zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | \\
+    awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9]|X|Y|MT|M)\$/ {print}' | \\
+    gzip > ${entity}_filtered.cov.gz
+     
     cut -f1-3 ${regions} | sort -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
