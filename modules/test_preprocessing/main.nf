@@ -20,10 +20,14 @@ process TEST_PREPROCESSING {
     }
     """
     cut -f1-3 ${reference} | sort -k1,1 -k2,2n > regions.bed
+    
+    zcat $covs | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | \\
+    awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9]|X|Y|MT|M)\$/ {print}' | \\
+    gzip > ${meta}_filtered.cov.gz
 
     bedtools intersect \\
     -a regions.bed \\
-    -b ${covs} \\
+    -b ${meta}_filtered.cov.gz \\
     -wa -wb $args > ${meta}.bed \\
 
     bedtools groupby \\

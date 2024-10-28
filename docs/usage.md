@@ -155,6 +155,7 @@ You can also supply a run name to resume a specific run: `-resume [run-name]`. U
 Specify the path to a specific config file (this is a core Nextflow command). See the [nf-core website documentation](https://nf-co.re/usage/configuration) for more information.
 
 ## DMR selection arguments
+> **NOTE** Whatever DMR selection tool is chosen, the pipeline will filter out from the coverage files all those CpGs not mapping to chromosomes ((chr)1-22/X/Y/M/MT). Thus, all those CpGs located in unplaced or unlocalized genomic sequences (e.g. chr1_gl000192_random, chrUn_gl000215, etc) will be filtered out.
 
 ### `--DMRselection`
 Choose one of the following: 'limma', 'DSS', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
@@ -225,10 +226,10 @@ Minimum number of counts to keep a CpG position. Default 10.
 Minimum number of CpGs per region. Default 3.
 
 #### `--big_covs`
-If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files before using limma running with a memory-efficient algorithm. When specifying this flag, it's necessary to specify the `--genome_order` flag as well.
+If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma) running with a memory-efficient algorithm. When specifying this flag, it's necessary to specify the `--genome_order` flag as well.
 
 #### `--genome_order`
-> **NOTE** The coverage files are expected to be sorted by chromosome position (chr1, chr11, chr12) instead of this natural order (chr1, chr2, chr3) order. You can achieve this using the UNIX sort utility to sort cov files by chromosome and then by position. That is, *sort -k1,1 -k2,2n in.cov > in.sorted.cov* .
+> **NOTE** The coverage files are expected to be sorted by chromosome position (chr1, chr11, chr12) instead of natural order (chr1, chr2, chr3). You can achieve this using the UNIX sort utility to sort cov files by chromosome and then by position. That is, *sort -k1,1 -k2,2n in.cov > in.sorted.cov* . 
 
 When `--big_covs` is specified, you need to specify the genome version of the files and if the chromosome name is represented just by the number (e.g. human.hg38.nochr) or with the "chr" string (e.g. human.38). You can choose among the following parameters: [`human.hg19`, `human.hg38`, `human.hg19.nochr`, `human.hg38.nochr`, `mouse.mm9`, `mouse.mm10`, `mouse.mm9.nochr`, `mouse.mm10.nochr`].
 
