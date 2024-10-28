@@ -11,24 +11,27 @@ DNAmDeconv is a bioinformatics analysis pipeline used for computational deconvol
 The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
 
 # Pipeline Summary
-This pipeline runs with Nextflow version. The pipeline allows you to run both reference-based and reference-free deconvolution tools. Visit docs for more information.
+The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit docs for more information.
 
-| Reference-based deconvolution tools |
-|-------------------------------------|
-| meth_atlas (default) |
-| CIBERSORT            |
-| EpiDISH              |
-| MethylResolver       |
-| EpiSCORE             |
-| PRMeth               | 
-| CelFiE               |
-| UXM                  |
-| MetDecode            |
+1. DMR selection
+    1. DSS
+    2. limma
+    3. wgbs_tools    
+2. Deconvolution
+    1. Reference-based deconvolution
+        - meth_atlas (.cov)
+        - CIBERSORT (.cov)
+        - EpiDISH (.cov)
+        - EpiSCORE (.cov)
+        - MethylResolver (.cov)
+        - PRMeth (.cov)
+        - CelFiE (.cov)
+        - MetDecode (.cov)
+        - UXM (.bam)
+    2. Reference-free deconvolution
+        - MeDeCom (.cov)
+        - PRMeth (Ref-Free) (.cov)     
 
-| Reference-free deconvolution tools |
-|-------------------------------------|
-| MeDeCom              |
-| PRMeth (default)     |
 
 # Usage
 > **NOTE**
@@ -67,11 +70,7 @@ Each row represents a coverage file, with the first column representing the samp
 ## Run the pipeline
 > **NOTE** For more information, please refer to the [docs](docs/README.md).
 
-Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. If in the params.yaml you specify the input file (`--input`) but no tools, the pipeline will automatically deconvolve the samples using meth_atlas.
-
-Alternatively, if you do not specify the input file, the pipeline will automatically run the reference-free deconvolution workflow and deconvolve the samples using PRMeth (with reference-free modality).
-
-If you want to run the pipeline with one tool which is not the default one, you just have to specify the corresponding flag (e.g. `--cibersort`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, and for this reason the `--input` argument is required.
+Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one tool to use (e.g. `--cibersort`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)). If you want to run the pipeline using UXM, refer to the [documentation](./docs/usage.md).
 
 You can run the pipeline using docker profile:
 ```plaintext:
@@ -88,6 +87,7 @@ The params.yaml file looks like the following:
 input: ./resources/reference.csv
 output_dir: ./results
 test_samples: ./resources/test.csv
+methyl_atlas: true
 ```
 All the parameters specified in the file can also be specified in the command line using the corresponding flags.
 
