@@ -220,9 +220,9 @@ workflow DNAmDeconv{
         if (params.celfie || params.metdecode || params.benchmark) {
 
             // Generate CelFiE (or MetDecode) like matrices
-            test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect( sort: true )
+            test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
             CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
-            ref_celfie_format = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect( sort: true )
+            ref_celfie_format = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
 
             // Run the subworkflows based on the parameters specified
             if (params.celfie || params.benchmark) {

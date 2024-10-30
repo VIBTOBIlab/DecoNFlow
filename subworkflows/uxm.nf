@@ -19,7 +19,7 @@ workflow UXM {
     main:
     
     fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
-
+    step = Channel.value(file("./no_file"))
 
     /*
      * If a DMR selection different than wgbstools has been specified
@@ -106,13 +106,14 @@ workflow UXM {
             BAM2PAT_REF.out.pat_index.collect( sort: true )
         )
         atlas = BUILD.out.atlas
+        step = step = Channel.value(file("./no_file2"))
     }
 
 
     /*
      * Convert test bam files to pat files 
      */
-    BAM2PAT_TEST(test_bam, atlas.first())
+    BAM2PAT_TEST(test_bam, step)
     pats = BAM2PAT_TEST
         .out
         .pat
