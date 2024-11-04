@@ -23,7 +23,6 @@
                 "exists": true,
                 "pattern": "^\\S+\\.bam$",
                 "errorMessage": "Path for the bam file must be provided and cannot contain spaces"
-
             },
             "bai": {
                 "type": "string",
@@ -31,7 +30,6 @@
                 "exists": true,
                 "pattern": "^\\S+\\.bam.bai$",
                 "errorMessage": "Path for the bai file must be provided and cannot contain spaces"
-
             }
         },
         "required": ["name", "type", "bam", "bai"]
