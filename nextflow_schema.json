@@ -10,9 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": [
-                "outdir"
-            ],
+            "required": ["outdir"],
             "properties": {
                 "input": {
                     "type": "string",
@@ -245,11 +243,11 @@
                     "fa_icon": "fas fa-file-csv"
                 },
                 "fasta": {
-                    "type":"string",
+                    "type": "string",
                     "description": "Path to the genome fasta file used to align samples."
                 },
                 "genome": {
-                    "type":"string",
+                    "type": "string",
                     "default": "hg19",
                     "description": "Name of the genome that you want to initialize."
                 },
@@ -267,13 +265,13 @@
                 },
                 "rlen": {
                     "type": "integer",
-                    "description":"Minimal CpGs per read required to consider the reads.",
+                    "description": "Minimal CpGs per read required to consider the reads.",
                     "default": 3,
                     "fa_icon": "fas fa-microchip"
                 },
                 "only_hypo": {
                     "type": "boolean",
-                    "description":"Take only hypomethylated markers."
+                    "description": "Take only hypomethylated markers."
                 }
             }
         },

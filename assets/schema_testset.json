@@ -18,9 +18,8 @@
                 "exists": true,
                 "pattern": "^\\S+\\.cov\\.gz$",
                 "errorMessage": "Path for the coverage file must be provided and cannot contain spaces"
-
             }
         },
-        "required": ["name","sample"]
+        "required": ["name", "sample"]
     }
 }
