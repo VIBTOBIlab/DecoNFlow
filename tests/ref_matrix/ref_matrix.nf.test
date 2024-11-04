@@ -43,7 +43,7 @@ nextflow_pipeline {
                     path("$outputDir/epidish/epidish_res_RPC.csv"),
                     path("$outputDir/cibersort/test_samples_deconv_output.csv"),
                     path("$outputDir/episcore/test_samples_deconv_output_weight_0.4.csv"),
-                    path("$outputDir/methyl_resolver/test_samples_deconv_output_alpha_0.5.csv"),                
+                    path("$outputDir/methyl_resolver/test_samples_deconv_output_alpha_0.5.csv"),
                     path("$outputDir/methyl_atlas/test_matrix_deconv_output.csv"),
                     path("$outputDir/prmeth/test_samples_deconv_output_mod_QP.csv")).match() }
             )

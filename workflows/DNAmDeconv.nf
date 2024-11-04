@@ -19,13 +19,13 @@ log.info logo + paramsSummaryLog(workflow) + citation
 
 // Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
 log.info """
-    ==============================================================================================    
-                 _____  _   _                      _____                            
-                |  __ \\| \\ | |   /\\               |  __ \\                           
+    ==============================================================================================
+                _____  _   _                      _____
+                |  __ \\| \\ | |   /\\               |  __ \\
                 | |  | |  \\| |  /  \\   _ __ ___   | |  | | ___  ___ ___  _ ____   __
                 | |  | | . ` | / /\\ \\ | '_ ` _ \\  | |  | |/ _ \\/ __/ _ \\| '_ \\ \\ / /
-                | |__| | |\\  |/ ____ \\| | | | | | | |__| |  __/ (_| (_) | | | \\ V / 
-                |_____/|_| \\_/_/    \\_\\_| |_| |_| |_____/ \\___|\\___\\___/|_| |_|\\_/  
+                | |__| | |\\  |/ ____ \\| | | | | | | |__| |  __/ (_| (_) | | | \\ V /
+                |_____/|_| \\_/_/    \\_\\_| |_| |_| |_____/ \\___|\\___\\___/|_| |_|\\_/
 
     ==============================================================================================
     """.stripIndent()
@@ -70,7 +70,7 @@ workflow DNAmDeconv{
 
 
     /*
-     * If reference matrix has been specified, and neither 
+     * If reference matrix has been specified, and neither
      * CelFiE or MetDecode have been specified, then:
      * skip the preprocessing and DMR selection steps
      */
@@ -85,7 +85,7 @@ workflow DNAmDeconv{
 
         Channel.fromList(
             samplesheetToList(params.input, "assets/schema_input.json"))
-            .map { 
+            .map {
                 meta, entity, cov ->
                 meta_entity = meta.clone()
                 meta_entity.entity = entity
@@ -96,10 +96,10 @@ workflow DNAmDeconv{
         // Add index to the second (entity) column
         def counterMap = [:]
         samples_ch = samples_ch_original
-            .map { entry -> 
-        
+            .map { entry ->
+
                 def label = entry[1]
-                
+
                 if (!counterMap.containsKey(label)) {
                     counterMap[label] = 0
                 }
@@ -136,7 +136,7 @@ workflow DNAmDeconv{
     /*
      *  Run DSS DMR selection
      */
-    else if (params.DMRselection=="DSS"){ 
+    else if (params.DMRselection=="DSS"){
         DSSPrep(samples_ch)
         atlas_tsv = DSSPrep.out.atlas_tsv
         atlas_csv = DSSPrep.out.atlas_csv
@@ -164,7 +164,7 @@ workflow DNAmDeconv{
         }
         test_bams = Channel.fromList(
         samplesheetToList(params.test_bams, "assets/schema_testbams.json"))
-            .map { 
+            .map {
             meta, bam, bai ->
             meta_entity = meta.clone()
             meta_entity.id = meta.id
@@ -172,10 +172,10 @@ workflow DNAmDeconv{
             tuple(meta_entity.id, entity, bam, bai) }
 
         /*
-         * If wgbstools DMR selection, use the atlas generated 
-         * Otherwise, convert the DSS or limma atlas 
+         * If wgbstools DMR selection, use the atlas generated
+         * Otherwise, convert the DSS or limma atlas
          * and convert it into a UXM-like format
-         */    
+         */
         if (params.DMRselection=="wgbstools" || params.uxm_atlas) {
             UXM(test_bams, wgbstools_atlas)
         }
@@ -184,7 +184,7 @@ workflow DNAmDeconv{
         }
 
         proportion_ch = proportion_ch.concat(UXM.out.uxm_proportions)
-    }   
+    }
 
 
     /*
@@ -209,7 +209,7 @@ workflow DNAmDeconv{
         test = TEST_PREPROCESSING
                 .out
                 .preprocessed_test
-                .collect()                    
+                .collect()
         MERGE_SAMPLES('test',test)
 
         /*
@@ -243,7 +243,7 @@ workflow DNAmDeconv{
             proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
         }
     }
-   
+
 
     /*
      * SUBWORKFLOW: If reference-free deconvolution tools
@@ -262,12 +262,12 @@ workflow DNAmDeconv{
             .map { meta, cov -> tuple(meta.id, cov) }
         regions_ch = Channel.fromPath(params.regions)
         refFreeDeconv(test_ch, regions_ch.first())
-        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)  
+        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)
     }
 
 
     /*
-     * PROCESS: Combine results in a unique table 
+     * PROCESS: Combine results in a unique table
      */
     COMBINE_FILES( proportion_ch.collect { t -> t[0] + ':' + t[1] } )
 

@@ -39,7 +39,7 @@ class NfcoreTemplate {
 
         return version_string
     }
-    
+
     //
     // Dump pipeline parameters in a json file
     //
