@@ -13,7 +13,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a w
 
 # Pipeline Summary
 
-![Presentation1](docs/images/decoNFlow.drawio.svg)
+![Presentation1](docs/images/animated.map.svg)
 The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit docs for more information.
 
 1. DMR selection
