@@ -28,6 +28,8 @@
 - Added possibility of specifying "-sorted" and "-g" to the bedtools intersect in the preprocessing to keep the memory usage low when using big coverage files (e.g. WGBS covs).
 - Sort the columns of the matrices in MERGE_SAMPLES module to make the files always the same
 - Updated MERGE_SAMPLES container to always output sorted samples for reproducibility
+- Added gitignore, pre-commit and CODEOWNERS for PR
+- Added metromap to the README
 
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 
