@@ -30,7 +30,7 @@ workflow refBasedDeconv {
     }
     if (params.epidish || params.benchmark) {
         EPIDISH(reference, test)
-        outputChannels = outputChannels.concat(Channel.of( 'EpiDISH' ).combine( EPIDISH.out.output) )
+        outputChannels = outputChannels.concat(Channel.of( "EpiDISH_${params.mod}" ).combine( EPIDISH.out.output) )
     }
     if (params.methyl_resolver || params.benchmark) {
         METHYL_RESOLVER(reference, test)
