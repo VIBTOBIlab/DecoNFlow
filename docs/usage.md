@@ -32,7 +32,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) (>= 23.04.0) a 
 
 If you want to deconvolve the samples using reference-based deconvolution tools, you will need to create a samplesheet (`reference.csv`) with information about the samples that will build your reference matrix and a samplesheet (`test.csv`) with information about the samples you would like to deconvolve.
 
-### Input file
+### Reference samples
 
 Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
 
@@ -62,7 +62,7 @@ DNA044134,nbl,DNA044134_S32.cov.gz
 
 An [example samplesheet](../assets/reference.csv) has been provided with the pipeline.
 
-### Test file
+### Bulk samples
 
 Use this parameter to specify its location. It has to be a comma-separated file with 2 columns, and a header row as shown in the example below.
 
@@ -72,7 +72,7 @@ Use this parameter to specify its location. It has to be a comma-separated file 
 
 where the samplesheet file looks like the following:
 
-`test.csv`
+`bulk_samples.csv`
 
 ```plaintext:
 name,sample
@@ -83,18 +83,18 @@ name,sample
 20M_mix_Bmap_CLBGA_100_rep1,20M_mix_Bmap_CLBGA_100_rep1.cov.gz
 ```
 
-An [example samplesheet](../assets/test.csv) has been provided with the pipeline.
+An [example samplesheet](../assets/bulk_samples.csv) has been provided with the pipeline.
 
 ## Reference-free deconvolution
 
-For the reference-free deconvolution tools, the required files are the [regions file](../assets/RRBS_regions20-200.bed) and the [test samplesheet](../assets/test.csv).
+For the reference-free deconvolution tools, the required files are the [regions file](../assets/RRBS_regions20-200.bed) and the [bulk samplesheet](../assets/bulk_samples.csv).
 
 ## Running the pipeline
 
 The typical command for running the pipeline is the following:
 
 ```bash
-nextflow run main.nf --input assets/reference.csv --test_set assets/test.csv --outdir ./results  -profile docker
+nextflow run main.nf --input assets/reference.csv --test_set assets/bulk_samples.csv --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -108,11 +108,7 @@ work                # Directory containing the nextflow working files
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
-If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
-
-Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
-
-The above pipeline run specified with a params file in yaml format:
+If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`. The above pipeline run specified with a params file in yaml format:
 
 ```bash
 nextflow run main.nf -profile docker -params-file params.yaml
@@ -129,7 +125,7 @@ outdir: './results/'
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
 
-## Default behaviours
+## Default behaviours (depracated)
 
 By default, when the `--input` is specified, the pipeline will run the reference-based deconvolution workflow and deconvolve the samples given with the `--test_set` parameter using `meth_atlas`. If the `--input` file is not specified, the pipeline will deconvolve the samples using the `PRMeth` tool with the reference-free modality.
 

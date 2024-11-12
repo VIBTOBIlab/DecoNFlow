@@ -14,7 +14,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a w
 # Pipeline Summary
 
 ![Presentation1](docs/images/animated.map.svg)
-The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit docs for more information.
+The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit [docs](docs/) for more information.
 
 1. DMR selection
    1. DSS
@@ -40,7 +40,7 @@ The pipeline allows you to run both reference-based and reference-free deconvolu
 > **NOTE**
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/getting_started/installation) on how to set-up Nextflow.
 
-## Testing samples
+## Bulk samples
 
 First, prepare a samplesheet (.csv) file with your samples that need to be deconvolved as follows:
 
@@ -56,7 +56,7 @@ test4,/path/to/the/files/file4.cov.gz
 
 Each row represents a sample, defined by a name (first column) and the sample path to the coverage file (second column).
 
-## Input file (reference dataset)
+## Reference samples
 
 > **NOTE** This step can be skipped if no reference samples are available, or if you want to run reference-free deconvolution tools. For more information, please refer to the [docs](docs/README.md).
 
