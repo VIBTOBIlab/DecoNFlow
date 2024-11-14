@@ -10,6 +10,7 @@
 - [Core Nextflow arguments](#core-nextflow-arguments)
 - [DMR selection arguments](#dmr-selection-arguments)
   - [DSS arguments](#dss-arguments)
+  - [DMRfinder arguments](#dmrfinder-arguments)
   - [limma arguments](#limma-arguments)
   - [wgbs_tools](#wgbs_tools-arguments)
 - [Deconvolution parameters](#deconvolution-parameters)
@@ -168,7 +169,7 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ### `--DMRselection`
 
-Choose one of the following: 'limma', 'DSS', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
+Choose one of the following: 'limma', 'DSS', 'DMRfinder', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
 
 ### `--adjp`
 
@@ -215,6 +216,16 @@ Maximum distance between DMRs to merge (default: 50).
 #### `--pct_sign`
 
 Minimum percentage of significant CpGs within a DMR (default: 0.5).
+
+### DMRfinder arguments
+
+#### `--dmrfinder_pvalue`
+
+Maximum p-value for DMRfinder (default: 0.05)
+
+#### `--dmrfinder_qvalue`
+
+Maximum q-value (fdr) for DMRfinder (default: 0.05)
 
 ### limma arguments
 
