@@ -39,6 +39,7 @@ log.info """
 include { samplesheetToList                      } from 'plugin/nf-schema'
 include { inHousePrep                            } from "../subworkflows/inHousePrep"
 include { DSSPrep                                } from "../subworkflows/DSSPrep"
+include { DMRfinderPrep                          } from "../subworkflows/DMRfinderPrep"
 include { refBasedDeconv                         } from "../subworkflows/refBasedDeconv"
 include { refFreeDeconv                          } from "../subworkflows/refFreeDeconv"
 include { CELFIE                                 } from "../subworkflows/celfie"
@@ -142,6 +143,15 @@ workflow DNAmDeconv{
         atlas_csv = DSSPrep.out.atlas_csv
     }
 
+    /*
+     *  Run DMRfinder DMR selection
+     */
+
+    else if (params.DMRselection=="DMRfinder"){
+        DMRfinderPrep(samples_ch_original)
+        atlas_tsv = DMRfinderPrep.out.atlas_tsv
+        atlas_csv = DMRfinderPrep.out.atlas_csv
+    }
 
     /*
      * Run wgbstools DMR selection
