@@ -10,7 +10,7 @@ workflow DMRfinderPrep {
         samples         // channel: [ val(meta), val(entity), path(cov) ]
 
         main:
-        // Samples preprocessing
+        // Create the correct sample names format for DMRfinder
         samples_new = samples
             .map { sample_id, condition, file_path ->
                     [condition, sample_id]}
@@ -26,7 +26,7 @@ workflow DMRfinderPrep {
             .collect()
             .map { it.join(' ')}
 
-        // Pass the input data and region file to the preprocessing module
+        // Pass the input data to the preprocessing module
         DMRFINDER_PREPROCESSING(samples)
         
         // Merge the samples in a unique matrix
