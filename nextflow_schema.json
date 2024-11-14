@@ -217,6 +217,23 @@
                     "description": "Minimum percentage of significant CpGs within a DMR"
                 }
             }
+        },"dmrfinder_options": {
+            "title": "DMRfinder options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "dmrfinder_pvalue": {
+                    "type": "number",
+                    "default": 0.05,
+                    "description": "Maximum p-value [0,1]"
+                },
+                "dmrfinder_qvalue": {
+                    "type": "number",
+                    "default": 0.05,
+                    "description": "Maximum q-value [0,1]"
+                }
+            }
         },
         "wgbs_tools_options": {
             "title": "DSS options",

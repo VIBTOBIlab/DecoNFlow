@@ -18,8 +18,9 @@ The pipeline allows you to run both reference-based and reference-free deconvolu
 
 1. DMR selection
    1. DSS
-   2. limma
-   3. wgbs_tools
+   2. DMRfinder
+   3. limma
+   4. wgbs_tools
 2. Deconvolution
    1. Reference-based deconvolution
       - meth_atlas (.cov)
@@ -109,7 +110,7 @@ All the parameters specified in the file can also be specified in the command li
 
 # Credits
 
-The scripts and containers have been written and built by Edoardo Giuili ([@edogiuili](https://github.com/edogiuili)), Maísa Santos([@mferrodo](https://github.com/mferrodo)) and Sofie Van de Velde ([@sofie](https://github.com/sofvdvel)), who are also the maintainers.
+The scripts and containers have been written and built by Edoardo Giuili ([@edogiuili](https://github.com/edogiuili)), Maísa Santos([@mferrodo](https://github.com/mferrodo)) and Sofie Van de Velde ([@sofvdvel](https://github.com/sofvdvel)), who are also the maintainers.
 
 # Citations
 
