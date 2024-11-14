@@ -217,7 +217,8 @@
                     "description": "Minimum percentage of significant CpGs within a DMR"
                 }
             }
-        },"dmrfinder_options": {
+        },
+        "dmrfinder_options": {
             "title": "DMRfinder options",
             "type": "object",
             "description": "",
