@@ -382,6 +382,10 @@ EpiSCORE weight parameter. Default is 0.4, can go from 0.05 to 0.9.
 
 Modality to be used for the PRMeth tool. Default is 'QP' (reference-based), alternative is 'NMF' (partial reference-based). PRMeth_RF runs always with 'RF' (reference-free) modality.
 
+#### `--prmeth_NMF_entities`
+
+Expected number of entities when using PRMeth with NMF modality (def. 3).
+
 ### MeDeCom params
 
 #### `--ninit`

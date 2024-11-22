@@ -1,21 +1,14 @@
 #!/usr/bin/env nextflow
 
 // Define mounting option
-def cmd = ''
-if (workflow.profile=='docker'||
-    workflow.profile=='debug,docker' ||
-    workflow.profile=='docker,debug' ||
-    workflow.profile=='test,docker' ||
-    workflow.profile=='docker,test') {
-    cmd += '--volume'
-} else { cmd += '--bind'}
+def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
 
 process INIT_GENOME {
     container 'egiuili/uxm:v1'
 
     label 'process_high'
 
-    containerOptions "$cmd /tmp:/opt/wgbstools/references"
+    containerOptions "$cmd ${workflow.workDir}:/opt/wgbstools/references"
 
     input:
     path fasta, stageAs: "default/*"

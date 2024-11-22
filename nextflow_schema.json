@@ -237,7 +237,7 @@
             }
         },
         "wgbs_tools_options": {
-            "title": "DSS options",
+            "title": "wgbs_tools options",
             "type": "object",
             "description": "",
             "default": "",
@@ -408,6 +408,11 @@
                     "default": "QP",
                     "description": "PRMeth deconv modality",
                     "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based). PRMeth_RF runs always reference-free deconvolution."
+                },
+                "prmeth_NMF_entities": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "PRMeth number of entities when using NMF"
                 }
             }
         },

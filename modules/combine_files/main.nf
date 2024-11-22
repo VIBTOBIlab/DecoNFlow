@@ -1,14 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define mounting option
-def args = ''
-if (workflow.profile=='docker'||
-    workflow.profile=='debug,docker' ||
-    workflow.profile=='docker,debug' ||
-    workflow.profile=='test,docker' ||
-    workflow.profile=='docker,test') {
-    args += '--volume'
-} else { args += '--bind'}
+def args = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
 
 process COMBINE_FILES {
     container 'egiuili/combine_files:v1'

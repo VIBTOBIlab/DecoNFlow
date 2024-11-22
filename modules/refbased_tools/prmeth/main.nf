@@ -17,7 +17,7 @@ process PRMETH {
     Rscript /source/run_prmeth.R \
     -s ${reference} \
     -m ${samples} \
-    -k ${params.clusters} \
+    -k ${params.prmeth_NMF_entities} \
     -d ${params.prmeth_mod}
     """
     

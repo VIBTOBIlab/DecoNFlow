@@ -72,7 +72,8 @@ workflow UXM {
         INIT_GENOME(
             fasta
         )
-
+        step = INIT_GENOME.out.ref
+        
         /*
          * Convert ref bam files to pat files 
          */
@@ -106,7 +107,6 @@ workflow UXM {
             BAM2PAT_REF.out.pat_index.collect( sort: true )
         )
         atlas = BUILD.out.atlas
-        step = step = Channel.value(file("./no_file2"))
     }
 
 
