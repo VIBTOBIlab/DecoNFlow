@@ -10,6 +10,8 @@
 - Updated _bedtools_ container version to the version 2.29.2 to fix a bug present in the previous version (see [#643](https://github.com/arq5x/bedtools2/issues/643)).
 - Updated CelFiE container adding random seeds to make it generating reproducible results.
 - Updated the PRMeth container to solve a bug on the number of cells (ncells) parameters when using the NMF modality.
+- Updated nf-core schema plugin to version 2.2.0
+- Changed the function to read the input file (from meta.clone() to def meta)
 
 ### New features
 
@@ -30,6 +32,7 @@
 - Updated MERGE_SAMPLES container to always output sorted samples for reproducibility
 - Added gitignore, pre-commit and CODEOWNERS for PR
 - Added metromap to the README
+- Added instituional config options
 
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 
