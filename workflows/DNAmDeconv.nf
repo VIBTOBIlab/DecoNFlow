@@ -88,9 +88,7 @@ workflow DNAmDeconv{
             samplesheetToList(params.input, "assets/schema_input.json"))
             .map {
                 meta, entity, cov ->
-                meta_entity = meta.clone()
-                meta_entity.entity = entity
-                meta_entity.id = meta.id
+                def meta_entity = meta + [entity:entity]
                 tuple(meta_entity.id, meta_entity.entity, cov) }
             .set{ samples_ch_original }
 

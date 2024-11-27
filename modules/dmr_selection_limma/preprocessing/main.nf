@@ -20,32 +20,32 @@ process PREPROCESSING {
     """
     zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | \\
     awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9]|X|Y|MT|M)\$/ {print}' | \\
-    gzip > ${entity}_filtered.cov.gz
+    gzip > ${meta}_filtered.cov.gz
      
     cut -f1-3 ${regions} | sort -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
     -a regions.bed \\
-    -b ${entity}_filtered.cov.gz \\
-    -wa -wb $args > ${entity}.bed \\
+    -b ${meta}_filtered.cov.gz \\
+    -wa -wb $args > ${meta}.bed \\
 
     bedtools groupby \\
-    -i ${entity}.bed \\
+    -i ${meta}.bed \\
     -g 1,2,3 \\
     -c 8 \\
-    -o count | awk -v OFS='\\t' '\$4 >= ${params.refree_min_cpgs} {print \$1, \$2, \$3, \$4}' > ${entity}_counts.bed \\
+    -o count | awk -v OFS='\\t' '\$4 >= ${params.refree_min_cpgs} {print \$1, \$2, \$3, \$4}' > ${meta}_counts.bed \\
 
     bedtools groupby \\
-    -i ${entity}.bed \\
+    -i ${meta}.bed \\
     -g 1,2,3 \\
-    -c 8,9 > ${entity}_sum.bed \\
+    -c 8,9 > ${meta}_sum.bed \\
 
     bedtools intersect \\
-    -a ${entity}_sum.bed \\
-    -b ${entity}_counts.bed \\
-    -wa -wb | awk -v OFS='\\t' '{print \$1, \$2, \$3, \$4, \$5}'> ${entity}_final.bed \\
+    -a ${meta}_sum.bed \\
+    -b ${meta}_counts.bed \\
+    -wa -wb | awk -v OFS='\\t' '{print \$1, \$2, \$3, \$4, \$5}'> ${meta}_final.bed \\
 
-    echo ",chr,start,end,${entity}-V" > "${entity}_sample_mix.csv"
+    echo ",chr,start,end,${entity}-V" > "${meta}_sample_mix.csv"
     awk 'BEGIN {OFS=","}
         {
             chr=\$1 
@@ -54,7 +54,7 @@ process PREPROCESSING {
             methylation=\$4 / (\$4 + \$5)
             print NR, chr, start, end, methylation
 
-        }' ${entity}_final.bed >> ${entity}_sample_mix.csv    
+        }' ${meta}_final.bed >> ${meta}_sample_mix.csv    
     """
 
 }
