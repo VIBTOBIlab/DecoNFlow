@@ -2,7 +2,7 @@
 
 process DMRFINDER_SELECTION {
 
-    container 'sofvdvel/dmrfinder_r:v1'
+    container 'egiuili/dmrfinder_r:v2'
 
     label 'process_medium'
 
@@ -18,13 +18,12 @@ process DMRFINDER_SELECTION {
 
     script:
     def args = ''
-    if (params.direction == 'hyper') {
-        args += '-up'
+    if (params.direction) {
+        args += "-dir ${params.direction}"
+        if (params.top) {
+        args += " -top ${params.top}"
         }
-    else if (params.direction == 'hypo') {
-        args += '-down'
     }
-
     """
     Rscript /source/findDMRs.r \
     -i $combined_file \
