@@ -6,7 +6,7 @@ def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
 process BETA_TO_TABLE {
     container 'egiuili/uxm:v1'
 
-    label 'process_low'
+    label 'process_high'
 
     containerOptions "$cmd ${workflow.workDir}:/opt/wgbstools/references"
 

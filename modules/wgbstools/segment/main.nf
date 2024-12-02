@@ -6,7 +6,7 @@ def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
 process SEGMENT {
     container 'egiuili/uxm:v1'
 
-    label 'process_medium'
+    label 'process_high'
 
     containerOptions "$cmd ${workflow.workDir}:/opt/wgbstools/references"
 
