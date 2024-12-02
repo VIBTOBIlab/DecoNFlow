@@ -4,7 +4,7 @@ process DMRFINDER_SELECTION {
 
     container 'egiuili/dmrfinder_r:v2'
 
-    label 'process_medium'
+    label 'process_high'
 
     input:
     path(combined_file)

@@ -6,7 +6,7 @@ def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
 process BUILD {
     container 'egiuili/uxm:v1'
 
-    label 'process_medium'
+    label 'process_high'
 
     containerOptions "$cmd /tmp:/opt/UXM_deconv/tmp_dir"
 
