@@ -103,7 +103,7 @@ The params.yaml file looks like the following:
 input: ./resources/reference.csv
 output_dir: ./results
 test_samples: ./resources/test.csv
-methyl_atlas: true
+meth_atlas: true
 ```
 
 All the parameters specified in the file can also be specified in the command line using the corresponding flags.

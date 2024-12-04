@@ -137,7 +137,7 @@ workflow WGBSTOOLS {
      * If other deconvolution tools have been specified, 
      * generate an atlas that can be used with these tools
      */
-    if (params.methyl_atlas || params.metdecode || params.celfie || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+    if (params.meth_atlas || params.metdecode || params.celfie || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
 
         if (!params.ref_bams) {
             Nextflow.error "\n----> ERROR: If you want to use a UXM-like atlas in combination with another more classical deconvolution tool you must specifiy the --ref_bams flag <---- \n"

@@ -110,7 +110,7 @@
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },
-                "methyl_atlas": {
+                "meth_atlas": {
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },

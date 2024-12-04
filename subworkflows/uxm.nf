@@ -113,7 +113,7 @@ workflow UXM {
     /*
      * Convert test bam files to pat files 
      */
-    BAM2PAT_TEST(test_bam, step)
+    BAM2PAT_TEST(test_bam, atlas.first())
     pats = BAM2PAT_TEST
         .out
         .pat
