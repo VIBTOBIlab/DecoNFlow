@@ -40,9 +40,9 @@ workflow WGBSTOOLS {
             samplesheetToList(params.ref_bams, "assets/schema_refbams.json"))
             .map { 
             meta, entity, bam, bai ->
-            meta_entity = meta.clone()
+            def meta_entity = meta + [entity:entity]
             meta_entity.id = meta.id
-            tuple(meta_entity.id, entity, bam, bai) }
+            tuple(meta_entity.id, meta_entity.entity, bam, bai) }
 
         def counterMap = [:]
         ref_bams = samples_ch_original
