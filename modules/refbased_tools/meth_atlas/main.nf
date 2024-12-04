@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-process METHYL_ATLAS {
+process METH_ATLAS {
     container 'egiuili/methyl_atlas:v1.0'
 
     label 'process_medium'

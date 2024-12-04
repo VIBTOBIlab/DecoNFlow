@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-include { METHYL_ATLAS                                      } from "../modules/refbased_tools/methyl_atlas/main"
+include { METH_ATLAS                                        } from "../modules/refbased_tools/meth_atlas/main"
 include { CIBERSORT                                         } from "../modules/refbased_tools/cibersort/main"
 include { EPIDISH                                           } from "../modules/refbased_tools/epidish/main"
 include { METHYL_RESOLVER                                   } from "../modules/refbased_tools/methyl_resolver/main"
@@ -20,9 +20,9 @@ workflow refBasedDeconv {
     outputChannels = Channel.empty()
 
     // Run deconvolution tool(s)
-    if (params.methyl_atlas || params.benchmark) {
-        METHYL_ATLAS(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'meth_atlas' ).combine( METHYL_ATLAS.out.output) )
+    if (params.meth_atlas || params.benchmark) {
+        METH_ATLAS(reference, test)
+        outputChannels = outputChannels.concat( Channel.of( 'meth_atlas' ).combine( METH_ATLAS.out.output) )
     }
     if (params.cibersort || params.benchmark) {
         CIBERSORT(reference, test)

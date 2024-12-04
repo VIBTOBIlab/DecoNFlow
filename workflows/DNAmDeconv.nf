@@ -174,7 +174,7 @@ workflow DNAmDeconv{
         samplesheetToList(params.test_bams, "assets/schema_testbams.json"))
             .map {
             meta, bam, bai ->
-            meta_entity = meta.clone()
+            def meta_entity = meta
             meta_entity.id = meta.id
             entity = null
             tuple(meta_entity.id, entity, bam, bai) }
@@ -198,7 +198,7 @@ workflow DNAmDeconv{
     /*
      * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools
      */
-    if (params.methyl_atlas || params.celfie || params.metdecode || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+    if (params.meth_atlas || params.celfie || params.metdecode || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
 
         if (!params.test_set) {
             Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
@@ -246,7 +246,7 @@ workflow DNAmDeconv{
         /*
          * If not MetDecode or CelFiE, run "classical" deconvolution tools
          */
-        if (params.methyl_atlas || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+        if (params.meth_atlas || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
             refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
             proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
         }

@@ -265,7 +265,7 @@ Minimum number of CpGs per region. Default 3.
 
 #### `--big_covs`
 
-If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma) running with a memory-efficient algorithm. When specifying this flag, it's necessary to specify the `--genome_order` flag as well.
+If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma or for DMR finder combine process) running with a memory-efficient algorithm. When specifying this flag within `limma` workflow, it's necessary to specify the `--genome_order` flag as well.
 
 #### `--genome_order`
 
@@ -346,9 +346,9 @@ If the flag is specified, all the output files will be saved.
 
 If specified, all the tools and modalities in the pipeline are run.
 
-### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--prmeth_rf`,`--medecom`, `--celfie`,`--methyl_atlas`,`--cibersort`
+### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--prmeth_rf`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`
 
-If specified, they run the corresponding tool. By default, `--methyl_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
+If specified, they run the corresponding tool. By default, `--meth_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
 
 ### `--refree_min_cpgs`, `--refree_min_counts`
 
