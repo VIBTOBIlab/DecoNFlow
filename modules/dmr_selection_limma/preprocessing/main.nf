@@ -18,6 +18,23 @@ process PREPROCESSING {
         args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
     }
     """
+    first_column_regions=\$(awk -F'\t' 'NR==2 {print \$1}' $regions)
+    if [[ \$first_column_regions == chr* ]]; then
+        chr_present_regions="true"
+    else
+        chr_present_regions="false"
+    fi
+    first_column_cov=\$(zcat $cov | awk -F'\t' 'NR==2 {print \$1}')
+    if [[ \$first_column_cov == chr* ]]; then
+        chr_present_cov="true"
+    else
+        chr_present_cov="false"
+    fi
+    if [[ \$chr_present_cov != \$chr_present_regions ]]; then
+        echo "Error: chr suffix does not match between the files!" >&2
+        exit 1
+    fi
+
     zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | \\
     awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9])\$/ {print}' | \\
     gzip > ${meta}_filtered.cov.gz
