@@ -33,6 +33,7 @@
 - Added gitignore, pre-commit and CODEOWNERS for PR
 - Added metromap to the README
 - Added instituional config options
+- Changed methyl_atlas into meth_atlas
 
 ## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
 
