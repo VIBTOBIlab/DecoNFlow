@@ -12,7 +12,7 @@ process BAM2PAT {
 
     input:
     tuple val(meta),val(entity),path(bam),path(bai)
-    path ref 
+    val ready 
     
     output:
     path "*.pat.gz", emit: pat

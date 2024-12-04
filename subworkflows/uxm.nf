@@ -19,7 +19,7 @@ workflow UXM {
     main:
     
     fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
-    step = Channel.value(file("./no_file"))
+    atlas_ready = atlas.map { it -> true }
 
     /*
      * If a DMR selection different than wgbstools has been specified
@@ -38,9 +38,9 @@ workflow UXM {
             samplesheetToList(params.ref_bams, "assets/schema_refbams.json"))
             .map { 
             meta, entity, bam, bai ->
-            meta_entity = meta.clone()
+            def meta_entity = meta + [entity:entity]
             meta_entity.id = meta.id
-            tuple(meta_entity.id, entity, bam, bai) }
+            tuple(meta_entity.id, meta_entity.entity, bam, bai) }
 
         // Add index to the second (entity) column
         def counterMap = [:]
@@ -72,14 +72,13 @@ workflow UXM {
         INIT_GENOME(
             fasta
         )
-        step = INIT_GENOME.out.ref
         
         /*
          * Convert ref bam files to pat files 
          */
         BAM2PAT_REF(
             ref_bam, 
-            INIT_GENOME.out.ref
+            atlas_ready
         )
 
         // Select only chr, start and end columns
@@ -107,13 +106,15 @@ workflow UXM {
             BAM2PAT_REF.out.pat_index.collect( sort: true )
         )
         atlas = BUILD.out.atlas
+        atlas_ready = atlas.map { it -> true }
+
     }
 
 
     /*
      * Convert test bam files to pat files 
      */
-    BAM2PAT_TEST(test_bam, atlas.first())
+    BAM2PAT_TEST(test_bam, atlas_ready.first())
     pats = BAM2PAT_TEST
         .out
         .pat
