@@ -3,7 +3,7 @@
 process CELFIE_PREPROCESSING {
     container 'egiuili/bedtools_preprocessing:v2'
 
-    label 'process_medium'
+    label 'process_high'
 
     input:
     tuple val(meta),val(entity),path(cov) 
