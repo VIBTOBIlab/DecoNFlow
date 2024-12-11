@@ -14,7 +14,8 @@ process FINDMARKERS {
     path "MarkersAll.bed", emit: markers
 
     script:
-    def args += "-@ ${(task.cpus - 2) as int}"
+    def args = ""
+    args += "-@ ${(task.cpus - 2) as int}"
     def delta = params.delta
     def pval = params.adjp
     if (params.only_hypo) {

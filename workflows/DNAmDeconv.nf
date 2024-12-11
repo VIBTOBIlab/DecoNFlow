@@ -104,7 +104,7 @@ workflow DNAmDeconv{
                 }
                 counterMap[label]++
 
-                def newLabel = "${label}${counterMap[label]}"
+                def newLabel = "${label}_${counterMap[label]}"
 
                 def newEntry = [
                     entry[0],           // Original first column
