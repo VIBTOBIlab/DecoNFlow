@@ -14,8 +14,8 @@
             },
             "type": {
                 "type": "string",
-                "pattern": "^[a-zA-Z]+$",
-                "errorMessage": "Sample type must be provided, cannot contain spaces or numbers but only characters"
+                "pattern": "^\\S+$",
+                "errorMessage": "Sample name must be provided and cannot contain spaces"
             },
             "file": {
                 "type": "string",
