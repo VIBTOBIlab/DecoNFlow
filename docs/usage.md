@@ -346,7 +346,7 @@ If the flag is specified, all the output files will be saved.
 
 If specified, all the tools and modalities in the pipeline are run.
 
-### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--prmeth_rf`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`
+### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--prmeth_rf`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`,`--metdecode`
 
 If specified, they run the corresponding tool. By default, `--meth_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
 
