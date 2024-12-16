@@ -431,7 +431,7 @@ To use _uxm_ deconvolution, you will need to create a samplesheet (`--test_bams`
 `test_bams.csv`
 
 ```plaintext:
-name,type,bam,bai
+name,bam,bai
 DNA097385,DNA097385_S10.bam,DNA097385_S10.bam.bai
 DNA097389,DNA097389_S14.bam,DNA097389_S14.bam.bai
 DNA097393,DNA097393_S18.bam,DNA097393_S18.bam.bai
