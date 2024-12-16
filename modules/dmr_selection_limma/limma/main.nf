@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process LIMMA {
-    container 'egiuili/dmr_analysis:v2.0'
+    container 'egiuili/dmr_analysis:v3.0'
 
     label 'process_low'
 
