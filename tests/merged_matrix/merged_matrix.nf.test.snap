@@ -1,0 +1,20 @@
+{
+    "DMRselection: limma (merged_matrix)": {
+        "content": [
+            "reference_matrix_1_BH_mean.csv:md5,0033d24c5e1d96f4db38a63bf8f0829c",
+            "ref_free_matrix.csv:md5,dac28f8230b70a8d959805cdd409ada3",
+            "test_matrix.csv:md5,6ebe04466b1258a1a75e0a8727979162",
+            "epidish_res_RPC.csv:md5,f6dfdc8f4ed2323c94e282a73e28b2d7",
+            "test_samples_deconv_output.csv:md5,cda5278df214f795c2adf27701c5cff3",
+            "test_samples_deconv_output_weight_0.4.csv:md5,368a309356af0881fb03980b3343e960",
+            "test_samples_deconv_output_alpha_0.5.csv:md5,5913753f3de186eae8c2828dea7bff09",
+            "test_matrix_deconv_output.csv:md5,cfa43854b949598dfd2d468b22c8622c",
+            "test_samples_deconv_output_mod_QP.csv:md5,4fdd5d0341818911a61afc7cc5486d2e"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-10-21T18:43:02.079457"
+    }
+}

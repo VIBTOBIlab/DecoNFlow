@@ -1,12 +1,11 @@
 #!/usr/bin/env nextflow
 
-include { METHYL_ATLAS                                      } from "../modules/methyl_atlas/main"
-include { CIBERSORT                                         } from "../modules/cibersort/main"
-include { EPIDISH                                           } from "../modules/epidish/main"
-include { METHYL_RESOLVER                                   } from "../modules/methyl_resolver/main"
-include { EPISCORE                                          } from "../modules/episcore/main"
-include { PRMETH                                            } from "../modules/prmeth/main"
-include { CELFIE                                            } from "../subworkflows/celfie"
+include { METH_ATLAS                                        } from "../modules/refbased_tools/meth_atlas/main"
+include { CIBERSORT                                         } from "../modules/refbased_tools/cibersort/main"
+include { EPIDISH                                           } from "../modules/refbased_tools/epidish/main"
+include { METHYL_RESOLVER                                   } from "../modules/refbased_tools/methyl_resolver/main"
+include { EPISCORE                                          } from "../modules/refbased_tools/episcore/main"
+include { PRMETH                                            } from "../modules/refbased_tools/prmeth/main"
 
 
 workflow refBasedDeconv {
@@ -21,9 +20,9 @@ workflow refBasedDeconv {
     outputChannels = Channel.empty()
 
     // Run deconvolution tool(s)
-    if (params.methyl_atlas || params.benchmark) {
-        METHYL_ATLAS(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'meth_atlas' ).combine( METHYL_ATLAS.out.output) )
+    if (params.meth_atlas || params.benchmark) {
+        METH_ATLAS(reference, test)
+        outputChannels = outputChannels.concat( Channel.of( 'meth_atlas' ).combine( METH_ATLAS.out.output) )
     }
     if (params.cibersort || params.benchmark) {
         CIBERSORT(reference, test)
@@ -31,7 +30,7 @@ workflow refBasedDeconv {
     }
     if (params.epidish || params.benchmark) {
         EPIDISH(reference, test)
-        outputChannels = outputChannels.concat(Channel.of( 'EpiDISH' ).combine( EPIDISH.out.output) )
+        outputChannels = outputChannels.concat(Channel.of( "EpiDISH_${params.mod}" ).combine( EPIDISH.out.output) )
     }
     if (params.methyl_resolver || params.benchmark) {
         METHYL_RESOLVER(reference, test)

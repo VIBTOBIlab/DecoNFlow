@@ -10,10 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": [
-                "test_set",
-                "outdir"
-            ],
+            "required": ["outdir"],
             "properties": {
                 "input": {
                     "type": "string",
@@ -35,6 +32,18 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "ref_matrix": {
+                    "type": "string",
+                    "pattern": "^\\S+\\.(bed|tsv|txt)$",
+                    "format": "file-path",
+                    "description": "The path of the reference matrix that you want to use for ref-based deconvolution."
+                },
+                "merged_matrix": {
+                    "type": "string",
+                    "pattern": "^\\S+\\.(csv)$",
+                    "format": "file-path",
+                    "description": "The path of a matrix containing regions and samples where to perform DMR selection."
                 }
             }
         },
@@ -101,11 +110,19 @@
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },
-                "methyl_atlas": {
+                "meth_atlas": {
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },
                 "cibersort": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "uxm": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "metdecode": {
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 }
@@ -119,7 +136,7 @@
             "properties": {
                 "DMRselection": {
                     "type": "string",
-                    "default": "custom",
+                    "default": "limma",
                     "description": "DMR selection approach adopted"
                 },
                 "regions": {
@@ -150,6 +167,96 @@
                     "type": "integer",
                     "description": "Take the top x number of DMRs per cell state.",
                     "help_text": "Default is \"None\". It can be used only if \"direction\" flag is specified."
+                },
+                "big_covs": {
+                    "type": "boolean",
+                    "description": "If specified, it makes the preprocessing running with a memory-efficient algorithm. Suggested to activate it when using whole-genome coverage files.",
+                    "help_text": "Default is false."
+                },
+                "genome_order": {
+                    "type": "string",
+                    "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
+                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]"
+                },
+                "delta": {
+                    "type": "number",
+                    "default": 0.1,
+                    "description": "Threshold for calling DMRs"
+                }
+            }
+        },
+        "dmrfinder_options": {
+            "title": "DMRfinder options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "dmrfinder_pvalue": {
+                    "type": "number",
+                    "default": 0.05,
+                    "description": "Maximum p-value [0,1]"
+                },
+                "dmrfinder_qvalue": {
+                    "type": "number",
+                    "default": 0.05,
+                    "description": "Maximum q-value [0,1]"
+                }
+            }
+        },
+        "wgbs_tools_options": {
+            "title": "wgbs_tools options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "ref_bams": {
+                    "type": "string",
+                    "format": "file-path",
+                    "schema": "assets/schema_refbams.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the reference bam samples.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "groups_file": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "File (.csv) of the groups.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "fasta": {
+                    "type": "string",
+                    "description": "Path to the genome fasta file used to align samples."
+                },
+                "genome": {
+                    "type": "string",
+                    "default": "hg19",
+                    "description": "Name of the genome that you want to initialize."
+                },
+                "max_bp": {
+                    "type": "integer",
+                    "description": "Maximum length in bp for the blocks.",
+                    "default": 2000,
+                    "fa_icon": "fas fa-microchip"
+                },
+                "min_cpg_uxm": {
+                    "type": "integer",
+                    "description": "Minimum number of CpGs for the blocks.",
+                    "default": 3,
+                    "fa_icon": "fas fa-microchip"
+                },
+                "rlen": {
+                    "type": "integer",
+                    "description": "Minimal CpGs per read required to consider the reads.",
+                    "default": 3,
+                    "fa_icon": "fas fa-microchip"
+                },
+                "only_hypo": {
+                    "type": "boolean",
+                    "description": "Take only hypomethylated markers."
                 }
             }
         },
@@ -268,6 +375,11 @@
                     "default": "QP",
                     "description": "PRMeth deconv modality",
                     "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based). PRMeth_RF runs always reference-free deconvolution."
+                },
+                "prmeth_NMF_entities": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "PRMeth number of entities when using NMF"
                 }
             }
         },
@@ -304,6 +416,74 @@
                 }
             }
         },
+        "uxm_parameters": {
+            "title": "UXM parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "test_bams": {
+                    "type": "string",
+                    "format": "file-path",
+                    "schema": "assets/schema_testbams.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the bam samples to deconvolve.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "uxm_atlas": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to the uxm-like atlas."
+                }
+            }
+        },
+        "metdecode_parameters": {
+            "title": "MetDecode parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "unknown_tissues": {
+                    "type": "integer",
+                    "description": "Number of unknown entities.",
+                    "fa_icon": "fas fa-microchip"
+                },
+                "sum1": {
+                    "type": "boolean",
+                    "description": "If specified, it makes the sum of the proportions to 1."
+                },
+                "no_coverage": {
+                    "type": "boolean",
+                    "description": "Disable CpG coverage factor."
+                },
+                "supervised": {
+                    "type": "boolean",
+                    "description": "Disable the unsupervised refinment of the proportions."
+                }
+            }
+        },
+        "bismark_parameters": {
+            "title": "Bismark parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "bismark_multicore": {
+                    "type": "boolean",
+                    "description": "If true, activate multicore option"
+                },
+                "single_end": {
+                    "type": "boolean",
+                    "description": "If true, bismark will run under 'single_end' option"
+                },
+                "bismark_buffer_size": {
+                    "type": "boolean",
+                    "description": "If true, bismark will run with buffer_size option"
+                }
+            }
+        },
         "institutional_config_options": {
             "title": "Institutional config options",
             "type": "object",
@@ -322,6 +502,92 @@
                     "description": "Institutional config description.",
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
+                },
+                "config_profile_contact": {
+                    "type": "string",
+                    "description": "Institutional config contact information.",
+                    "hidden": true,
+                    "fa_icon": "fas fa-users-cog"
+                },
+                "config_profile_url": {
+                    "type": "string",
+                    "description": "Institutional config URL link.",
+                    "hidden": true,
+                    "fa_icon": "fas fa-users-cog"
+                },
+                "monochrome_logs": {
+                    "type": "boolean",
+                    "description": "Do not use coloured log outputs.",
+                    "fa_icon": "fas fa-palette",
+                    "hidden": true
+                },
+                "help": {
+                    "type": "boolean",
+                    "description": "Display help text.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
+                "version": {
+                    "type": "boolean",
+                    "description": "Display version and exit.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
+                "validate_params": {
+                    "type": "boolean",
+                    "description": "Boolean whether to validate parameters against the schema at runtime",
+                    "default": true,
+                    "fa_icon": "fas fa-check-square",
+                    "hidden": true
+                },
+                "validationFailUnrecognisedParams": {
+                    "type": "boolean",
+                    "fa_icon": "far fa-check-circle",
+                    "description": "Validation of parameters fails when an unrecognised parameter is found.",
+                    "hidden": true,
+                    "help_text": "By default, when an unrecognised parameter is found, it returns a warinig."
+                },
+                "validationLenientMode": {
+                    "type": "boolean",
+                    "fa_icon": "far fa-check-circle",
+                    "description": "Validation of parameters in lenient more.",
+                    "hidden": true,
+                    "help_text": "Allows string values that are parseable as numbers or booleans. For further information see [JSONSchema docs](https://github.com/everit-org/json-schema#lenient-mode)."
+                }
+            }
+        },
+        "max_job_request_options": {
+            "title": "Max job request options",
+            "type": "object",
+            "fa_icon": "fab fa-acquisitions-incorporated",
+            "description": "Set the top limit for requested resources for any single job.",
+            "help_text": "If you are running on a smaller system, a pipeline step requesting more resources than are available may cause the Nextflow to stop the run with an error. These options allow you to cap the maximum resources requested by any single job so that the pipeline will run on your system.\n\nNote that you can not _increase_ the resources requested by any job using these options. For that you will need your own configuration file. See [the nf-core website](https://nf-co.re/usage/configuration) for details.",
+            "properties": {
+                "max_cpus": {
+                    "type": "integer",
+                    "description": "Maximum number of CPUs that can be requested for any single job.",
+                    "default": 32,
+                    "fa_icon": "fas fa-microchip",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
+                },
+                "max_memory": {
+                    "type": "string",
+                    "description": "Maximum amount of memory that can be requested for any single job.",
+                    "default": "64.GB",
+                    "fa_icon": "fas fa-memory",
+                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the memory requirement for each process. Should be a string in the format integer-unit e.g. `--max_memory '8.GB'`"
+                },
+                "max_time": {
+                    "type": "string",
+                    "description": "Maximum amount of time that can be requested for any single job.",
+                    "default": "100.h",
+                    "fa_icon": "far fa-clock",
+                    "pattern": "^(\\d+\\.?\\s*(s|m|h|d|day)\\s*)+$",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the time requirement for each process. Should be a string in the format integer-unit e.g. `--max_time '2.h'`"
                 }
             }
         }
