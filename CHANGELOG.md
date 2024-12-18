@@ -1,6 +1,6 @@
-# DNAmDeconv Pipeline
+# DecoNFlow Pipeline
 
-## [v1.0.2](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.2) -
+## [v2.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.0.0) - 2024-12-26
 
 ### Bugs fixed
 
@@ -21,6 +21,7 @@
 - Added MetDecode tool
 - Added possibility to start from a reference matrix already built.
 - Added possibility to start from a merged matrix with reference samples on columns and regions on rows.
+- In the entity column of the reference samples is now possible to include numbers.
 
 ### Minor changes
 
