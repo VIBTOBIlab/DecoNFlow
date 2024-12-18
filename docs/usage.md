@@ -9,7 +9,6 @@
   - [Default behaviours](#default-behaviours)
 - [Core Nextflow arguments](#core-nextflow-arguments)
 - [DMR selection arguments](#dmr-selection-arguments)
-  - [DSS arguments](#dss-arguments)
   - [DMRfinder arguments](#dmrfinder-arguments)
   - [limma arguments](#limma-arguments)
   - [wgbs_tools](#wgbs_tools-arguments)
@@ -169,7 +168,7 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ### `--DMRselection`
 
-Choose one of the following: 'limma', 'DSS', 'DMRfinder', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
+Choose one of the following: 'limma', 'DMRfinder', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
 
 ### `--adjp`
 
@@ -194,28 +193,6 @@ Take the top x number (integer) of DMRs per cell state (def. null): it can be us
 ### `--delta`
 
 Threshold for calling DMRs (default: 0.1).
-
-### DSS arguments
-
-#### `--smoothing`
-
-Apply smoothing (default: TRUE).
-
-#### `--smoothing_span`
-
-Size of smoothing window in base pairs (default: 500).
-
-#### `--min_len`
-
-Minimum length in base pairs for DMR (default: 50).
-
-#### `--dis_merge`
-
-Maximum distance between DMRs to merge (default: 50).
-
-#### `--pct_sign`
-
-Minimum percentage of significant CpGs within a DMR (default: 0.5).
 
 ### DMRfinder arguments
 
@@ -275,7 +252,7 @@ When `--big_covs` is specified, you need to specify the genome version of the fi
 
 ### wgbs_tools arguments
 
-Alternatively to DSS and limma DMR selection, one can choose to use wgbs*tools, a software developed by the same authors of [UXM](https://www.nature.com/articles/s41586-022-05580-6). This software is necessary to perform the preprocessing and generate a UXM-like atlas. However, this atlas will automatically be converted into a standard atlas that can be used by "classical" deconvolution tools when these are specified with the corresponding flag. To use \_wgbs_tools* selection, you will need to create a samplesheet (`--ref_bams`) similar to `--input` but with paths to `bam` (and .bam.bai) files instead of .cov files:
+Alternatively to DMRfinder and limma DMR selection, one can choose to use _wgbs_tools_, a software developed by the same authors of [UXM](https://www.nature.com/articles/s41586-022-05580-6). This software is necessary to perform the preprocessing and generate a UXM-like atlas. However, this atlas will automatically be converted into a standard atlas that can be used by "classical" deconvolution tools when these are specified with the corresponding flag. To use _wgbs_tools_ selection, you will need to create a samplesheet (`--ref_bams`) similar to `--input` but with paths to `bam` (and .bam.bai) files instead of .cov files:
 
 `ref_bams.csv`
 

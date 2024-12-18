@@ -17,10 +17,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a w
 The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit [docs](docs/) for more information.
 
 1. DMR selection
-   1. DSS
-   2. DMRfinder
-   3. limma
-   4. wgbs_tools
+   1. DMRfinder
+   2. limma
+   3. wgbs_tools
 2. Deconvolution
    1. Reference-based deconvolution
       - meth_atlas (.cov)
