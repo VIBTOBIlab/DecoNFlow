@@ -177,44 +177,11 @@
                     "type": "string",
                     "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
                     "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]"
-                }
-            }
-        },
-        "dss_options": {
-            "title": "DSS options",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "smoothing": {
-                    "type": "boolean",
-                    "default": "true",
-                    "description": "Apply smoothing"
-                },
-                "smoothing_span": {
-                    "type": "number",
-                    "default": 500,
-                    "description": "Size of smoothing window in base pairs"
                 },
                 "delta": {
                     "type": "number",
                     "default": 0.1,
                     "description": "Threshold for calling DMRs"
-                },
-                "min_len": {
-                    "type": "number",
-                    "default": 50,
-                    "description": "Minimum length in base pairs for DMR"
-                },
-                "dis_merge": {
-                    "type": "number",
-                    "default": 50,
-                    "description": "Maximum distance between DMRs to merge"
-                },
-                "pct_sign": {
-                    "type": "number",
-                    "default": 0.5,
-                    "description": "Minimum percentage of significant CpGs within a DMR"
                 }
             }
         },

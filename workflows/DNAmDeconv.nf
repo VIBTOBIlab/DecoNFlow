@@ -20,12 +20,12 @@ log.info logo + paramsSummaryLog(workflow) + citation
 log.info """
     ==============================================================================================
 
-        ██████╗*███████╗*██████╗*██████╗*███╗***██╗███████╗███████╗██╗******██████╗*██╗****██╗
-        ██╔══██╗██╔════╝██╔════╝██╔═══██╗████╗**██║██╔════╝██╔════╝██║*****██╔═══██╗██║****██║
-        ██║**██║█████╗**██║*****██║***██║██╔██╗*██║█████╗**█████╗**██║*****██║***██║██║*█╗*██║
-        ██║**██║██╔══╝**██║*****██║***██║██║╚██╗██║██╔══╝**██╔══╝**██║*****██║***██║██║███╗██║
-        ██████╔╝███████╗╚██████╗╚██████╔╝██║*╚████║██║*****██║*****███████╗╚██████╔╝╚███╔███╔╝
-        ╚═════╝*╚══════╝*╚═════╝*╚═════╝*╚═╝**╚═══╝╚═╝*****╚═╝*****╚══════╝*╚═════╝**╚══╝╚══╝*
+        ██████╗*███████╗*██████╗*██████╗*███╗***██╗███████╗██╗******██████╗*██╗****██╗
+        ██╔══██╗██╔════╝██╔════╝██╔═══██╗████╗**██║██╔════╝██║*****██╔═══██╗██║****██║
+        ██║**██║█████╗**██║*****██║***██║██╔██╗*██║█████╗**██║*****██║***██║██║*█╗*██║
+        ██║**██║██╔══╝**██║*****██║***██║██║╚██╗██║██╔══╝**██║*****██║***██║██║███╗██║
+        ██████╔╝███████╗╚██████╗╚██████╔╝██║*╚████║██║*****███████╗╚██████╔╝╚███╔███╔╝
+        ╚═════╝*╚══════╝*╚═════╝*╚═════╝*╚═╝**╚═══╝╚═╝*****╚══════╝*╚═════╝**╚══╝╚══╝*
 
     ==============================================================================================
     """.stripIndent()
@@ -37,7 +37,6 @@ log.info """
 */
 include { samplesheetToList                      } from 'plugin/nf-schema'
 include { inHousePrep                            } from "../subworkflows/inHousePrep"
-include { DSSPrep                                } from "../subworkflows/DSSPrep"
 include { DMRfinderPrep                          } from "../subworkflows/DMRfinderPrep"
 include { refBasedDeconv                         } from "../subworkflows/refBasedDeconv"
 include { refFreeDeconv                          } from "../subworkflows/refFreeDeconv"
@@ -130,16 +129,6 @@ workflow DNAmDeconv{
         atlas_csv = inHousePrep.out.atlas_csv
     }
 
-
-    /*
-     *  Run DSS DMR selection
-     */
-    else if (params.DMRselection=="DSS"){
-        DSSPrep(samples_ch)
-        atlas_tsv = DSSPrep.out.atlas_tsv
-        atlas_csv = DSSPrep.out.atlas_csv
-    }
-
     /*
      *  Run DMRfinder DMR selection
      */
@@ -180,7 +169,7 @@ workflow DNAmDeconv{
 
         /*
          * If wgbstools DMR selection, use the atlas generated
-         * Otherwise, convert the DSS or limma atlas
+         * Otherwise, convert the DMRfinder or limma atlas
          * and convert it into a UXM-like format
          */
         if (params.DMRselection=="wgbstools" || params.uxm_atlas) {
