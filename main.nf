@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/DNAmDeconv
+    DNAmDeconv
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/nf-core/...
     Website: https://nf-co.re/...
@@ -15,27 +15,23 @@ nextflow.enable.dsl = 2
     VALIDATE & PRINT PARAMETER SUMMARY
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { validateParameters; paramsHelp; paramsSummaryLog} from 'plugin/nf-schema'
+include { validateParameters; paramsHelp} from 'plugin/nf-schema'
 
 // Print help message, supply typical command line usage for the pipeline
 if (params.help) {
-   log.info paramsHelp("nextflow run main.nf --input input_file.csv -test_set test.csv --outdir results/ --regions_file regions.bed -profile <profile>")
-   exit 0
+    def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
+    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+    def String command = "nextflow run main.nf --input input_file.csv -test_set test.csv --outdir results/ --regions_file regions.bed -profile <profile>"
+    log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
+    System.exit(0)
 }
 
 // Validate input parameters
-validateParameters()
-if (params.DMRselection=="custom" & !(params.regions)) {
-    println("With custom DMR selection a cluster file is required (--regions)")
-    exit 0
-}
-if (params.benchmark & !(params.input)) {
-    println("With benchmark option, the reference set (--input) is required")
-    exit 0
+if (params.validate_params) {
+    validateParameters()
 }
 
-// Print summary of supplied parameters
-log.info paramsSummaryLog(workflow)
+WorkflowMain.initialise(workflow, params, log)
 
 
 /*

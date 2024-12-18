@@ -2,8 +2,8 @@
 
 
 include { REFREE_PREPROCESSING                              } from "../modules/refree_preprocessing/main"
-include { PRMETH_RF                                         } from "../modules/prmeth_rf/main"
-include { MEDECOM                                           } from "../modules/medecom/main"
+include { PRMETH_RF                                         } from "../modules/refree_tools/prmeth_rf/main"
+include { MEDECOM                                           } from "../modules/refree_tools/medecom/main"
 include { MERGE_SAMPLES                                     } from "../modules/merge_samples/main"
 
 
@@ -23,7 +23,7 @@ workflow refFreeDeconv {
         .out
         .preprocessed_refree
         .map{sample,cov -> [cov]}
-        .collect()
+        .collect( sort: true )
     
     // Merge the samples in a unique matrix
     MERGE_SAMPLES('ref_free',refree_procTest)

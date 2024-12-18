@@ -1,4 +1,3 @@
-input: ./resources/reference.csv
+input: ./assets/reference.csv
 outdir: ./results
-regions: ./resources/RRBS_regions20-200.bed
-test_set: ./resources/test.csv
+test_set: ./assets/test.csv
