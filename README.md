@@ -80,7 +80,7 @@ Each row represents a coverage file, with the first column representing the samp
 
 > **NOTE** For more information, please refer to the [docs](docs/README.md).
 
-Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one tool to use (e.g. `--cibersort`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)). If you want to run the pipeline using UXM, refer to the [documentation](./docs/usage.md).
+Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one deconvolution tool to use (e.g. `--meth_atlas`). If you specify a reference-based deconvolution tool, also a DMR selection approach needs to be specified (e.g. `--DMRselection DMRfinder`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)). If you want to run the pipeline using UXM, refer to the [documentation](./docs/usage.md).
 
 You can run the pipeline using docker profile:
 
@@ -103,6 +103,7 @@ input: ./resources/reference.csv
 output_dir: ./results
 test_samples: ./resources/test.csv
 meth_atlas: true
+DMRselection: DMRfinder
 ```
 
 All the parameters specified in the file can also be specified in the command line using the corresponding flags.
