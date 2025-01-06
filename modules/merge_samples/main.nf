@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process MERGE_SAMPLES {
-    container 'egiuili/merge_samples:v2'
+    container 'egiuili/merge_samples:v3'
 
     label 'process_medium'
 
