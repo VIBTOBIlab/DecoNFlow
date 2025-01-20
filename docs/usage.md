@@ -19,6 +19,10 @@
   - [PRMeth params](#prmeth-params)
   - [MeDeCom params](#medecom-params)
   - [CelFiE params](#celfie-params)
+  - [UXM params](#uxm-params)
+  - [MetDecode params](#metdecode-params)
+- [Bismark parameters](#bismark-parameters)
+- [Other parameters](#other-parameters)
 - [Resource requests](#resource-requests)
 - [Running in the background](#running-in-the-background)
 
@@ -492,7 +496,7 @@ If this parameter is specified, the pipeline skips the preprocessing step and im
 `merged_matrix.csv`
 
 ```plaintext:
-,chr,start,end,healthy3-V,nbl2-V,nbl3-V,healthy1-V,healthy2-V,nbl1-V
+,chr,start,end,healthy_3-V,nbl_2-V,nbl_3-V,healthy_1-V,healthy_2-V,nbl_1-V
 0,1,10497,10588,0.902439,0.968421,0.946197,0.938053,0.820513,0.972149
 1,1,136876,136924,0.959184,0.972678,0.989583,0.884181,0.934272,0.926941
 2,1,661865,661927,1.0,1.0,0.972222,0.986111,0.927536,0.885965
