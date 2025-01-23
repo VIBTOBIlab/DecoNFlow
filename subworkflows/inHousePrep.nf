@@ -18,8 +18,8 @@ workflow inHousePrep {
         if (params.merged_matrix) {
                 fin_matrix = Channel.fromPath(params.merged_matrix)
                 LIMMA(fin_matrix)
-                atlas_tsv = LIMMA.out.reference_tsv
-                atlas_csv = LIMMA.out.reference_csv
+                atlas_tsv = LIMMA.out.reference_tsv.first()
+                atlas_csv = LIMMA.out.reference_csv.first()
         }
 
 
