@@ -5,6 +5,7 @@
 ### Bugs fixed
 
 - Modified limma container and module to avoid errors if --top > available number of DMRs
+- Added _--sort_by delta_means_ flag to FINDMARKERS module. With the _--only_hyper_ flag it was sorting the markers based on chromosome location and not on delta means (as explicitly specified in the software). Needs to open github issue in the wgbs_tools repo.
 
 ## [v2.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.0.0) - 2024-12-26
 
