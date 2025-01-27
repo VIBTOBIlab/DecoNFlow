@@ -31,11 +31,11 @@ process FINDMARKERS {
     --blocks_path $blocks \
     --groups_file $groups \
     --betas $betas \
-    --delta_means $delta \
     --pval $pval \
     --top ${params.top} \
     --min_cov ${params.min_counts} \
     --min_cpg ${params.min_cpgs} \
+    --sort_by delta_means \
     $args
     
     awk 'FNR==1 && NR!=1 { next; } { print }' Markers*.bed > MarkersAll.bed
