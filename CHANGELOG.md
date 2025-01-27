@@ -1,5 +1,11 @@
 # DecoNFlow Pipeline
 
+## [v2.1.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.1.0) -
+
+### Bugs fixed
+
+- Modified limma container and module to avoid errors if --top > available number of DMRs
+
 ## [v2.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.0.0) - 2024-12-26
 
 ### Bugs fixed
