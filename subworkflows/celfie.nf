@@ -18,14 +18,17 @@ workflow CELFIE {
     /*
      * Merge the samples in a unique matrix compatible with CelFiE
      */
-    MERGE_CELFIE_REF('ref_celfie', ref_celfie)    // reference samples
+    MERGE_CELFIE_REF('celfie_atlas',ref_celfie)    // reference samples
     MERGE_CELFIE_TEST('test_celfie',test_celfie)  // test samples
 
 
     /*
      * merge data to match celfie format
      */
-    MERGE_TABLES(MERGE_CELFIE_REF.out.celfie_fin_matrix, MERGE_CELFIE_TEST.out.fin_matrix)
+    MERGE_TABLES( 
+        MERGE_CELFIE_REF.out.celfie_fin_matrix, 
+        MERGE_CELFIE_TEST.out.fin_matrix
+    )
 
 
     /*
