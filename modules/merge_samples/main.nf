@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process MERGE_SAMPLES {
-    container 'egiuili/merge_samples:v2'
+    container 'egiuili/merge_samples:v3'
 
     label 'process_medium'
 
@@ -18,8 +18,8 @@ process MERGE_SAMPLES {
     if (step=='test') {
         args += '--how outer'
     }
-    if (step == 'ref_celfie') {
-        args += ' --celfie'
+    if (step == 'celfie_atlas') {
+        args += ' --celfie_atlas'
     }
     """
     python3 /source/build_matrix.py \

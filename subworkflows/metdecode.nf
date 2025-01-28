@@ -17,9 +17,9 @@ workflow METDECODE {
      * Merge the samples in a unique matrix compatible with MetDecode
      */
     MERGE_CELFIE_REF( // reference samples
-        'ref_celfie', 
+        'celfie_atlas', 
         ref_metdecode
-    )    
+    )
     MERGE_CELFIE_TEST( // test samples
         'test_celfie',
         test_metdecode
