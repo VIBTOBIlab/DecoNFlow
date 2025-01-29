@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process CONVERT_ATLAS {
-    container 'egiuili/convert_atlas:v1'
+    container 'egiuili/convert_atlas:v2'
 
     label 'process_low'    
     

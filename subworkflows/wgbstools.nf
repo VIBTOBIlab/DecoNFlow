@@ -55,7 +55,7 @@ workflow WGBSTOOLS {
                 }
                 counterMap[label]++
 
-                def newLabel = "${label}${counterMap[label]}"
+                def newLabel = "${label}_${counterMap[label]}"
 
                 def newEntry = [
                     entry[0],           // Original first column
@@ -160,7 +160,7 @@ workflow WGBSTOOLS {
                         .filt_sample
                         .collect( sort: true )
         MERGE_SAMPLES(
-            'ref_based', 
+            'atlas', 
             procSamples
         )
 
