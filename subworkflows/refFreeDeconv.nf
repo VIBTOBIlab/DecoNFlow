@@ -25,8 +25,8 @@ workflow refFreeDeconv {
         .map{sample,cov -> [cov]}
         .collect( sort: true )
     
-    // Merge the samples in a unique matrix
-    MERGE_SAMPLES('ref_free',refree_procTest)
+    // Merge the samples in a unique matrix with inner join
+    MERGE_SAMPLES('atlas',refree_procTest)
 
     // List to collect output channels
     refree_outputChannels = Channel.empty()

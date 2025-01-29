@@ -15,11 +15,16 @@ process MERGE_SAMPLES {
 
     script:
     def args = ''
-    if (step=='test') {
+    if (step=='test') { 
+        // if normal test samples, outer join
         args += '--how outer'
-    }
-    if (step == 'celfie_atlas') {
-        args += ' --celfie_atlas'
+    } else if (step=='test_celfie') {
+        // if test samples with Celfie structure outer_fillna with 0
+        args += '--how outer_fillna'
+    } else if (step == 'celfie_atlas') {
+        args += '--how inner --celfie_atlas'
+    } else if (step == 'atlas') { 
+        args += '--how inner'
     }
     """
     python3 /source/build_matrix.py \

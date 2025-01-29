@@ -50,7 +50,7 @@ process PREPROCESSING {
     -i ${meta}.bed \\
     -g 1,2,3 \\
     -c 8 \\
-    -o count | awk -v OFS='\\t' '\$4 >= ${params.refree_min_cpgs} {print \$1, \$2, \$3, \$4}' > ${meta}_counts.bed \\
+    -o count | awk -v OFS='\\t' '\$4 >= ${params.min_cpgs} {print \$1, \$2, \$3, \$4}' > ${meta}_counts.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\

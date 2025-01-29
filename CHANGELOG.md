@@ -4,8 +4,14 @@
 
 ### Bugs fixed
 
-- Modified limma container and module to avoid errors if --top > available number of DMRs
-- Added _--sort_by delta_means_ flag to FINDMARKERS module. With the _--only_hyper_ flag it was sorting the markers based on chromosome location and not on delta means (as explicitly specified in the software). Needs to open github issue in the wgbs_tools repo.
+- Modified limma container and module to avoid errors if `--top` > available number of DMRs
+- Added `--sort_by delta_means` flag to FINDMARKERS module. With the `--only_hyper` flag it was sorting the markers based on chromosome location and not on delta means (as explicitly specified in the software). Needs to open github issue in the wgbs_tools repo.
+- Updated **convert_atlas** container to properly process the new **entity** structure with the `_` introduced with the version 2.0.0.
+- Added the `_` to the entity in the _wgbstools_ subworkflow as well, since this would create problems.
+
+### Minor changes
+
+- Renamed the _step_ parameter for the MERGE_SAMPLES module to better fit with the new version of the container.
 
 ### Changes to MetDecode and CelFiE subworkflows
 

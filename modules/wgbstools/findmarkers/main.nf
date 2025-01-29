@@ -31,6 +31,7 @@ process FINDMARKERS {
     --blocks_path $blocks \
     --groups_file $groups \
     --betas $betas \
+    --delta_means $delta \
     --pval $pval \
     --top ${params.top} \
     --min_cov ${params.min_counts} \

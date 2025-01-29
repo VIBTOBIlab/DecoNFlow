@@ -39,7 +39,7 @@ workflow inHousePrep {
                                 .out
                                 .filt_sample
                                 .collect()                              
-                MERGE_SAMPLES('ref_based', procSamples)
+                MERGE_SAMPLES('atlas', procSamples)
 
                 // Pass the regions for the DMR analysis
                 LIMMA(MERGE_SAMPLES.out.fin_matrix)
