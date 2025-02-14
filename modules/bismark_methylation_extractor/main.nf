@@ -4,7 +4,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     label 'process_high'
 
-    container "egiuili/bismark:0.24.2--hdfd78af_0"
+    container "quay.io/biocontainers/bismark:0.24.0--hdfd78af_0"
 
     input:
     tuple val(meta), val(entity), path(bam), path(bai)
@@ -24,7 +24,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     }
     def seqtype  = params.single_end ? '-s' : '-p'
     """
-    samtools sort -n $bam > "${meta}_sorted.bam"
+    samtools sort -@ $task.cpus -n $bam > "${meta}_sorted.bam"
     bismark_methylation_extractor \\
         ${meta}_sorted.bam \\
         --bedGraph \\

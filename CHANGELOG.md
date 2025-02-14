@@ -12,6 +12,8 @@
 ### Minor changes
 
 - Renamed the _step_ parameter for the MERGE_SAMPLES module to better fit with the new version of the container.
+- Removed unnecessary containers and created the bin directory with the script
+- Remove the tidyverse library from test_DMR.R script and added tibble and dyplr to reduce the size of the container.
 
 ### Changes to MetDecode and CelFiE subworkflows
 
