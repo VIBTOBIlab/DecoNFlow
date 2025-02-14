@@ -2,7 +2,7 @@
 
 process DMRFINDER_COMBINE {
 
-    container 'sofvdvel/dmrfinder_python:v1'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_medium'
 
@@ -18,7 +18,7 @@ process DMRFINDER_COMBINE {
         args += "-b"
     }
     """
-    python /source/combine_CpG_sites.py \
+    combine_CpG_sites.py \
     -i $cov \
     -o combine_CpG_sites_output.csv \
     $args

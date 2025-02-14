@@ -4,7 +4,7 @@
 def args = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
 
 process COMBINE_FILES {
-    container 'egiuili/combine_files:v1'
+    container 'egiuili/python3-3.9.16:v1'
 
     containerOptions "$args ${projectDir}:${projectDir}"
 
@@ -18,7 +18,7 @@ process COMBINE_FILES {
     
     script:
     """
-    python3 /source/combine_files.py \
+    combine_files.py \
     "${files}" \
     -o combined_results
     """

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process MERGE_SAMPLES {
-    container 'egiuili/merge_samples:v3'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_medium'
 
@@ -27,7 +27,7 @@ process MERGE_SAMPLES {
         args += '--how inner'
     }
     """
-    python3 /source/build_matrix.py \
+    build_matrix.py \
     --file_paths "${files}" \
     --outfile "${step}_matrix.csv" \
     $args

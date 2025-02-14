@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process PROCESS_REF_MATRIX {
-    container 'egiuili/process_ref_matrix:v1'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_low'
 
@@ -13,7 +13,7 @@ process PROCESS_REF_MATRIX {
 
     script:
     """
-    python3 /source/check_file.py $reference_tsv
+    check_file.py $reference_tsv
     """
 
 }

@@ -1,7 +1,5 @@
-#!/usr/bin/env nextflow
-
 process MERGE_TABLES {
-    container 'egiuili/celfie:v3.0'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_low'
 
@@ -14,9 +12,6 @@ process MERGE_TABLES {
 
     script:
     """
-    python3 /source/merge_tables.py \
-    -i ${ref_matrix} \
-    -t ${test_matrix} \
+    merge_tables.py -i ${ref_matrix} -t ${test_matrix}
     """
-
 }

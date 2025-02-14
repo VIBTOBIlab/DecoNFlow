@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process CONVERT_ATLAS {
-    container 'egiuili/convert_atlas:v2'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_low'    
     
@@ -14,7 +14,7 @@ process CONVERT_ATLAS {
 
     script:
     """
-    python3 /source/convert_atlas.py \
+    convert_atlas.py \
     -m $fin_matrix \
     -c ${params.collapse_method} \
     """

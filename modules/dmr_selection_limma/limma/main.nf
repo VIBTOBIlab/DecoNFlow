@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process LIMMA {
-    container 'egiuili/dmr_analysis:v4.0'
+    container 'egiuili/r-v4.4.1:v1'
 
     label 'process_low'
 
@@ -22,7 +22,7 @@ process LIMMA {
     }
     }
     """
-    Rscript /source/test_DMR.R \
+    test_DMR.R \
     -i ${clusters} \
     -p ${params.adjp} \
     -j ${params.adj_method} \
