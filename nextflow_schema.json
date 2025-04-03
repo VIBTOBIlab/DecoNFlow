@@ -470,17 +470,9 @@
             "description": "",
             "default": "",
             "properties": {
-                "bismark_multicore": {
-                    "type": "boolean",
-                    "description": "If true, activate multicore option"
-                },
                 "single_end": {
                     "type": "boolean",
                     "description": "If true, bismark will run under 'single_end' option"
-                },
-                "bismark_buffer_size": {
-                    "type": "boolean",
-                    "description": "If true, bismark will run with buffer_size option"
                 }
             }
         },
