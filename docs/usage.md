@@ -291,12 +291,12 @@ File (.csv) linking each file to a group (or entity) to perform DMR selection us
 
 ```plaintext:
 name,group
-DNA097385,healthy
-DNA097389,healthy
-DNA097393,healthy
-DNA041087,nbl
-DNA044133,nbl
-DNA044134,nbl
+DNA097385_S10,healthy
+DNA097389_S14,healthy
+DNA097393_S18,healthy
+DNA041087_S27,nbl
+DNA044133_S31,nbl
+DNA044134_S32,nbl
 ```
 
 An [example group file](../assets/groups.csv) has been provided with the pipeline.
