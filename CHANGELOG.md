@@ -14,6 +14,8 @@
 - Renamed the _step_ parameter for the MERGE_SAMPLES module to better fit with the new version of the container.
 - Removed unnecessary containers and created the bin directory with the script
 - Remove the tidyverse library from test_DMR.R script and added tibble and dyplr to reduce the size of the container.
+- Added _include_na_ parameter to allow missing values when merging the reference samples before performing limma DMR selection.
+- Moved the _top_ parameter in the **find_markers** module outside the script, so that it gets specified in the function only when it's different to null/false.
 
 ### Changes to MetDecode and CelFiE subworkflows
 

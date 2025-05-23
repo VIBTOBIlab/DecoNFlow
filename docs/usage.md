@@ -182,6 +182,10 @@ Adjusted p-value threshold for the DMR selection. Default 0.001.
 
 Multiple testing correction method. Default is 'BH'. Look at limma documentation for other methods.
 
+### `--include_na`
+
+Activate this parameter to allow missing values when merging the reference samples before performing limma DMR selection (def. false).
+
 ### `--collapse_method`
 
 Method adopted to collapse the samples values for each region. Default is 'mean', alternative is 'median'.
