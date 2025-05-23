@@ -25,6 +25,9 @@ process FINDMARKERS {
         pval = 1
         delta = 0
     }
+    if (params.top) {
+        args += " --top ${params.top}"
+    }
     
     """
     wgbstools find_markers \
@@ -33,7 +36,6 @@ process FINDMARKERS {
     --betas $betas \
     --delta_means $delta \
     --pval $pval \
-    --top ${params.top} \
     --min_cov ${params.min_counts} \
     --min_cpg ${params.min_cpgs} \
     --sort_by delta_means \
