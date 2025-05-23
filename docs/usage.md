@@ -182,17 +182,13 @@ Adjusted p-value threshold for the DMR selection. Default 0.001.
 
 Multiple testing correction method. Default is 'BH'. Look at limma documentation for other methods.
 
-### `--include_na`
-
-Activate this parameter to allow missing values when merging the reference samples before performing limma DMR selection (def. false).
-
 ### `--collapse_method`
 
 Method adopted to collapse the samples values for each region. Default is 'mean', alternative is 'median'.
 
 ### `--direction`
 
-Direction of methylation: can be either "hypo","hyper","both" or "random" (def. null, takes all the regions).
+Direction of methylation: can be either "hypo","hyper","both" or "random" (def. both).
 
 ### `--top`
 
@@ -247,6 +243,10 @@ Minimum number of counts to keep a CpG position. Default 10.
 #### `--min_cpgs`
 
 Minimum number of CpGs per region. Default 3.
+
+### `--include_na`
+
+Activate this parameter to allow missing values when merging the reference samples before performing limma DMR selection (def. false).
 
 #### `--big_covs`
 
