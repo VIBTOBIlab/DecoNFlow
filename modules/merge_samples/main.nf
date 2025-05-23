@@ -23,8 +23,10 @@ process MERGE_SAMPLES {
         args += '--how outer_fillna'
     } else if (step == 'celfie_atlas') {
         args += '--how inner --celfie_atlas'
-    } else if (step == 'atlas') { 
-        args += '--how inner'
+    } else if (step == 'atlas') {
+        if (params.include_na) {
+            args += '--how outer'
+        } else { args += '--how inner' }
     }
     """
     build_matrix.py \

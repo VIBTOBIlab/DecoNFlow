@@ -153,6 +153,11 @@
                     "default": "BH",
                     "description": "Multiple testing correction method among the ones available in limma R package"
                 },
+                "include_na": {
+                    "type": "boolean",
+                    "default": "false",
+                    "description": "When merging samples for limma DMR analysis, include the regions even if some samples have missing values"
+                },
                 "collapse_method": {
                     "type": "string",
                     "default": "mean",
