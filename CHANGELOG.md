@@ -8,13 +8,14 @@
 - Added `--sort_by delta_means` flag to FINDMARKERS module. With the `--only_hyper` flag it was sorting the markers based on chromosome location and not on delta means (as explicitly specified in the software). Needs to open github issue in the wgbs_tools repo.
 - Updated **convert_atlas** container to properly process the new **entity** structure with the `_` introduced with the version 2.0.0.
 - Added the `_` to the entity in the _wgbstools_ subworkflow as well, since this would create problems.
+- Added params.ref_matrix to the if gate in the UXM subworkflow to make the workflow enter this gate even when no DMRselection method is specified since the ref_matrix has been specified.
 
 ### Minor changes
 
 - Renamed the _step_ parameter for the MERGE_SAMPLES module to better fit with the new version of the container.
-- Removed unnecessary containers and created the bin directory with the script
+- Removed unnecessary containers and created the bin directory with the scripts.
 - Remove the tidyverse library from test_DMR.R script and added tibble and dyplr to reduce the size of the container.
-- Added _include_na_ parameter to allow missing values when merging the reference samples before performing limma DMR selection.
+- Added _include_na_ parameter to allow missing values when merging the reference samples before performing limma DMR selection. In this way, regions with missing values for some samples will be retained, avoiding filtering out too many regions when the number of samples and/or entities increases.
 - Moved the _top_ parameter in the **find_markers** module outside the script, so that it gets specified in the function only when it's different to null/false.
 
 ### Changes to MetDecode and CelFiE subworkflows

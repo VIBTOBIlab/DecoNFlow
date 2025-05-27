@@ -25,7 +25,7 @@ workflow UXM {
      * If a DMR selection different than wgbstools has been specified
      * convert the atlas into a wgbstools-like atlas
      */
-    if (params.DMRselection!="wgbstools" & params.DMRselection!=null) {
+    if ((params.DMRselection!="wgbstools" & params.DMRselection!=null) || params.ref_matrix) {
         if (!params.ref_bams) {
             Nextflow.error "\n----> ERROR: With UXM deconvolution tool you must specify the --ref_bams flag. <---- \n"
         }
@@ -78,7 +78,7 @@ workflow UXM {
          */
         BAM2PAT_REF(
             ref_bam, 
-            atlas_ready
+            INIT_GENOME.out.ref
         )
 
         // Select only chr, start and end columns
