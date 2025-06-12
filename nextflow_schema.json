@@ -23,16 +23,6 @@
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
                 },
-                "test_set": {
-                    "type": "string",
-                    "description": "Path to comma-separated file containing information about the samples to deconvolve.."
-                },
-                "outdir": {
-                    "type": "string",
-                    "format": "directory-path",
-                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
-                    "fa_icon": "fas fa-folder-open"
-                },
                 "ref_matrix": {
                     "type": "string",
                     "pattern": "^\\S+\\.(bed|tsv|txt)$",
@@ -44,32 +34,73 @@
                     "pattern": "^\\S+\\.(csv)$",
                     "format": "file-path",
                     "description": "The path of a matrix containing regions and samples where to perform DMR selection."
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "ref_bams": {
+                    "type": "string",
+                    "format": "file-path",
+                    "schema": "assets/schema_refbams.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the reference bam samples.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "fasta": {
+                    "type": "string",
+                    "description": "Path to the genome fasta file used to align samples."
+                },
+                "groups_file": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "File (.csv) of the groups.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "uxm_atlas": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to the uxm-like atlas."
+                },
+                "test_set": {
+                    "type": "string",
+                    "description": "Path to comma-separated file containing information about the samples to deconvolve.."
+                },
+                "test_bams": {
+                    "type": "string",
+                    "format": "file-path",
+                    "schema": "assets/schema_testbams.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the bam samples to deconvolve.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
                 }
             }
         },
-        "generic_options": {
-            "title": "Generic options",
+        "intermediate_files": {
+            "title": "Intermediate files options",
             "type": "object",
             "fa_icon": "fas fa-file-import",
             "description": "Less common options for the pipeline, typically set in a config file.",
             "help_text": "These options are common to all nf-core pipelines and allow you to customise some of the core preferences for how the pipeline runs.\n\nTypically these options would be set in a Nextflow config file loaded for all pipeline runs, such as `~/.nextflow/config`.",
             "properties": {
-                "help": {
+                "save_intermeds": {
                     "type": "boolean",
                     "description": "Display help text.",
                     "fa_icon": "fas fa-question-circle",
-                    "hidden": true
-                },
-                "version": {
-                    "type": "boolean",
-                    "description": "Display version and exit.",
-                    "fa_icon": "fas fa-question-circle",
-                    "hidden": true
+                    "default": false
                 }
             }
         },
         "deconvolution_options": {
-            "title": "Deconvolution options",
+            "title": "Deconvolution tools",
             "type": "object",
             "description": "",
             "default": "",
@@ -77,10 +108,6 @@
                 "benchmark": {
                     "type": "boolean",
                     "description": "If True, it runs all the tools present in the pipeline"
-                },
-                "save_intermeds": {
-                    "type": "boolean",
-                    "description": "Save intermediate files, including single deconvolution tool output files"
                 },
                 "epidish": {
                     "type": "boolean",
@@ -128,8 +155,54 @@
                 }
             }
         },
+        "ref_samples_preprocessing_options": {
+            "title": "Options for the preprocessing of the reference samples",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "min_counts": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Minimum number of counts to keep a CpG position"
+                },
+                "min_cpgs": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Minimum number of CpGs per region"
+                },
+                "big_covs": {
+                    "type": "boolean",
+                    "description": "If specified, it makes the preprocessing running with a memory-efficient algorithm. Suggested to activate it when using whole-genome coverage files.",
+                    "help_text": "Default is false."
+                },
+                "genome_order": {
+                    "type": "string",
+                    "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
+                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]"
+                }
+            }
+        },
+        "bulk_samples_preprocessing_options": {
+            "title": "Options for the preprocessing for bulk samples.",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "bulk_min_cpgs": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Minimum number of counts to keep a CpG position for the bulk samples."
+                },
+                "bulk_min_counts": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Minimum number of CpGs per region for the bulk samples."
+                }
+            }
+        },
         "dmr_analysis_options": {
-            "title": "DMR analysis options",
+            "title": "DMR analysis general options",
             "type": "object",
             "description": "",
             "default": "",
@@ -139,24 +212,10 @@
                     "default": "limma",
                     "description": "DMR selection approach adopted"
                 },
-                "regions": {
-                    "type": "string",
-                    "description": "Path to region file if DMRselection == \"custom\""
-                },
                 "adjp": {
                     "type": "number",
                     "default": 0.001,
                     "description": "Adjusted p-value threshold"
-                },
-                "adj_method": {
-                    "type": "string",
-                    "default": "BH",
-                    "description": "Multiple testing correction method among the ones available in limma R package"
-                },
-                "include_na": {
-                    "type": "boolean",
-                    "default": "false",
-                    "description": "When merging samples for limma DMR analysis, include the regions even if some samples have missing values"
                 },
                 "collapse_method": {
                     "type": "string",
@@ -173,20 +232,32 @@
                     "description": "Take the top x number of DMRs per cell state.",
                     "help_text": "Default is \"None\". It can be used only if \"direction\" flag is specified."
                 },
-                "big_covs": {
-                    "type": "boolean",
-                    "description": "If specified, it makes the preprocessing running with a memory-efficient algorithm. Suggested to activate it when using whole-genome coverage files.",
-                    "help_text": "Default is false."
-                },
-                "genome_order": {
-                    "type": "string",
-                    "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
-                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]"
-                },
                 "delta": {
                     "type": "number",
                     "default": 0.1,
                     "description": "Threshold for calling DMRs"
+                }
+            }
+        },
+        "limma_options": {
+            "title": "Limma options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "regions": {
+                    "type": "string",
+                    "description": "Path to region file if DMRselection == \"custom\""
+                },
+                "adj_method": {
+                    "type": "string",
+                    "default": "BH",
+                    "description": "Multiple testing correction method among the ones available in limma R package"
+                },
+                "include_na": {
+                    "type": "boolean",
+                    "default": "false",
+                    "description": "When merging samples for limma DMR analysis, include the regions even if some samples have missing values"
                 }
             }
         },
@@ -214,28 +285,6 @@
             "description": "",
             "default": "",
             "properties": {
-                "ref_bams": {
-                    "type": "string",
-                    "format": "file-path",
-                    "schema": "assets/schema_refbams.json",
-                    "mimetype": "csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the reference bam samples.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row.",
-                    "fa_icon": "fas fa-file-csv"
-                },
-                "groups_file": {
-                    "type": "string",
-                    "format": "file-path",
-                    "mimetype": "csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "File (.csv) of the groups.",
-                    "fa_icon": "fas fa-file-csv"
-                },
-                "fasta": {
-                    "type": "string",
-                    "description": "Path to the genome fasta file used to align samples."
-                },
                 "genome": {
                     "type": "string",
                     "default": "hg19",
@@ -265,40 +314,12 @@
                 }
             }
         },
-        "options_for_the_preprocessing_of_the_reference_samples": {
-            "title": "Options for the preprocessing of the reference samples",
+        "ref_free_deconvolution_options": {
+            "title": "Reference-free deconvolution options.",
             "type": "object",
             "description": "",
             "default": "",
             "properties": {
-                "min_counts": {
-                    "type": "integer",
-                    "default": 10,
-                    "description": "Minimum number of counts to keep a CpG position"
-                },
-                "min_cpgs": {
-                    "type": "integer",
-                    "default": 3,
-                    "description": "Minimum number of CpGs per region"
-                }
-            }
-        },
-        "options_for_the_preprocessing_for_reference_free_tools": {
-            "title": "Options for the preprocessing for reference-free tools",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "refree_min_cpgs": {
-                    "type": "integer",
-                    "default": 3,
-                    "description": "Minimum number of counts to keep a CpG position"
-                },
-                "refree_min_counts": {
-                    "type": "integer",
-                    "default": 10,
-                    "description": "Minimum number of CpGs per region"
-                },
                 "clusters": {
                     "type": "integer",
                     "default": 2,
@@ -418,29 +439,6 @@
                     "type": "integer",
                     "default": 10,
                     "description": "CelFiE will perform several random restarts and select the one with the highest log-likelihood"
-                }
-            }
-        },
-        "uxm_parameters": {
-            "title": "UXM parameters",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "test_bams": {
-                    "type": "string",
-                    "format": "file-path",
-                    "schema": "assets/schema_testbams.json",
-                    "mimetype": "csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the bam samples to deconvolve.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
-                    "fa_icon": "fas fa-file-csv"
-                },
-                "uxm_atlas": {
-                    "type": "string",
-                    "format": "file-path",
-                    "description": "Path to the uxm-like atlas."
                 }
             }
         },
@@ -594,19 +592,31 @@
             "$ref": "#/defs/input_output_options"
         },
         {
-            "$ref": "#/defs/generic_options"
+            "$ref": "#/defs/intermediate_files"
         },
         {
             "$ref": "#/defs/deconvolution_options"
         },
         {
+            "$ref": "#/defs/ref_samples_preprocessing_options"
+        },
+        {
+            "$ref": "#/defs/bulk_samples_preprocessing_options"
+        },
+        {
             "$ref": "#/defs/dmr_analysis_options"
         },
         {
-            "$ref": "#/defs/options_for_the_preprocessing_of_the_reference_samples"
+            "$ref": "#/defs/limma_options"
         },
         {
-            "$ref": "#/defs/options_for_the_preprocessing_for_reference_free_tools"
+            "$ref": "#/defs/dmrfinder_options"
+        },
+        {
+            "$ref": "#/defs/wgbs_tools_options"
+        },
+        {
+            "$ref": "#/defs/ref_free_deconvolution_options"
         },
         {
             "$ref": "#/defs/medecom_parameters"
@@ -625,6 +635,18 @@
         },
         {
             "$ref": "#/defs/celfie_parameters"
+        },
+        {
+            "$ref": "#/defs/metdecode_parameters"
+        },
+        {
+            "$ref": "#/defs/bismark_parameters"
+        },
+        {
+            "$ref": "#/defs/institutional_config_options"
+        },
+        {
+            "$ref": "#/defs/max_job_request_options"
         }
     ]
 }
