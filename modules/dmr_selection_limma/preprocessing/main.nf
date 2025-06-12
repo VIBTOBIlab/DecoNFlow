@@ -39,7 +39,7 @@ process PREPROCESSING {
     awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9])\$/ {print}' | \\
     gzip > ${meta}_filtered.cov.gz
      
-    cut -f1-3 ${regions} | sort -k1,1 -k2,2n > regions.bed
+    cut -f1-3 ${regions} | sort -T /tmp/ -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
     -a regions.bed \\
