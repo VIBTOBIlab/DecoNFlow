@@ -13,13 +13,21 @@ process CELFIE_PREPROCESSING {
     path "*sample_celfie_mix.csv", emit: filt_celfie_sample
     
     script:
+    def args = ""
+    if (params.big_covs) {
+        args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
+    }
     """
-    cat ${regions} | tail -n +2 | awk '{print \$1 "\t" \$2 "\t" \$3}' > reference.tsv
+    cat ${regions} | tail -n +2 | awk '{print \$1 "\t" \$2 "\t" \$3}' | sort -T /tmp/ -k1,1 -k2,2n > reference.tsv
+
+    zcat $cov | \\
+    awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9]|X|Y|MT|M)\$/ {print}' | \\
+    gzip > ${meta}_filtered.cov.gz
 
     bedtools intersect \\
     -a reference.tsv \\
-    -b $cov \\
-    -wa -wb > ${entity}.bed \\
+    -b ${meta}_filtered.cov.gz \\
+    -wa -wb $args > ${entity}.bed \\
 
     bedtools groupby \\
     -i ${entity}.bed \\
