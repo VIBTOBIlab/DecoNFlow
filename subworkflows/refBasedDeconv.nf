@@ -22,27 +22,27 @@ workflow refBasedDeconv {
     // Run deconvolution tool(s)
     if (params.meth_atlas || params.benchmark) {
         METH_ATLAS(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'meth_atlas' ).combine( METH_ATLAS.out.output) )
+        outputChannels = outputChannels.mix( METH_ATLAS.out.output.map { file -> tuple('meth_atlas', file) } )
     }
     if (params.cibersort || params.benchmark) {
         CIBERSORT(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'CIBERSORT' ).combine( CIBERSORT.out.output ) )
+        outputChannels = outputChannels.mix( CIBERSORT.out.output.map { file -> tuple('CIBERSORT', file) } )
     }
     if (params.epidish || params.benchmark) {
         EPIDISH(reference, test)
-        outputChannels = outputChannels.concat(Channel.of( "EpiDISH_${params.mod}" ).combine( EPIDISH.out.output) )
-    }
+        outputChannels = outputChannels.mix( EPIDISH.out.output.map { file -> tuple("EpiDISH_${params.mod}", file) } )
+    }   
     if (params.methyl_resolver || params.benchmark) {
         METHYL_RESOLVER(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'Methyl_Resolver' ).combine( METHYL_RESOLVER.out.output ) )
+        outputChannels = outputChannels.mix( METHYL_RESOLVER.out.output.map { file -> tuple('Methyl_Resolver', file) } )
     }
     if (params.episcore || params.benchmark) {
         EPISCORE(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'EpiSCORE' ).combine( EPISCORE.out.output ) )
+        outputChannels = outputChannels.mix( EPISCORE.out.output.map { file -> tuple('EpiSCORE', file) } )
     }
     if (params.prmeth || params.benchmark) {
         PRMETH(reference, test)
-        outputChannels = outputChannels.concat( Channel.of( 'PRMeth' ).combine( PRMETH.out.output ) )
+        outputChannels = outputChannels.mix( PRMETH.out.output.map { file -> tuple('PRMeth', file) } )
     }   
     
     emit:

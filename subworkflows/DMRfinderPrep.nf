@@ -12,17 +12,17 @@ workflow DMRfinderPrep {
         main:
         // Create the correct sample names format for DMRfinder
         samples_new = samples
-            .map { sample_id, condition, file_path ->
+            .map { sample_id, condition, _filepath ->
                     [condition, sample_id]}
-            .groupTuple()
+            .groupTuple().view()
 
         condition = samples_new
-            .map{ condition,sample_id -> condition }
+            .map{ condition, _sample_id -> condition }
             .collect()
-            .map { it.join(',')}
+            .map { it.join(',')}.view()
  
         sampleid = samples_new
-            .map{ condition,sample_id -> sample_id.collect{ it + "_dmrfinder_format" }.join(',') }
+            .map{ _condition,sample_id -> sample_id.collect{ it + "_dmrfinder_format" }.join(',') }
             .collect()
             .map { it.join(' ')}
 

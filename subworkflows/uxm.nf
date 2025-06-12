@@ -1,7 +1,6 @@
 /*
  * UXM subworkflow
  */
-import nextflow.Nextflow
 include { samplesheetToList                                       } from 'plugin/nf-schema'
 include { BAM2PAT as BAM2PAT_TEST; BAM2PAT as BAM2PAT_REF         } from '../modules/wgbstools/bam2pat/main'
 include { UXM_DECONV                                              } from '../modules/uxm/uxm_deconv/main'
@@ -19,7 +18,7 @@ workflow UXM {
     main:
     
     fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
-    atlas_ready = atlas.map { it -> true }
+    atlas_ready = atlas.map { _it -> true }
 
     /*
      * If a DMR selection different than wgbstools has been specified
@@ -27,10 +26,10 @@ workflow UXM {
      */
     if ((params.DMRselection!="wgbstools" & params.DMRselection!=null) || params.ref_matrix) {
         if (!params.ref_bams) {
-            Nextflow.error "\n----> ERROR: With UXM deconvolution tool you must specify the --ref_bams flag. <---- \n"
+            nextflow.Nextflow.error "\n----> ERROR: With UXM deconvolution tool you must specify the --ref_bams flag. <---- \n"
         }
         if (!params.groups_file) {
-            Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using UXM deconvolution. <---- \n"
+            nextflow.Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using UXM deconvolution. <---- \n"
         }
 
         group_ch = Channel.fromPath(params.groups_file)
@@ -52,8 +51,8 @@ workflow UXM {
                 if (!counterMap.containsKey(label)) {
                     counterMap[label] = 0
                 }
-                counterMap[label]++
-
+                counterMap[label] = counterMap[label] + 1
+                
                 def newLabel = "${label}${counterMap[label]}"
 
                 def newEntry = [
@@ -106,7 +105,7 @@ workflow UXM {
             BAM2PAT_REF.out.pat_index.collect( sort: true )
         )
         atlas = BUILD.out.atlas
-        atlas_ready = atlas.map { it -> true }
+        atlas_ready = atlas.map { _it -> true }
 
     }
 
@@ -129,8 +128,7 @@ workflow UXM {
      * Run deconvolution
      */
     UXM_DECONV(pats, pat_indeces, atlas)
-    
 
     emit:
-    uxm_proportions             = Channel.of( 'UXM' ).combine( UXM_DECONV.out.res )
+    uxm_proportions             = UXM_DECONV.out.res.map { file -> tuple('UXM', file) }
 }
