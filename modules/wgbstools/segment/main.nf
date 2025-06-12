@@ -1,14 +1,11 @@
 #!/usr/bin/env nextflow
 
-// Define mounting option
-def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
-
 process SEGMENT {
     container 'egiuili/uxm:v1'
 
     label 'process_high'
 
-    containerOptions "$cmd ${workflow.workDir}:/opt/wgbstools/references"
+    containerOptions "${workflow.containerEngine == 'docker' ? '--volume' : '--bind'} ${workflow.workDir}:/opt/wgbstools/references"
 
     input:
     path betas
