@@ -1,14 +1,11 @@
 #!/usr/bin/env nextflow
 
-// Define mounting option
-def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
-
 process BUILD {
     container 'egiuili/uxm:v1'
 
     label 'process_high'
 
-    containerOptions "$cmd /tmp:/opt/UXM_deconv/tmp_dir"
+    containerOptions "${workflow.containerEngine == 'docker' ? '--volume' : '--bind'} ${workflow.workDir}:/opt/wgbstools/references"
 
     input:
     path markers
