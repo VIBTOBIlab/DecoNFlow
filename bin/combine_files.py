@@ -27,7 +27,8 @@ def usage():
 def parse_arguments():
     # Specify the flags and print them
     parser = argparse.ArgumentParser()
-    parser.add_argument('file_paths', nargs='*', help='A list of file paths to process')
+    parser.add_argument('--results', nargs='*', help='A list of results files to process')
+    parser.add_argument('--tool_names', nargs='*', help='A list of tools names corresponding to the results to process')
     parser.add_argument('-o','--outfile', type = str, help='Output file')
     parser.add_argument(
         "-v", "--version", help="Version of the tool", action="store_true"
@@ -42,17 +43,21 @@ def parse_arguments():
     return args
 
 
-def merge_files(paths):
+def merge_files(paths,tools):
     df = pd.DataFrame()
-    for path in paths:
-        tool = path.split(":")[0]
-        filePath = path.split(":")[1]
-        if filePath.endswith(".txt"):
-            deconvFile = pd.read_csv(filePath,sep="\t")
-        else: deconvFile = pd.read_csv(filePath,sep=",")
+    for i in range(len(paths)):
+
+        tool = tools[i]
+        path = paths[i]
+
+        if path.endswith(".txt"):
+            deconvFile = pd.read_csv(path,sep="\t")
+        else: deconvFile = pd.read_csv(path,sep=",")
+
         deconvFile.columns.values[0] = "sample"
         deconvFile[['tool']] = tool
         df = pd.concat([df,deconvFile], axis = 0)
+
     return df.reset_index(drop = True)
 
 
@@ -60,8 +65,9 @@ def main():
     # Get the arguments and print them in the output file
     args = parse_arguments()
     # Read from standard input
-    file_paths = args.file_paths[0].strip()[1:-1].split(',')
-    res_df = merge_files(file_paths)
+    file_paths = args.results
+    tool_names = args.tool_names
+    res_df = merge_files(file_paths,tool_names)
     res_df.to_csv(args.outfile+".csv", index = False)
 
 
