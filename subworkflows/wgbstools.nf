@@ -1,7 +1,6 @@
 /*
  * wgbstools subworkflow
  */
-import nextflow.Nextflow
 include { INIT_GENOME                               } from '../modules/wgbstools/init_genome/main'
 include { BAM2PAT                                   } from '../modules/wgbstools/bam2pat/main'
 include { SEGMENT                                   } from '../modules/wgbstools/segment/main'
@@ -22,15 +21,17 @@ workflow WGBSTOOLS {
     main:
 
     if (!params.ref_bams & !params.uxm_atlas) {
-        Nextflow.error "\n----> ERROR: With wgbstools you must specify the --ref_bams flag or the --uxm_atlas. <---- \n"
+        nextflow.Nextflow.error "\n----> ERROR: With wgbstools you must specify the --ref_bams flag or the --uxm_atlas. <---- \n"
     }
     if (!params.groups_file & !params.uxm_atlas) {
-        Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using wgbstools. <---- \n"
+        nextflow.Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using wgbstools. <---- \n"
     }
-
+    
     /*
      * Initialize the channels
      */
+    // Enforce dependency on atlas_tsv, but do not use its value
+    atlas_tsv.map{ null }
     fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
     reference_csv = Channel.empty()
     reference_tsv = Channel.empty()
@@ -53,7 +54,7 @@ workflow WGBSTOOLS {
                 if (!counterMap.containsKey(label)) {
                     counterMap[label] = 0
                 }
-                counterMap[label]++
+                counterMap[label] = counterMap[label] + 1
 
                 def newLabel = "${label}_${counterMap[label]}"
 
@@ -140,18 +141,53 @@ workflow WGBSTOOLS {
     if (params.meth_atlas || params.metdecode || params.celfie || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
 
         if (!params.ref_bams) {
-            Nextflow.error "\n----> ERROR: If you want to use a UXM-like atlas in combination with another more classical deconvolution tool you must specifiy the --ref_bams flag <---- \n"
+            nextflow.Nextflow.error "\n----> ERROR: If you want to use a UXM-like atlas in combination with another more classical deconvolution tool you must specifiy the --ref_bams flag <---- \n"
+        }
+        if (params.input) {
+
+            Channel.fromList(
+                samplesheetToList(params.input, "assets/schema_input.json"))
+                .map {
+                    meta, entity, cov ->
+                    def meta_entity = meta + [entity:entity]
+                    tuple(meta_entity.id, meta_entity.entity, cov) }
+                .set{ samples_ch_original }
+    
+            // Add index to the second (entity) column
+            def counterMap = [:]
+            samples_ch = samples_ch_original
+                .map { entry ->
+    
+                    def label = entry[1]
+    
+                    if (!counterMap.containsKey(label)) {
+                        counterMap[label] = 0
+                    }
+                    counterMap[label] = counterMap[label] + 1
+    
+                    def newLabel = "${label}_${counterMap[label]}"
+    
+                    def newEntry = [
+                        entry[0],           // Original first column
+                        newLabel,           // Modified second column with index
+                        entry[2]            // Original third column
+                    ]
+    
+                    return newEntry
+                }
+        }
+        else { 
+            BISMARK_METHYLATIONEXTRACTOR ( // Generate cov files from bam files
+                ref_bams
+            )
+            samples_ch = BISMARK_METHYLATIONEXTRACTOR.out.coverage
         }
         
         SELECT_REGIONS(wgbstools_atlas)
         regions = SELECT_REGIONS.out.regions
 
-        BISMARK_METHYLATIONEXTRACTOR ( // Generate cov files from bam files
-            ref_bams
-        )
-    
         PREPROCESSING( // Pass the input data and region file to the preprocessing module
-            BISMARK_METHYLATIONEXTRACTOR.out.coverage,
+            samples_ch,
             regions.first()
         )
 
