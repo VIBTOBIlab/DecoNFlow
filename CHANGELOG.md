@@ -2,25 +2,63 @@
 
 ## [v2.1.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.1.0) -
 
-### Bugs fixed
+### 🐛 Bug Fixes
 
-- Modified limma container and module to avoid errors if `--top` > available number of DMRs
-- Added `--sort_by delta_means` flag to FINDMARKERS module. With the `--only_hyper` flag it was sorting the markers based on chromosome location and not on delta means (as explicitly specified in the software). Needs to open github issue in the wgbs_tools repo.
-- Updated **convert_atlas** container to properly process the new **entity** structure with the `_` introduced with the version 2.0.0.
-- Added the `_` to the entity in the _wgbstools_ subworkflow as well, since this would create problems.
-- Added params.ref_matrix to the if gate in the UXM subworkflow to make the workflow enter this gate even when no DMRselection method is specified since the ref_matrix has been specified.
+- **Limma module**:
+  Modified container and module to prevent errors when `--top` exceeds the available number of DMRs.
 
-### Minor changes
+- **FINDMARKERS module**:
+  Added the `--sort_by delta_means` flag. Previously, when using `--only_hyper`, markers were incorrectly sorted by chromosome location instead of delta means as intended.
+  \_Note: a GitHub issue should be opened in the `wgbs_tools` repository regarding this behavior.
 
-- Renamed the _step_ parameter for the MERGE_SAMPLES module to better fit with the new version of the container.
-- Removed unnecessary containers and created the bin directory with the scripts.
-- Remove the tidyverse library from test_DMR.R script and added tibble and dyplr to reduce the size of the container.
-- Added _include_na_ parameter to allow missing values when merging the reference samples before performing limma DMR selection. In this way, regions with missing values for some samples will be retained, avoiding filtering out too many regions when the number of samples and/or entities increases.
-- Moved the _top_ parameter in the **find_markers** module outside the script, so that it gets specified in the function only when it's different to null/false.
+- **convert_atlas container**:
+  Updated to properly handle the new **entity** structure (with `_`) introduced in version 2.0.0.
 
-### Changes to MetDecode and CelFiE subworkflows
+- **wgbstools subworkflow**:
+  Adjusted to include `_` in the entity structure to avoid processing errors.
 
-Before this change, only the atlas markers present in all the bulk samples were being kept and used for deconvolution. Now, if one bulk sample doesn't contain a marker, instead of NA value, 0 will be used for both methylation and depth fields.
+- **UXM subworkflow**:
+  Added `params.ref_matrix` to the conditional (`if`) gate, ensuring that the workflow proceeds when no DMR selection method is specified but a reference matrix is provided.
+
+- **Preprocessing modules**:
+  Added `sort -T /tmp/` to prevent `sort` from using unavailable directories.
+  See [related discussion](https://github.com/nf-core/chipseq/issues/123).
+
+- **CelFiE preprocessing**:
+  Included missing `params.big_covs` parameter.
+
+### 🚀 Minor Improvements
+
+- **MERGE_SAMPLES module**:
+  Renamed the `step` parameter for clarity and consistency with the latest container version.
+
+- **Container cleanup**:
+  Removed unnecessary containers and added a `/bin` directory for utility scripts.
+
+- **test_DMR.R script optimization**:
+  Reduced container size by removing `tidyverse` from `test_DMR.R`, keeping only `tibble` and `dplyr`.
+
+- **Limma DMR selection**:
+  Introduced `params.include_na` parameter to allow merging of reference samples even when values are missing.
+  This prevents excessive region filtering when the number of samples or entities is high.
+
+- **FINDMARKERS module**:
+  Moved `top` parameter outside the main script, now passed to the function only when explicitly defined (not `null` or `false`).
+
+- **COMBINE_FILES module**:
+  Changed the way output files are combined: now files are linked directly using Nextflow, eliminating the need for volume bindings.
+
+- **Reference coverage option**:
+  Added support to use reference coverage files (`--input`) instead of rerunning the `bismark_methylationextraction` module.
+  Applies when using `wgbstools` for DMR selection and `meth_atlas` (or other tools except UXM) for deconvolution.
+
+- **Bulk sample filtering parameters**:
+  Replaced `refree_min_counts` and `refree_min_cpgs` with `bulk_min_counts` and `bulk_min_cpgs` for more flexible CpG and region filtering on bulk samples. By default they are both set to 0 (meaning, no filtering on the bulk samples).
+
+### 🔄 Updates to MetDecode & CelFiE Subworkflows
+
+- Previously, only atlas markers present in **all** bulk samples were used for deconvolution.
+- Now, if a marker is missing in any bulk sample, a value of **0** is assigned (instead of `NA`) for both methylation and depth, ensuring smoother downstream processing.
 
 ## [v2.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.0.0) - 2024-12-26
 
