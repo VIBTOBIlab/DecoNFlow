@@ -335,7 +335,7 @@ If specified, all the tools and modalities in the pipeline are run.
 
 If specified, they run the corresponding tool. By default, `--meth_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
 
-### `--refree_min_cpgs`, `--refree_min_counts`
+### `--bulk_min_cpgs`, `--bulk_min_counts`
 
 Same as min_cpgs and min_counts but for reference-free deconvolution.
 
