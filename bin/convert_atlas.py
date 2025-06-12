@@ -74,7 +74,7 @@ def generate_df(file_path,collapse_approach):
             result_df[entity] = df[columns].mean(axis=1)
         elif collapse_approach=="median":
             result_df[entity] = df[columns].median(axis=1)
-        else: raise ExceptionType("Error: a value different from mean or median has been specified!")
+        else: raise Exception("Error: a value different from mean or median has been specified!")
     return result_df
 
 def generate_csv(result_df):
