@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process RUN_DECONV {
-    container 'egiuili/celfie:v3.0'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_low'    
     
@@ -14,7 +14,7 @@ process RUN_DECONV {
 
     script:
     """
-    python3 /source/celfie.py \
+    celfie.py \
     ${merged_table} \
     ${params.outdir} \
     ${nsamples} \

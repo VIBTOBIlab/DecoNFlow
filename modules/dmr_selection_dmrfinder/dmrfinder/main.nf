@@ -2,7 +2,7 @@
 
 process DMRFINDER_SELECTION {
 
-    container 'egiuili/dmrfinder_r:v2'
+    container 'egiuili/r-v4.4.1:v1'
 
     label 'process_high'
 
@@ -25,7 +25,7 @@ process DMRFINDER_SELECTION {
         }
     }
     """
-    Rscript /source/findDMRs.r \
+    findDMRs.r \
     -i $combined_file \
     $sampleid \
     -o reference_matrix_dmrfinder.csv \

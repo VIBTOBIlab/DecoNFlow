@@ -18,8 +18,8 @@ workflow inHousePrep {
         if (params.merged_matrix) {
                 fin_matrix = Channel.fromPath(params.merged_matrix)
                 LIMMA(fin_matrix)
-                atlas_tsv = LIMMA.out.reference_tsv
-                atlas_csv = LIMMA.out.reference_csv
+                atlas_tsv = LIMMA.out.reference_tsv.first()
+                atlas_csv = LIMMA.out.reference_csv.first()
         }
 
 
@@ -39,7 +39,7 @@ workflow inHousePrep {
                                 .out
                                 .filt_sample
                                 .collect()                              
-                MERGE_SAMPLES('ref_based', procSamples)
+                MERGE_SAMPLES('atlas', procSamples)
 
                 // Pass the regions for the DMR analysis
                 LIMMA(MERGE_SAMPLES.out.fin_matrix)

@@ -1,6 +1,5 @@
 #!/usr/bin/env nextflow
 
-import nextflow.Nextflow
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,7 +99,7 @@ workflow DNAmDeconv{
                 if (!counterMap.containsKey(label)) {
                     counterMap[label] = 0
                 }
-                counterMap[label]++
+                counterMap[label] = counterMap[label] + 1
 
                 def newLabel = "${label}_${counterMap[label]}"
 
@@ -121,7 +120,7 @@ workflow DNAmDeconv{
     if (params.DMRselection=="limma") {
 
         if (!params.merged_matrix & (!params.regions || !params.input)) {
-            Nextflow.error "\n----> ERROR: With limma DMR selection either a cluster file (--regions) + reference samples (--input) or a merged matrix (--merged_matrix) is required  <----\n"
+            nextflow.Nextflow.error "\n----> ERROR: With limma DMR selection either a cluster file (--regions) + reference samples (--input) or a merged matrix (--merged_matrix) is required  <----\n"
         }
 
         inHousePrep(samples_ch)
@@ -156,7 +155,7 @@ workflow DNAmDeconv{
     if (params.uxm || params.benchmark) {
 
         if (!params.test_bams) {
-            Nextflow.error "\n----> ERROR: The flag --test_bams (.csv file) is required for UXM tool. <----\n"
+            nextflow.Nextflow.error "\n----> ERROR: The flag --test_bams (.csv file) is required for UXM tool. <----\n"
         }
         test_bams = Channel.fromList(
         samplesheetToList(params.test_bams, "assets/schema_testbams.json"))
@@ -164,7 +163,7 @@ workflow DNAmDeconv{
             meta, bam, bai ->
             def meta_entity = meta
             meta_entity.id = meta.id
-            entity = null
+            def entity = null
             tuple(meta_entity.id, entity, bam, bai) }
 
         /*
@@ -179,7 +178,7 @@ workflow DNAmDeconv{
             UXM(test_bams, atlas_tsv)
         }
 
-        proportion_ch = proportion_ch.concat(UXM.out.uxm_proportions)
+        proportion_ch = proportion_ch.mix( UXM.out.uxm_proportions )
     }
 
 
@@ -189,7 +188,7 @@ workflow DNAmDeconv{
     if (params.meth_atlas || params.celfie || params.metdecode || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
 
         if (!params.test_set) {
-            Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
+            nextflow.Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
         }
 
         // Set the testing samples channel
@@ -223,11 +222,11 @@ workflow DNAmDeconv{
             // Run the subworkflows based on the parameters specified
             if (params.celfie || params.benchmark) {
                 CELFIE(ref_celfie_format, test_celfie_format)
-                proportion_ch = proportion_ch.concat( Channel.of( 'CelFiE' ).combine( CELFIE.out.output ) )
+                proportion_ch = proportion_ch.mix( CELFIE.out.output.map { file -> tuple('CelFiE', file) } )
             }
             if (params.metdecode || params.benchmark) {
                 METDECODE(ref_celfie_format, test_celfie_format)
-                proportion_ch = proportion_ch.concat( Channel.of( 'MetDecode' ).combine( METDECODE.out.output ) )
+                proportion_ch = proportion_ch.mix( METDECODE.out.output.map { file -> tuple('MetDecode', file) } )
             }
         }
 
@@ -247,10 +246,10 @@ workflow DNAmDeconv{
      */
     if (params.medecom || params.prmeth_rf || params.benchmark) {
         if (!params.regions) {
-            Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
+            nextflow.Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
         }
         if (!params.test_set) {
-            Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
+            nextflow.Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
         }
         // Set the testing samples channel
         test_ch = Channel.fromList(
@@ -265,7 +264,18 @@ workflow DNAmDeconv{
     /*
      * PROCESS: Combine results in a unique table
      */
-    COMBINE_FILES( proportion_ch.collect { t -> t[0] + ':' + t[1] } )
+    proportion_ch = proportion_ch
+                        .toList()
+                        .map { list ->
+                            def methods = []
+                            def files = []
+                            list.each { item ->
+                                methods.add(item[0])
+                                files.add(item[1])
+                            }
+                            [methods, files]
+                        }
+    COMBINE_FILES( proportion_ch )
 
 }
 

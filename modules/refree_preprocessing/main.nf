@@ -18,11 +18,11 @@ process REFREE_PREPROCESSING {
         args += "-sorted -g /bedtools2/genomes2/${params.genome_order}.genome"
     }
     """
-    zcat $covs | awk -v OFS='\\t' '\$5 + \$6 >= ${params.refree_min_counts}' | \\
+    zcat $covs | awk -v OFS='\\t' '\$5 + \$6 >= ${params.bulk_min_counts}' | \\
     awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9]|X|Y|MT|M)\$/ {print}' | \\
     gzip > ${meta}_filtered.cov.gz
 
-    cut -f1-3 ${reference} | sort -k1,1 -k2,2n > regions.bed
+    cut -f1-3 ${reference} | sort -T /tmp/ -k1,1 -k2,2n > regions.bed
 
     bedtools intersect \\
     -a regions.bed \\
@@ -33,7 +33,7 @@ process REFREE_PREPROCESSING {
     -i ${meta}.bed \\
     -g 1,2,3 \\
     -c 8 \\
-    -o count | awk -v OFS='\\t' '\$4 >= ${params.refree_min_cpgs} {print \$1, \$2, \$3, \$4}' > ${meta}_counts.bed \\
+    -o count | awk -v OFS='\\t' '\$4 >= ${params.bulk_min_cpgs} {print \$1, \$2, \$3, \$4}' > ${meta}_counts.bed \\
 
     bedtools groupby \\
     -i ${meta}.bed \\

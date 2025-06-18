@@ -22,11 +22,11 @@ workflow refFreeDeconv {
     refree_procTest = REFREE_PREPROCESSING
         .out
         .preprocessed_refree
-        .map{sample,cov -> [cov]}
+        .map{_sample,cov -> [cov]}
         .collect( sort: true )
     
-    // Merge the samples in a unique matrix
-    MERGE_SAMPLES('ref_free',refree_procTest)
+    // Merge the samples in a unique matrix with inner join
+    MERGE_SAMPLES('atlas',refree_procTest)
 
     // List to collect output channels
     refree_outputChannels = Channel.empty()
@@ -34,11 +34,11 @@ workflow refFreeDeconv {
     // Run deconvolution tool(s)
     if (params.medecom || params.benchmark) {
         MEDECOM(MERGE_SAMPLES.out.fin_matrix)
-        refree_outputChannels = refree_outputChannels.concat( Channel.of( 'MeDeCom' ).combine( MEDECOM.out.output) )
+        refree_outputChannels = refree_outputChannels.mix( MEDECOM.out.output.map { file -> tuple('MeDeCom', file) } )
     }  
     if (params.prmeth_rf || params.benchmark) {
         PRMETH_RF(MERGE_SAMPLES.out.fin_matrix)
-        refree_outputChannels = refree_outputChannels.concat( Channel.of( 'PRMeth_RF' ).combine( PRMETH_RF.out.output ) )
+        refree_outputChannels = refree_outputChannels.mix( PRMETH_RF.out.output.map { file -> tuple('PRMeth_RF', file) } )
     }   
 
     emit:

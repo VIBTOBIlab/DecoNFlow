@@ -2,7 +2,7 @@
 
 process INTERSECT {
 
-    container 'egiuili/intersect:v1'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_low'    
     
@@ -16,7 +16,7 @@ process INTERSECT {
 
     script:
     """
-    python3 /source/intersect.py \
+    intersect.py \
     -i $atlas \
     -t $samples \
     """

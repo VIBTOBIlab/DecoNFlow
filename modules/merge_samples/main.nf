@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process MERGE_SAMPLES {
-    container 'egiuili/merge_samples:v3'
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_medium'
 
@@ -15,14 +15,21 @@ process MERGE_SAMPLES {
 
     script:
     def args = ''
-    if (step=='test') {
+    if (step=='test') { 
+        // if normal test samples, outer join
         args += '--how outer'
-    }
-    if (step == 'ref_celfie') {
-        args += ' --celfie'
+    } else if (step=='test_celfie') {
+        // if test samples with Celfie structure outer_fillna with 0
+        args += '--how outer_fillna'
+    } else if (step == 'celfie_atlas') {
+        args += '--how inner --celfie_atlas'
+    } else if (step == 'atlas') {
+        if (params.include_na) {
+            args += '--how outer'
+        } else { args += '--how inner' }
     }
     """
-    python3 /source/build_matrix.py \
+    build_matrix.py \
     --file_paths "${files}" \
     --outfile "${step}_matrix.csv" \
     $args
