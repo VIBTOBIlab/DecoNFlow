@@ -1,6 +1,6 @@
 # DecoNFlow Pipeline
 
-## [v2.1.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.1.0) -
+## [v2.1.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.1.0) - 2025-06-18
 
 ### 🐛 Bug Fixes
 
