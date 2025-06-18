@@ -39,7 +39,7 @@ class WorkflowMain {
             Nextflow.error "\n----> ERROR: specify at least one deconvolution tool. <----\n"
         }
         if ((params.celfie || params.metdecode) & !params.input) {
-            Nextflow.error "\n----> ERROR: you need to specify the reference samples (--input) when using CelFiE. <----\n"
+            Nextflow.error "\n----> ERROR: you need to specify the reference samples (--input) when using CelFiE or MetDecode. <----\n"
         }
         if (params.DMRselection!="wgbstools" & params.DMRselection!="DMRfinder" & params.DMRselection!="limma" & !params.ref_matrix & !params.uxm_atlas & !params.prmeth_rf & !params.medecom) {
             Nextflow.error "\n----> ERROR: you need to specify one DMR selection approach (--DMRselection). <----\n"

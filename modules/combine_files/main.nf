@@ -1,25 +1,21 @@
 #!/usr/bin/env nextflow
 
-// Define mounting option
-def args = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
-
 process COMBINE_FILES {
-    container 'egiuili/combine_files:v1'
-
-    containerOptions "$args ${projectDir}:${projectDir}"
+    container 'egiuili/python3-3.9.16:v1'
 
     label 'process_low'
 
     input:
-    val files
+    tuple val(names), path(proportions, stageAs: "?/*")
 
     output:
     path '*.csv', emit: clusters
     
     script:
     """
-    python3 /source/combine_files.py \
-    "${files}" \
+    combine_files.py \
+    --tool_names ${names.join(' ')} \
+    --results $proportions \
     -o combined_results
     """
     

@@ -1,14 +1,11 @@
 #!/usr/bin/env nextflow
 
-// Define mounting option
-def cmd = workflow.containerEngine == 'docker' ? '--volume' : '--bind'
-
 process BAM2PAT {
     container 'egiuili/uxm:v1'
+    
+    containerOptions "${workflow.containerEngine == 'docker' ? '--volume' : '--bind'} ${workflow.workDir}:/opt/wgbstools/references"
 
-    label 'process_medium'
-
-    containerOptions "$cmd ${workflow.workDir}:/opt/wgbstools/references"
+    label 'process_high'
 
     input:
     tuple val(meta),val(entity),path(bam),path(bai)

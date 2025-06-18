@@ -19,6 +19,10 @@
   - [PRMeth params](#prmeth-params)
   - [MeDeCom params](#medecom-params)
   - [CelFiE params](#celfie-params)
+  - [UXM params](#uxm-params)
+  - [MetDecode params](#metdecode-params)
+- [Bismark parameters](#bismark-parameters)
+- [Other parameters](#other-parameters)
 - [Resource requests](#resource-requests)
 - [Running in the background](#running-in-the-background)
 
@@ -184,7 +188,7 @@ Method adopted to collapse the samples values for each region. Default is 'mean'
 
 ### `--direction`
 
-Direction of methylation: can be either "hypo","hyper","both" or "random" (def. null, takes all the regions).
+Direction of methylation: can be either "hypo","hyper","both" or "random" (def. both).
 
 ### `--top`
 
@@ -240,6 +244,10 @@ Minimum number of counts to keep a CpG position. Default 10.
 
 Minimum number of CpGs per region. Default 3.
 
+### `--include_na`
+
+Activate this parameter to allow missing values when merging the reference samples before performing limma DMR selection (def. false).
+
 #### `--big_covs`
 
 If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma or for DMR finder combine process) running with a memory-efficient algorithm. When specifying this flag within `limma` workflow, it's necessary to specify the `--genome_order` flag as well.
@@ -287,12 +295,12 @@ File (.csv) linking each file to a group (or entity) to perform DMR selection us
 
 ```plaintext:
 name,group
-DNA097385,healthy
-DNA097389,healthy
-DNA097393,healthy
-DNA041087,nbl
-DNA044133,nbl
-DNA044134,nbl
+DNA097385_S10,healthy
+DNA097389_S14,healthy
+DNA097393_S18,healthy
+DNA041087_S27,nbl
+DNA044133_S31,nbl
+DNA044134_S32,nbl
 ```
 
 An [example group file](../assets/groups.csv) has been provided with the pipeline.
@@ -327,7 +335,7 @@ If specified, all the tools and modalities in the pipeline are run.
 
 If specified, they run the corresponding tool. By default, `--meth_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
 
-### `--refree_min_cpgs`, `--refree_min_counts`
+### `--bulk_min_cpgs`, `--bulk_min_counts`
 
 Same as min_cpgs and min_counts but for reference-free deconvolution.
 
@@ -492,7 +500,7 @@ If this parameter is specified, the pipeline skips the preprocessing step and im
 `merged_matrix.csv`
 
 ```plaintext:
-,chr,start,end,healthy3-V,nbl2-V,nbl3-V,healthy1-V,healthy2-V,nbl1-V
+,chr,start,end,healthy_3-V,nbl_2-V,nbl_3-V,healthy_1-V,healthy_2-V,nbl_1-V
 0,1,10497,10588,0.902439,0.968421,0.946197,0.938053,0.820513,0.972149
 1,1,136876,136924,0.959184,0.972678,0.989583,0.884181,0.934272,0.926941
 2,1,661865,661927,1.0,1.0,0.972222,0.986111,0.927536,0.885965

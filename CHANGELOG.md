@@ -1,6 +1,66 @@
 # DecoNFlow Pipeline
 
-## [v2.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.0.0) - 2024-12-26
+## [v2.1.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.1.0) -
+
+### 🐛 Bug Fixes
+
+- **Limma module**:
+  Modified container and module to prevent errors when `--top` exceeds the available number of DMRs.
+
+- **FINDMARKERS module**:
+  Added the `--sort_by delta_means` flag. Previously, when using `--only_hyper`, markers were incorrectly sorted by chromosome location instead of delta means as intended.
+  \_Note: a GitHub issue should be opened in the `wgbs_tools` repository regarding this behavior.
+
+- **convert_atlas container**:
+  Updated to properly handle the new **entity** structure (with `_`) introduced in version 2.0.0.
+
+- **wgbstools subworkflow**:
+  Adjusted to include `_` in the entity structure to avoid processing errors.
+
+- **UXM subworkflow**:
+  Added `params.ref_matrix` to the conditional (`if`) gate, ensuring that the workflow proceeds when no DMR selection method is specified but a reference matrix is provided.
+
+- **Preprocessing modules**:
+  Added `sort -T /tmp/` to prevent `sort` from using unavailable directories.
+  See [related discussion](https://github.com/nf-core/chipseq/issues/123).
+
+- **CelFiE preprocessing**:
+  Included missing `params.big_covs` parameter.
+
+### 🚀 Minor Improvements
+
+- **MERGE_SAMPLES module**:
+  Renamed the `step` parameter for clarity and consistency with the latest container version.
+
+- **Container cleanup**:
+  Removed unnecessary containers and added a `/bin` directory for utility scripts.
+
+- **test_DMR.R script optimization**:
+  Reduced container size by removing `tidyverse` from `test_DMR.R`, keeping only `tibble` and `dplyr`.
+
+- **Limma DMR selection**:
+  Introduced `params.include_na` parameter to allow merging of reference samples even when values are missing.
+  This prevents excessive region filtering when the number of samples or entities is high.
+
+- **FINDMARKERS module**:
+  Moved `top` parameter outside the main script, now passed to the function only when explicitly defined (not `null` or `false`).
+
+- **COMBINE_FILES module**:
+  Changed the way output files are combined: now files are linked directly using Nextflow, eliminating the need for volume bindings.
+
+- **Reference coverage option**:
+  Added support to use reference coverage files (`--input`) instead of rerunning the `bismark_methylationextraction` module.
+  Applies when using `wgbstools` for DMR selection and `meth_atlas` (or other tools except UXM) for deconvolution.
+
+- **Bulk sample filtering parameters**:
+  Replaced `refree_min_counts` and `refree_min_cpgs` with `bulk_min_counts` and `bulk_min_cpgs` for more flexible CpG and region filtering on bulk samples. By default they are both set to 0 (meaning, no filtering on the bulk samples).
+
+### 🔄 Updates to MetDecode & CelFiE Subworkflows
+
+- Previously, only atlas markers present in **all** bulk samples were used for deconvolution.
+- Now, if a marker is missing in any bulk sample, a value of **0** is assigned (instead of `NA`) for both methylation and depth, ensuring smoother downstream processing.
+
+## [v2.0.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.0.0) - 2024-12-26
 
 ### Bugs fixed
 
@@ -37,7 +97,7 @@
 - Changed methyl_atlas into meth_atlas
 - Added prefix chr check between region file and coverage files in limma preprocessing
 
-## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
+## [v1.0.1](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v1.0.1) - 2024-07-26
 
 ### Parameters changes
 
@@ -56,6 +116,6 @@
 
 Version two of the container has been released. With this version, it's now possible to perform DMR selection with even only one sample per group.
 
-## [v1.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.0) - 2024-07-16
+## [v1.0.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v1.0.0) - 2024-07-16
 
 The DNAmDeconv pipeline is designed to perform DNA methylation deconvolution on bulk DNA samples. This pipeline uses a Nextflow framework to streamline and automate the analysis process, ensuring reproducible and efficient results.
