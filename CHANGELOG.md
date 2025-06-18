@@ -1,6 +1,6 @@
 # DecoNFlow Pipeline
 
-## [v2.1.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.1.0) -
+## [v2.1.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.1.0) -
 
 ### 🐛 Bug Fixes
 
@@ -60,7 +60,7 @@
 - Previously, only atlas markers present in **all** bulk samples were used for deconvolution.
 - Now, if a marker is missing in any bulk sample, a value of **0** is assigned (instead of `NA`) for both methylation and depth, ensuring smoother downstream processing.
 
-## [v2.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v2.0.0) - 2024-12-26
+## [v2.0.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.0.0) - 2024-12-26
 
 ### Bugs fixed
 
@@ -97,7 +97,7 @@
 - Changed methyl_atlas into meth_atlas
 - Added prefix chr check between region file and coverage files in limma preprocessing
 
-## [v1.0.1](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.1) - 2024-07-26
+## [v1.0.1](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v1.0.1) - 2024-07-26
 
 ### Parameters changes
 
@@ -116,6 +116,6 @@
 
 Version two of the container has been released. With this version, it's now possible to perform DMR selection with even only one sample per group.
 
-## [v1.0.0](https://github.ugent.be/DePreterLab/DNAmDeconv/releases/tag/v1.0.0) - 2024-07-16
+## [v1.0.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v1.0.0) - 2024-07-16
 
 The DNAmDeconv pipeline is designed to perform DNA methylation deconvolution on bulk DNA samples. This pipeline uses a Nextflow framework to streamline and automate the analysis process, ensuring reproducible and efficient results.
