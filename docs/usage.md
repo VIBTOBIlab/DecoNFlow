@@ -50,12 +50,12 @@ where the samplesheet file looks like the following:
 
 ```plaintext:
 name,type,file
-DNA097385,healthy,DNA097385_S10.cov.gz
-DNA097389,healthy,DNA097389_S14.cov.gz
-DNA097393,healthy,DNA097393_S18.cov.gz
-DNA041087,nbl,DNA041087_S27.cov.gz
-DNA044133,nbl,DNA044133_S31.cov.gz
-DNA044134,nbl,DNA044134_S32.cov.gz
+DNAXX1,healthy,DNAXX1.cov.gz
+DNAXX2,healthy,DNAXX2.cov.gz
+DNAXX3,healthy,DNAXX3.cov.gz
+DNAXX4,nbl,DNAXX4.cov.gz
+DNAXX5,nbl,DNAXX5.cov.gz
+DNAXX6,nbl,DNAXX6.cov.gz
 ```
 
 | Column | Description                                                                                  |
@@ -63,8 +63,6 @@ DNA044134,nbl,DNA044134_S32.cov.gz
 | `name` | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
 | `type` | Cell type name                                                                               |
 | `file` | Full path to .cov file. File has to be gzipped and have the extension ".cov.gz".             |
-
-An [example samplesheet](../assets/reference.csv) has been provided with the pipeline.
 
 ### Bulk samples
 
@@ -80,18 +78,16 @@ where the samplesheet file looks like the following:
 
 ```plaintext:
 name,sample
-20M_mix_Bmap_CLBGA_0_rep1,20M_mix_Bmap_CLBGA_0_rep1.cov.gz
-20M_mix_Bmap_CLBGA_10_rep1,20M_mix_Bmap_CLBGA_10_rep1.cov.gz
-20M_mix_Bmap_CLBGA_25_rep1,20M_mix_Bmap_CLBGA_25_rep1.cov.gz
-20M_mix_Bmap_CLBGA_50_rep1,20M_mix_Bmap_CLBGA_50_rep1.cov.gz
-20M_mix_Bmap_CLBGA_100_rep1,20M_mix_Bmap_CLBGA_100_rep1.cov.gz
+bulk1,bulk1.cov.gz
+bulk2,bulk2.cov.gz
+bulk3,bulk3.cov.gz
+bulk4,bulk4.cov.gz
+bulk5,bulk5.cov.gz
 ```
-
-An [example samplesheet](../assets/bulk_samples.csv) has been provided with the pipeline.
 
 ## Reference-free deconvolution
 
-For the reference-free deconvolution tools, the required files are the [regions file](../assets/RRBS_regions20-200.bed) and the [bulk samplesheet](../assets/bulk_samples.csv).
+For the reference-free deconvolution tools, the required files are the [regions file](#regions) and the [bulk samplesheet](#bulk-samples).
 
 ## Running the pipeline
 
@@ -234,8 +230,6 @@ chr22  50064064    50064084
 chr22  50064090    50064112
 ```
 
-An [example regions file](../assets/RRBS_regions20-200_chr.bed) has been provided with the pipeline.
-
 #### `--min_counts`
 
 Minimum number of counts to keep a CpG position. Default 10.
@@ -266,12 +260,12 @@ Alternatively to DMRfinder and limma DMR selection, one can choose to use _wgbs_
 
 ```plaintext:
 name,type,bam,bai
-DNA097385,healthy,DNA097385_S10.bam,DNA097385_S10.bam.bai
-DNA097389,healthy,DNA097389_S14.bam,DNA097389_S14.bam.bai
-DNA097393,healthy,DNA097393_S18.bam,DNA097393_S18.bam.bai
-DNA041087,nbl,DNA041087_S27.bam,DNA041087_S27.bam.bai
-DNA044133,nbl,DNA044133_S31.bam,DNA044133_S31.bam.bai
-DNA044134,nbl,DNA044134_S32.bam,DNA044134_S32.bam.bai
+DNAXX1,healthy,DNAXX1.bam,DNAXX1.bam.bai
+DNAXX2,healthy,DNAXX2.bam,DNAXX2.bam.bai
+DNAXX3,healthy,DNAXX3.bam,DNAXX3.bam.bai
+DNAXX4,nbl,DNAXX4.bam,DNAXX4.bam.bai
+DNAXX5,nbl,DNAXX5.bam,DNAXX5.bam.bai
+DNAXX6,nbl,DNAXX6.bam,DNAXX6.bam.bai
 ```
 
 | Column | Description                                                                                  |
@@ -280,8 +274,6 @@ DNA044134,nbl,DNA044134_S32.bam,DNA044134_S32.bam.bai
 | `type` | Cell type name                                                                               |
 | `bam`  | Full path to .bam file.                                                                      |
 | `bai`  | Full path to .bam.bai file.                                                                  |
-
-An [example samplesheet](../assets/ref_bam.csv) has been provided with the pipeline.
 
 ### `--genome` and `--fasta`
 
@@ -295,15 +287,13 @@ File (.csv) linking each file to a group (or entity) to perform DMR selection us
 
 ```plaintext:
 name,group
-DNA097385_S10,healthy
-DNA097389_S14,healthy
-DNA097393_S18,healthy
-DNA041087_S27,nbl
-DNA044133_S31,nbl
-DNA044134_S32,nbl
+DNAXX1,healthy
+DNAXX2,healthy
+DNAXX3,healthy
+DNAXX4,nbl
+DNAXX5,nbl
+DNAXX6,nbl
 ```
-
-An [example group file](../assets/groups.csv) has been provided with the pipeline.
 
 ### `--max_bp`
 
@@ -417,12 +407,11 @@ To use _uxm_ deconvolution, you will need to create a samplesheet (`--test_bams`
 
 ```plaintext:
 name,bam,bai
-DNA097385,DNA097385_S10.bam,DNA097385_S10.bam.bai
-DNA097389,DNA097389_S14.bam,DNA097389_S14.bam.bai
-DNA097393,DNA097393_S18.bam,DNA097393_S18.bam.bai
-DNA041087,DNA041087_S27.bam,DNA041087_S27.bam.bai
-DNA044133,DNA044133_S31.bam,DNA044133_S31.bam.bai
-DNA044134,DNA044134_S32.bam,DNA044134_S32.bam.bai
+bulk1,bulk1.bam,bulk1.bam.bai
+bulk2,bulk2.bam,bulk2.bam.bai
+bulk3,bulk3.bam,bulk3.bam.bai
+bulk4,bulk4.bam,bulk4.bam.bai
+bulk5,bulk5.bam,bulk5.bam.bai
 ```
 
 | Column | Description                                                                                  |
@@ -430,8 +419,6 @@ DNA044134,DNA044134_S32.bam,DNA044134_S32.bam.bai
 | `name` | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
 | `bam`  | Full path to .bam file.                                                                      |
 | `bai`  | Full path to .bam.bai file.                                                                  |
-
-An [example samplesheet](../assets/test_bam.csv) has been provided with the pipeline.
 
 #### `--uxm_atlas`
 
