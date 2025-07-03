@@ -1,5 +1,9 @@
 # DecoNFlow Pipeline
 
+## [v2.2.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.2.0) - 2025-07-02
+
+Added the test profile to test the pipeline on public, test data.
+
 ## [v2.1.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.1.0) - 2025-06-18
 
 ### 🐛 Bug Fixes
