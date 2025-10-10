@@ -244,7 +244,7 @@ Minimum number of counts to keep a CpG position. Default 10.
 
 Minimum number of CpGs per region. Default 3.
 
-### `--include_na`
+#### `--include_na`
 
 Activate this parameter to allow missing values when merging the reference samples before performing limma DMR selection (def. false).
 
@@ -331,13 +331,13 @@ If the flag is specified, all the output files will be saved.
 
 If specified, all the tools and modalities in the pipeline are run.
 
-### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--prmeth_rf`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`,`--metdecode`
+### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--ref_freecell_mix`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`,`--metdecode`
 
-If specified, they run the corresponding tool. By default, `--meth_atlas` and `--prmeth_rf` are set for respectively ref-based and ref-free decovolution.
+If specified, they run the corresponding tool. By default, `--meth_atlas` and `--ref_freecell_mix` are set for respectively ref-based and ref-free decovolution.
 
 ### `--bulk_min_cpgs`, `--bulk_min_counts`
 
-Same as min_cpgs and min_counts but for reference-free deconvolution.
+Same filtering as min_cpgs and min_counts but applied on the bulk samples.
 
 ### `--clusters`
 
@@ -365,7 +365,7 @@ EpiSCORE weight parameter. Default is 0.4, can go from 0.05 to 0.9.
 
 #### `--prmeth_mod`
 
-Modality to be used for the PRMeth tool. Default is 'QP' (reference-based), alternative is 'NMF' (partial reference-based). PRMeth_RF runs always with 'RF' (reference-free) modality.
+Modality to be used for the PRMeth tool. Default is 'QP' (reference-based), alternative is 'NMF' (partial reference-based).
 
 #### `--prmeth_NMF_entities`
 
