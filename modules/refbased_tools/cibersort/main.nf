@@ -1,20 +1,20 @@
 #!/usr/bin/env nextflow
 
 process CIBERSORT {
-    container 'egiuili/cibersort:v1'
+    container 'egiuili/epidish:v1'
 
     label 'process_low'
 
     input:
-    path reference
-    path samples
+    path ref_path
+    path samples_path
 
     output:
-    path '*_deconv_output.csv', emit: output
+    path 'epidish_res_*.csv', emit: output
 
     script:
     """
-    Rscript /source/run_cibersort.R -s ${reference} -m ${samples}
+    Rscript /source/EpiDISH.R -s ${ref_path} -m ${samples_path} -d "CBS"
     """
     
 }
