@@ -2,7 +2,7 @@
 
 
 include { REFREE_PREPROCESSING                              } from "../modules/refree_preprocessing/main"
-include { PRMETH_RF                                         } from "../modules/refree_tools/prmeth_rf/main"
+include { REF_FREECELL_MIX                                  } from "../modules/refree_tools/ref_freecell_mix/main"
 include { MEDECOM                                           } from "../modules/refree_tools/medecom/main"
 include { MERGE_SAMPLES                                     } from "../modules/merge_samples/main"
 
@@ -36,9 +36,9 @@ workflow refFreeDeconv {
         MEDECOM(MERGE_SAMPLES.out.fin_matrix)
         refree_outputChannels = refree_outputChannels.mix( MEDECOM.out.output.map { file -> tuple('MeDeCom', file) } )
     }  
-    if (params.prmeth_rf || params.benchmark) {
-        PRMETH_RF(MERGE_SAMPLES.out.fin_matrix)
-        refree_outputChannels = refree_outputChannels.mix( PRMETH_RF.out.output.map { file -> tuple('PRMeth_RF', file) } )
+    if (params.ref_freecell_mix || params.benchmark) {
+        REF_FREECELL_MIX(MERGE_SAMPLES.out.fin_matrix)
+        refree_outputChannels = refree_outputChannels.mix( REF_FREECELL_MIX.out.output.map { file -> tuple('RefFreeCellMix', file) } )
     }   
 
     emit:
