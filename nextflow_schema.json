@@ -113,6 +113,14 @@
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },
+                "houseman_eq": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
+                "houseman_ineq": {
+                    "type": "boolean",
+                    "description": "Run the corresponding tool"
+                },
                 "methyl_resolver": {
                     "type": "boolean",
                     "description": "Run the corresponding tool"
@@ -363,20 +371,6 @@
                 }
             }
         },
-        "epidish_parameters": {
-            "title": "EpiDISH parameters",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "mod": {
-                    "type": "string",
-                    "default": "RPC",
-                    "description": "EpiDISH deconvolution modality",
-                    "help_text": "Alternatives are: [RPC, CBS, CP_ineq, CP_eq]"
-                }
-            }
-        },
         "methylresolver_parameters": {
             "title": "MethylResolver parameters",
             "type": "object",
@@ -623,9 +617,6 @@
         },
         {
             "$ref": "#/defs/episcore_parameters"
-        },
-        {
-            "$ref": "#/defs/epidish_parameters"
         },
         {
             "$ref": "#/defs/methylresolver_parameters"
