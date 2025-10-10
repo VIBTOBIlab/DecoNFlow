@@ -28,6 +28,8 @@
   > He, D., Chen, M., Wang, W. et al. Deconvolution of tumor composition using partially available DNA methylation data. BMC Bioinformatics 23, 355 (2022)
 - <u>[MeDeCom](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1182-6)</u>
   > Lutsik, P., Slawski, M., Gasparoni, G. et al. MeDeCom: discovery and quantification of latent components of heterogeneous methylomes. Genome Biol 18, 55 (2017)
+- <u>[RefFreeCellMix](https://academic.oup.com/bioinformatics/article/30/10/1431/266465?login=false)</u>
+  > Eugene Andres Houseman, John Molitor, Carmen J. Marsit, Reference-free cell mixture adjustments in analysis of DNA methylation data, Bioinformatics, Volume 30, Issue 10 (May 2014)
 - <u>[CelFiE](https://www.nature.com/articles/s41467-021-22901-x)</u>
   > Caggiano, C., Celona, B., Garton, F. et al. Comprehensive cell type decomposition of circulating cell-free DNA with CelFiE. Nat Commun 12, 2717 (2021)
 - <u>[UXM](https://www.nature.com/articles/s41586-022-05580-6)</u>
