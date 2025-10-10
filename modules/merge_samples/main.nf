@@ -10,8 +10,8 @@ process MERGE_SAMPLES {
     path(files)
 
     output:
-    path "${step}*.csv", emit: fin_matrix
-    path "celfie_${step}*.csv", emit: celfie_fin_matrix, optional: true
+    path "${step}*.csv", emit: fin_matrix, optional: true
+    path "final_${step}*.csv", emit: celfie_fin_matrix, optional: true
 
     script:
     def args = ''
