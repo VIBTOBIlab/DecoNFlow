@@ -81,10 +81,14 @@ def merge_files(paths, how, celfie_atlas, outfile):
     df_sorted = pd.concat([first_three_cols, df[sorted_cols]], axis=1)
     df_sorted = df_sorted.sort_values(by=['chr','start','end']).reset_index(drop=True)
 
+    # If celfie atlas is specified, reformat the matrix accordingly and save it
     if celfie_atlas == True:
         df_celfie = celfie_atlas_format(df_sorted)
-        df_celfie.to_csv("celfie_"+outfile)
+        df_celfie.to_csv("final_"+outfile)
+        return df_celfie
 
+    # Otherwise, just save the sorted, concatanated matrix
+    df_sorted.to_csv(outfile)
     return df_sorted
 
 
@@ -119,12 +123,12 @@ def main():
 
     file_paths = args.file_paths.split(" ")
 
-    res_df = merge_files(file_paths,
-                         args.how,
-                         args.celfie_atlas,
-                         args.outfile)
+    merge_files(file_paths,
+                args.how,
+                args.celfie_atlas,
+                args.outfile)
 
-    res_df.to_csv(args.outfile)
+    #res_df.to_csv(args.outfile)
 
 
 if __name__ == "__main__":
