@@ -125,7 +125,7 @@
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },
-                "prmeth_rf": {
+                "ref_freecell_mix": {
                     "type": "boolean",
                     "description": "Run the corresponding tool"
                 },
@@ -400,7 +400,7 @@
                     "type": "string",
                     "default": "QP",
                     "description": "PRMeth deconv modality",
-                    "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based). PRMeth_RF runs always reference-free deconvolution."
+                    "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based)."
                 },
                 "prmeth_NMF_entities": {
                     "type": "integer",
