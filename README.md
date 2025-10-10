@@ -25,6 +25,8 @@ The pipeline allows you to run both reference-based and reference-free deconvolu
       - meth_atlas (.cov)
       - CIBERSORT (.cov)
       - EpiDISH (.cov)
+      - Houseman's CP (equality)
+      - Houseman's CP (inequality)
       - EpiSCORE (.cov)
       - MethylResolver (.cov)
       - PRMeth (.cov)
@@ -33,7 +35,7 @@ The pipeline allows you to run both reference-based and reference-free deconvolu
       - UXM (.bam)
    2. Reference-free deconvolution
       - MeDeCom (.cov)
-      - PRMeth (Ref-Free) (.cov)
+      - RefFreeCellMix (.cov)
 
 # Usage
 
