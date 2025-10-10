@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-process EPIDISH {
+process HOUSEMAN_EQ {
     container 'egiuili/epidish:v1'
 
     label 'process_low'
@@ -14,7 +14,7 @@ process EPIDISH {
 
     script:
     """
-    Rscript /source/EpiDISH.R -s ${ref_path} -m ${samples_path} -d "RPC"
+    Rscript /source/EpiDISH.R -s ${ref_path} -m ${samples_path} -d "CP_eq"
     """
 
 }

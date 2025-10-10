@@ -35,7 +35,7 @@ class WorkflowMain {
         // Check that a -profile or Nextflow config has been provided to run the pipeline
         NfcoreTemplate.checkConfigProvided(workflow, log)
 
-        if (!params.medecom & !params.ref_freecell_mix & !params.uxm & !params.meth_atlas & !params.celfie & !params.metdecode & !params.epidish & !params.prmeth & !params.methyl_resolver & !params.episcore & !params.cibersort & !params.benchmark) {
+        if (!params.medecom & !params.ref_freecell_mix & !params.uxm & !params.houseman_eq &!params.houseman_ineq & !params.meth_atlas & !params.celfie & !params.metdecode & !params.epidish & !params.prmeth & !params.methyl_resolver & !params.episcore & !params.cibersort & !params.benchmark) {
             Nextflow.error "\n----> ERROR: specify at least one deconvolution tool. <----\n"
         }
         if ((params.celfie || params.metdecode) & !params.input) {

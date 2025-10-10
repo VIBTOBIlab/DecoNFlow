@@ -185,7 +185,8 @@ workflow DNAmDeconv{
     /*
      * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools
      */
-    if (params.meth_atlas || params.celfie || params.metdecode || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+    if (params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
+        params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
 
         if (!params.test_set) {
             nextflow.Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
@@ -233,7 +234,8 @@ workflow DNAmDeconv{
         /*
          * If not MetDecode or CelFiE, run "classical" deconvolution tools
          */
-        if (params.meth_atlas || params.epidish || params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+        if (params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
+            params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
             refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
             proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
         }
@@ -244,7 +246,7 @@ workflow DNAmDeconv{
      * SUBWORKFLOW: If reference-free deconvolution tools
      * have been specified, run ref-free deconvolution
      */
-    if (params.medecom || params.prmeth_rf || params.benchmark) {
+    if (params.medecom || params.ref_freecell_mix || params.benchmark) {
         if (!params.regions) {
             nextflow.Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
         }

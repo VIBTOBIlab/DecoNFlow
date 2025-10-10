@@ -6,7 +6,8 @@ include { EPIDISH                                           } from "../modules/r
 include { METHYL_RESOLVER                                   } from "../modules/refbased_tools/methyl_resolver/main"
 include { EPISCORE                                          } from "../modules/refbased_tools/episcore/main"
 include { PRMETH                                            } from "../modules/refbased_tools/prmeth/main"
-
+include { HOUSEMAN_EQ                                       } from "../modules/refbased_tools/houseman_eq/main"
+include { HOUSEMAN_INEQ                                     } from "../modules/refbased_tools/houseman_ineq/main"
 
 workflow refBasedDeconv {
 
@@ -30,8 +31,16 @@ workflow refBasedDeconv {
     }
     if (params.epidish || params.benchmark) {
         EPIDISH(reference, test)
-        outputChannels = outputChannels.mix( EPIDISH.out.output.map { file -> tuple("EpiDISH_${params.mod}", file) } )
-    }   
+        outputChannels = outputChannels.mix( EPIDISH.out.output.map { file -> tuple("EpiDISH", file) } )
+    }
+    if (params.houseman_eq || params.benchmark) {
+        HOUSEMAN_EQ(reference, test)
+        outputChannels = outputChannels.mix( HOUSEMAN_EQ.out.output.map { file -> tuple('Houseman_eq', file) } )
+    }
+    if (params.houseman_ineq || params.benchmark) {
+        HOUSEMAN_INEQ(reference, test)
+        outputChannels = outputChannels.mix( HOUSEMAN_INEQ.out.output.map { file -> tuple('Houseman_ineq', file) } )
+    }
     if (params.methyl_resolver || params.benchmark) {
         METHYL_RESOLVER(reference, test)
         outputChannels = outputChannels.mix( METHYL_RESOLVER.out.output.map { file -> tuple('Methyl_Resolver', file) } )
