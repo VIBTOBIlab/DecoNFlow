@@ -8,12 +8,11 @@
 */
 include {paramsSummaryLog} from 'plugin/nf-schema'
 
-def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
 def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
 def summary_params = paramsSummaryLog(workflow)
 
 // Print parameter summary log to screen
-log.info logo + paramsSummaryLog(workflow) + citation
+paramsSummaryLog(workflow) + citation
 
 // Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
 log.info """
