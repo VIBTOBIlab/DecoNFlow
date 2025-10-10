@@ -1,5 +1,10 @@
 # DecoNFlow Pipeline
 
+## [v2.3.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.3.0) - 2025-10-10
+
+- Changed the name from PRMeth_RF to the actual name RefFreeCellMix and added the corresponding citation.
+- Added 2 new modules, being Houseman's CP equality and inequality. Before, to run these modalities you had to specify the **--mod** EpiDISH parameter. Now this parameter is deprecated and to run the above two tools you just have to specify the corresponding new flag **--houseman_eq** and **--houseman_ineq**.
+
 ## [v2.2.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.2.0) - 2025-07-02
 
 Added the test profile to test the pipeline on public, test data.

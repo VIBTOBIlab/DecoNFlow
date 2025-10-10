@@ -331,9 +331,9 @@ If the flag is specified, all the output files will be saved.
 
 If specified, all the tools and modalities in the pipeline are run.
 
-### `--epidish`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--ref_freecell_mix`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`,`--metdecode`
+### `--epidish`, `houseman_eq`, `houseman_ineq`, `--methyl_resolver`, `--episcore`, `--prmeth`,`--ref_freecell_mix`,`--medecom`, `--celfie`,`--meth_atlas`,`--cibersort`,`--metdecode`
 
-If specified, they run the corresponding tool. By default, `--meth_atlas` and `--ref_freecell_mix` are set for respectively ref-based and ref-free decovolution.
+If specified, they run the corresponding tool.
 
 ### `--bulk_min_cpgs`, `--bulk_min_counts`
 
@@ -342,12 +342,6 @@ Same filtering as min_cpgs and min_counts but applied on the bulk samples.
 ### `--clusters`
 
 Number of expected cell types required by the reference-free deconvolution tools. Default is 2.
-
-### EpiDISH params
-
-#### `--mod`
-
-EpiDISH modality to be used. Default is 'RPC'. Alternatives are [CBS, CP_ineq, CP_eq].
 
 ### MethylResolver params
 

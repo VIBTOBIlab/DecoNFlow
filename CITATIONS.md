@@ -30,6 +30,8 @@
   > Lutsik, P., Slawski, M., Gasparoni, G. et al. MeDeCom: discovery and quantification of latent components of heterogeneous methylomes. Genome Biol 18, 55 (2017)
 - <u>[RefFreeCellMix](https://academic.oup.com/bioinformatics/article/30/10/1431/266465?login=false)</u>
   > Eugene Andres Houseman, John Molitor, Carmen J. Marsit, Reference-free cell mixture adjustments in analysis of DNA methylation data, Bioinformatics, Volume 30, Issue 10 (May 2014)
+- <u>[Houseman's CP](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-13-86)
+  > Houseman, E.A., Accomando, W.P., Koestler, D.C. et al. DNA methylation arrays as surrogate measures of cell mixture distribution. BMC Bioinformatics 13, 86 (2012).
 - <u>[CelFiE](https://www.nature.com/articles/s41467-021-22901-x)</u>
   > Caggiano, C., Celona, B., Garton, F. et al. Comprehensive cell type decomposition of circulating cell-free DNA with CelFiE. Nat Commun 12, 2717 (2021)
 - <u>[UXM](https://www.nature.com/articles/s41586-022-05580-6)</u>
