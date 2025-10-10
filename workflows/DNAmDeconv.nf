@@ -12,7 +12,7 @@ def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
 def summary_params = paramsSummaryLog(workflow)
 
 // Print parameter summary log to screen
-paramsSummaryLog(workflow) + citation
+log.info paramsSummaryLog(workflow) + citation
 
 // Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
 log.info """
