@@ -22,7 +22,7 @@ process BUILD {
     --markers $markers \
     --pats $pats \
     --groups $groups \
-    --tmp_dir /opt/UXM_deconv/tmp_dir \
+    --tmp_dir /tmp/ \
     --threads $task.cpus \
     --rlen ${params.rlen} \
     -o Atlas.l${params.rlen}.tsv
