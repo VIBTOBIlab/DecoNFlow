@@ -16,20 +16,20 @@ If `--save_intermeds` flag is not specified, the pipeline will produce two folde
 
 - Contains the information regarding the pipeline (timeline, dag, report).
 
-**Final output directory: `results/deconvolution`**
+**Final output directory: `results/deconvolution_results`**
 
 - Contains a .csv file with the cell type proportions estimated. Each row contains the information on the cell type proportion estimated by one single tool (specified in the column tool) for a single sample.
 
 `combined_results.csv`
 
 ```plaintext:
-sample,healthy,nbl,tool,LMC1,LMC2,V1,V2
-20M_mix_Bmap_CLBGA_0_rep1,0.9977785149894458,0.0022214850105542,CelFiE,,,,
-20M_mix_Bmap_CLBGA_10_rep1,0.877813686675229,0.122186313324771,CelFiE,,,,
-20M_mix_Bmap_CLBGA_25_rep1,0.6992687532002937,0.3007312467997062,CelFiE,,,,
-20M_mix_Bmap_CLBGA_50_rep1,0.4317048134137805,0.5682951865862195,CelFiE,,,,
+sample,proportion_entity1,proportion_entity2,proportion_entity3,tool
+bulk_sample_1,0.68,0.02,0.06,CelFiE
+bulk_sample_2,0.68,0.15,0.10,CelFiE
+bulk_sample_3,0.68,0.05,0.25,CelFiE
+bulk_sample_4,0.68,0.24,0.01,CelFiE
 ```
 
 ## Other output data
 
-If `--save_intermeds` flag is specified, then also the intermediate files are saved. So, the preprocessing, test preprocessing, reference-free preprocessing and DMR analyses results will be saved in the corresponding folders. Moreover, for each tool specified with the corresponding flag, a results .csv file containing the cell type proportions for the bulk samples will be generated.
+If `--save_intermeds` flag is specified, then also the intermediate files are saved. So, the preprocessing of the reference and bulk samples, the DMR analyses results and all other intermediates files will be saved in the corresponding folders. Moreover, for each tool specified with the corresponding flag, a results .csv file containing the cell type proportions for the bulk samples will be generated within the `results/deconvolution_results` folder.
