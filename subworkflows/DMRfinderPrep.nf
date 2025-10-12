@@ -14,12 +14,12 @@ workflow DMRfinderPrep {
         samples_new = samples
             .map { sample_id, condition, _filepath ->
                     [condition, sample_id]}
-            .groupTuple().view()
+            .groupTuple()
 
         condition = samples_new
             .map{ condition, _sample_id -> condition }
             .collect()
-            .map { it.join(',')}.view()
+            .map { it.join(',')}
  
         sampleid = samples_new
             .map{ _condition,sample_id -> sample_id.collect{ it + "_dmrfinder_format" }.join(',') }
