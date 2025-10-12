@@ -8,7 +8,7 @@ process UXM_DECONV {
     input:
     path pats
     path pat_indeces
-    path atlas 
+    path atlas
 
     output:
     path "output.csv", emit: res
