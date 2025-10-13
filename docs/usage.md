@@ -64,7 +64,7 @@ DNA044134,nbl,DNA044134_S32.cov.gz
 | `type` | Cell type name                                                                               |
 | `file` | Full path to .cov file. File has to be gzipped and have the extension ".cov.gz".             |
 
-An [example samplesheet](../assets/reference.csv) has been provided with the pipeline.
+An example samplesheet can be found [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/ref_cov.csv).
 
 ### Bulk samples
 
@@ -87,7 +87,7 @@ name,sample
 20M_mix_Bmap_CLBGA_100_rep1,20M_mix_Bmap_CLBGA_100_rep1.cov.gz
 ```
 
-An [example samplesheet](../assets/bulk_samples.csv) has been provided with the pipeline.
+An example samplesheet can be found [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/bulk_samples_cov.csv).
 
 ## Reference-free deconvolution
 
@@ -234,7 +234,7 @@ chr22  50064064    50064084
 chr22  50064090    50064112
 ```
 
-An [example regions file](../assets/RRBS_regions20-200_chr.bed) has been provided with the pipeline.
+An example regions file can be found [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/RRBS_regions20-200_hg19_chr1_1M.bed).
 
 #### `--min_counts`
 
@@ -281,7 +281,7 @@ DNA044134,nbl,DNA044134_S32.bam,DNA044134_S32.bam.bai
 | `bam`  | Full path to .bam file.                                                                      |
 | `bai`  | Full path to .bam.bai file.                                                                  |
 
-An [example samplesheet](../assets/ref_bam.csv) has been provided with the pipeline.
+An example samplesheet can be found [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/ref_bam.csv).
 
 ### `--genome` and `--fasta`
 
@@ -303,7 +303,7 @@ DNA044133_S31,nbl
 DNA044134_S32,nbl
 ```
 
-An [example group file](../assets/groups.csv) has been provided with the pipeline.
+An example group file can be found [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/groups.csv).
 
 ### `--max_bp`
 
@@ -425,11 +425,11 @@ DNA044134,DNA044134_S32.bam,DNA044134_S32.bam.bai
 | `bam`  | Full path to .bam file.                                                                      |
 | `bai`  | Full path to .bam.bai file.                                                                  |
 
-An [example samplesheet](../assets/test_bam.csv) has been provided with the pipeline.
+An example samplesheet can be found [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/bulk_samples_bam.csv).
 
 #### `--uxm_atlas`
 
-If you want to avoid DMR selection because you already have a UXM-like atlas, you can specify it using this flag.
+If you want to avoid DMR selection because you already have a UXM-like atlas, you can specify it using this flag. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/wgbstools/Atlas.l3.tsv).
 
 ### MetDecode params
 
@@ -485,7 +485,7 @@ chr   start     end         entity1 entity2     entity3
 14	89493868	89493895    0.9833  0           0
 ```
 
-The file needs to be a tab separated (.tsv/.bed) file. The values in the matrix are methylation beta values.
+The file needs to be a tab separated (.tsv/.bed) file. The values in the matrix are methylation beta values. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/limma/reference_matrix_limma.tsv).
 
 ### `--merged_matrix`
 
@@ -502,7 +502,7 @@ If this parameter is specified, the pipeline skips the preprocessing step and im
 4,1,714254,714299,0.0,0.0162162,0.0252101,0.00319489,0.0,0.0240964
 ```
 
-The file needs to be a comma separated (.csv) file. The values in the matrix are methylation beta values.
+The file needs to be a comma separated (.csv) file. The values in the matrix are methylation beta values. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/limma/atlas_matrix.csv).
 
 ## Resource requests
 
