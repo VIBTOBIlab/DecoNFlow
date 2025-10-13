@@ -2,7 +2,7 @@
 
 process DMRFINDER_SELECTION {
 
-    container 'egiuili/r-v4.4.1:v1'
+    container 'egiuili/dmrfinder_r:v2'
 
     label 'process_high'
 

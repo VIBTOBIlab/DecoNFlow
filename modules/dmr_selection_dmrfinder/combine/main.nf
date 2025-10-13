@@ -2,7 +2,7 @@
 
 process DMRFINDER_COMBINE {
 
-    container 'egiuili/python3-3.9.16:v1'
+    container 'sofvdvel/dmrfinder_python:v1'
 
     label 'process_medium'
 
