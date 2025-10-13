@@ -6,6 +6,7 @@
 - Added 2 new modules, being Houseman's CP equality and inequality. Before, to run these modalities you had to specify the **--mod** EpiDISH parameter. Now this parameter is deprecated and to run the above two tools you just have to specify the corresponding new flag **--houseman_eq** and **--houseman_ineq**.
 - Changed the Docker container of CIBERSORT module with the EpiDISH container since EpiDISH package contains the CIBERSORT modality.
 - Readapted the output directories and files in the modules/conf to have a more clear structure.
+- Added tests on each individual module in the **tests/modules/** folder.
 
 ## [v2.2.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.2.0) - 2025-07-02
 
