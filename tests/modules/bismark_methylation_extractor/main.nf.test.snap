@@ -1,0 +1,27 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        "SRR1045638",
+                        "lung_1",
+                        "SRR1045638_sorted.bismark.cov.gz:md5,f844756ee3b5651516ffd6ced550f013"
+                    ]
+                ],
+                "coverage": [
+                    [
+                        "SRR1045638",
+                        "lung_1",
+                        "SRR1045638_sorted.bismark.cov.gz:md5,f844756ee3b5651516ffd6ced550f013"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T15:54:50.919677"
+    }
+}

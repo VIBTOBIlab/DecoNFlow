@@ -1,0 +1,31 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "SRR1045638_chr1_1M.pat.gz:md5,331c8e25724b1445488475ad55e4c56e"
+                ],
+                "1": [
+                    "SRR1045638_chr1_1M.pat.gz.csi:md5,f090bab43d0ecb732b3b130ddde6cbbe"
+                ],
+                "2": [
+                    "SRR1045638_chr1_1M.beta:md5,83e4e9b56bfc640c31dc2c5c794295db"
+                ],
+                "beta_file": [
+                    "SRR1045638_chr1_1M.beta:md5,83e4e9b56bfc640c31dc2c5c794295db"
+                ],
+                "pat": [
+                    "SRR1045638_chr1_1M.pat.gz:md5,331c8e25724b1445488475ad55e4c56e"
+                ],
+                "pat_index": [
+                    "SRR1045638_chr1_1M.pat.gz.csi:md5,f090bab43d0ecb732b3b130ddde6cbbe"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T18:45:21.899146"
+    }
+}

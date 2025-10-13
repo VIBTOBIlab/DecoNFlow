@@ -1,0 +1,25 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "atlas.csv:md5,2b0f45ca898dc432a17629bdad4c64b6"
+                ],
+                "1": [
+                    "samples.csv:md5,1eb4f51ccc61052d9566c842c5ca894a"
+                ],
+                "atlas": [
+                    "atlas.csv:md5,2b0f45ca898dc432a17629bdad4c64b6"
+                ],
+                "samples": [
+                    "samples.csv:md5,1eb4f51ccc61052d9566c842c5ca894a"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T16:13:27.904316"
+    }
+}

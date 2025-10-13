@@ -1,0 +1,22 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "test_matrix_deconv_output.csv:md5,bc49261ae2c451ff388ac8c15832e454"
+                ],
+                "1": [
+                    "test_matrix_residuals.csv:md5,7687490499abd139c756db1ed6702ec3"
+                ],
+                "output": [
+                    "test_matrix_deconv_output.csv:md5,bc49261ae2c451ff388ac8c15832e454"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:37:06.303326"
+    }
+}

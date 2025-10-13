@@ -1,0 +1,31 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        "SRR1045638",
+                        "lung_1"
+                    ]
+                ],
+                "1": [
+                    "SRR1045638_dmrfinder_format.cov.gz:md5,f844756ee3b5651516ffd6ced550f013"
+                ],
+                "dmrfinder_format_sample": [
+                    "SRR1045638_dmrfinder_format.cov.gz:md5,f844756ee3b5651516ffd6ced550f013"
+                ],
+                "metadata": [
+                    [
+                        "SRR1045638",
+                        "lung_1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T16:12:41.037929"
+    }
+}

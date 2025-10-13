@@ -1,0 +1,25 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        "SRR536238",
+                        "SRR536238_sample_mix.csv:md5,a73d829f6605251cb86578920b96762f"
+                    ]
+                ],
+                "preprocessed_refree": [
+                    [
+                        "SRR536238",
+                        "SRR536238_sample_mix.csv:md5,a73d829f6605251cb86578920b96762f"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:37:20.6156"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "1_tissue_proportions.txt:md5,c963c13af5e919ab038236a9ba8b2eac"
+                ],
+                "res": [
+                    "1_tissue_proportions.txt:md5,c963c13af5e919ab038236a9ba8b2eac"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T16:11:09.003125"
+    }
+}

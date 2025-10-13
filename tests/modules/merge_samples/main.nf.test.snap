@@ -1,0 +1,116 @@
+{
+    "step: atlas": {
+        "content": [
+            {
+                "0": [
+                    "atlas_matrix.csv:md5,daecadfa3bca210cd0edd3fe20655f98"
+                ],
+                "1": [
+                    
+                ],
+                "celfie_fin_matrix": [
+                    
+                ],
+                "fin_matrix": [
+                    "atlas_matrix.csv:md5,daecadfa3bca210cd0edd3fe20655f98"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:22:57.302447"
+    },
+    "step: celfie_atlas": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    "final_celfie_atlas_matrix.csv:md5,0fe63279c57a0bf45c109bccbe2ba495",
+                    "final_celfie_atlas_matrix.csv:md5,14a591fd36a7b0f8f530b4e455dee551",
+                    "final_celfie_atlas_matrix.csv:md5,21bedf3ca5bf52054be127fee07e4a59",
+                    "final_celfie_atlas_matrix.csv:md5,2d6781c3e9896d6fda09d67917daa4e1",
+                    "final_celfie_atlas_matrix.csv:md5,3a6d5b033e9ab69bd24f3ad97076f49e",
+                    "final_celfie_atlas_matrix.csv:md5,4756eebeddf30cba4d5183a273b3c86b",
+                    "final_celfie_atlas_matrix.csv:md5,7ba9f1a3adaf65a926dca8ae77998bcc",
+                    "final_celfie_atlas_matrix.csv:md5,f3e5442f720aed37fa60784118d760c2"
+                ],
+                "celfie_fin_matrix": [
+                    "final_celfie_atlas_matrix.csv:md5,0fe63279c57a0bf45c109bccbe2ba495",
+                    "final_celfie_atlas_matrix.csv:md5,14a591fd36a7b0f8f530b4e455dee551",
+                    "final_celfie_atlas_matrix.csv:md5,21bedf3ca5bf52054be127fee07e4a59",
+                    "final_celfie_atlas_matrix.csv:md5,2d6781c3e9896d6fda09d67917daa4e1",
+                    "final_celfie_atlas_matrix.csv:md5,3a6d5b033e9ab69bd24f3ad97076f49e",
+                    "final_celfie_atlas_matrix.csv:md5,4756eebeddf30cba4d5183a273b3c86b",
+                    "final_celfie_atlas_matrix.csv:md5,7ba9f1a3adaf65a926dca8ae77998bcc",
+                    "final_celfie_atlas_matrix.csv:md5,f3e5442f720aed37fa60784118d760c2"
+                ],
+                "fin_matrix": [
+                    
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T19:35:49.204532"
+    },
+    "step: test_celfie": {
+        "content": [
+            {
+                "0": [
+                    "test_celfie_matrix.csv:md5,52d0081736ee017fc3a20283a5e5a357",
+                    "test_celfie_matrix.csv:md5,5c9c3508dcaaa023cd828768fa855212",
+                    "test_celfie_matrix.csv:md5,983abe763cf31e83b6e4e597169f1426"
+                ],
+                "1": [
+                    
+                ],
+                "celfie_fin_matrix": [
+                    
+                ],
+                "fin_matrix": [
+                    "test_celfie_matrix.csv:md5,52d0081736ee017fc3a20283a5e5a357",
+                    "test_celfie_matrix.csv:md5,5c9c3508dcaaa023cd828768fa855212",
+                    "test_celfie_matrix.csv:md5,983abe763cf31e83b6e4e597169f1426"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:36:23.762787"
+    },
+    "step: test": {
+        "content": [
+            {
+                "0": [
+                    "test_matrix.csv:md5,0cacc1373a6e3a89cd5c33fd30f9b4d4",
+                    "test_matrix.csv:md5,12b24115125548c7aca0bb774c93fc45",
+                    "test_matrix.csv:md5,d9978db091a344b503e1583fbb8903a0"
+                ],
+                "1": [
+                    
+                ],
+                "celfie_fin_matrix": [
+                    
+                ],
+                "fin_matrix": [
+                    "test_matrix.csv:md5,0cacc1373a6e3a89cd5c33fd30f9b4d4",
+                    "test_matrix.csv:md5,12b24115125548c7aca0bb774c93fc45",
+                    "test_matrix.csv:md5,d9978db091a344b503e1583fbb8903a0"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:36:17.5315"
+    }
+}

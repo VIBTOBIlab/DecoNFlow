@@ -1,0 +1,19 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "reference.csv:md5,b8128db7cbad103d3829b539fab509c0"
+                ],
+                "reference_csv": [
+                    "reference.csv:md5,b8128db7cbad103d3829b539fab509c0"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T16:14:01.147892"
+    }
+}

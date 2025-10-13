@@ -1,0 +1,25 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        "hg19_chr1_1M.fa:md5,de4a9413276f5ce3c180bc0693ba6f89",
+                        "hg19_chr1_1M.fa.fai:md5,214bc367026d784167273beee5e3e2d9"
+                    ]
+                ],
+                "ref": [
+                    [
+                        "hg19_chr1_1M.fa:md5,de4a9413276f5ce3c180bc0693ba6f89",
+                        "hg19_chr1_1M.fa.fai:md5,214bc367026d784167273beee5e3e2d9"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:38:40.682628"
+    }
+}

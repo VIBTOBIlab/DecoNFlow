@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process CELFIE_PREPROCESSING"
+    script "modules/celfie/preprocessing/main.nf"
+    process "CELFIE_PREPROCESSING"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                // Create the tuple structure that matches your channel
+                // tuple val(meta), val(entity), path(cov)
+                input[0] = Channel.of([
+                            "SRR1045638",
+                            "lung_1",
+                            file(params.pipelines_testdata_base_path + '/covs/SRR1045638_1M.cov.gz')
+                ])
+                input[1] = Channel.of(
+                            file(params.pipelines_testdata_base_path + '/resources/RRBS_regions20-200_hg19_chr1_1M.bed')
+                            )
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

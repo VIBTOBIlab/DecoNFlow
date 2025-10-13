@@ -1,0 +1,48 @@
+{
+    "convert atlas | mean collapse method": {
+        "content": [
+            {
+                "0": [
+                    "converted_atlas.csv:md5,dc0c18eb01c9583623f7c31e3fb4a8f5"
+                ],
+                "1": [
+                    "converted_atlas.tsv:md5,d139fff8e0a95360664e19d04efc408c"
+                ],
+                "atlas_csv": [
+                    "converted_atlas.csv:md5,dc0c18eb01c9583623f7c31e3fb4a8f5"
+                ],
+                "atlas_tsv": [
+                    "converted_atlas.tsv:md5,d139fff8e0a95360664e19d04efc408c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:34:44.523092"
+    },
+    "convert atlas | median collapse method": {
+        "content": [
+            {
+                "0": [
+                    "converted_atlas.csv:md5,01a2c3d0af98c4e135f546f59ce0fe84"
+                ],
+                "1": [
+                    "converted_atlas.tsv:md5,12048f9084800b078167b39f364c920c"
+                ],
+                "atlas_csv": [
+                    "converted_atlas.csv:md5,01a2c3d0af98c4e135f546f59ce0fe84"
+                ],
+                "atlas_tsv": [
+                    "converted_atlas.tsv:md5,12048f9084800b078167b39f364c920c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:34:48.6719"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "reference_matrix_dmrfinder_1_1.tsv:md5,2b7ccb2316e350abfb239a2c8396e097"
+                ],
+                "1": [
+                    "reference_matrix_dmrfinder_1_1.csv:md5,b58c2b63fc6cb5771793fee7b9871d82"
+                ],
+                "2": [
+                    "DMRfinder_analysis.out:md5,ded1bc076b662cbd72d7ced4dd240c07"
+                ],
+                "dmr_logfile": [
+                    "DMRfinder_analysis.out:md5,ded1bc076b662cbd72d7ced4dd240c07"
+                ],
+                "reference_csv": [
+                    "reference_matrix_dmrfinder_1_1.csv:md5,b58c2b63fc6cb5771793fee7b9871d82"
+                ],
+                "reference_tsv": [
+                    "reference_matrix_dmrfinder_1_1.tsv:md5,2b7ccb2316e350abfb239a2c8396e097"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T12:33:24.381713"
+    }
+}

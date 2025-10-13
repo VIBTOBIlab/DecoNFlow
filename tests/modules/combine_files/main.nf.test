@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process COMBINE_FILES"
+    script "modules/combine_files/main.nf"
+    process "COMBINE_FILES"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                // define inputs of the process here. Example:
+                input[0] = Channel.of([
+                    ['meth_atlas', 'CelFiE'],
+                    [file(params.pipelines_testdata_base_path + 'modules/meth_atlas/test_matrix_deconv_output.csv'),
+                    file(params.pipelines_testdata_base_path + 'modules/celfie/1_tissue_proportions.txt')]
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

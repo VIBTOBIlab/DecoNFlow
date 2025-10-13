@@ -1,0 +1,25 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "SRR536238_sample_mix.csv:md5,e3a16d533203066c26ddf0bf1fb9ea9b"
+                ],
+                "1": [
+                    "SRR536238_sample_celfie_mix.csv:md5,79b14b31e2b5329938198a47ad1e7f3d"
+                ],
+                "preprocessed_celfie_test": [
+                    "SRR536238_sample_celfie_mix.csv:md5,79b14b31e2b5329938198a47ad1e7f3d"
+                ],
+                "preprocessed_test": [
+                    "SRR536238_sample_mix.csv:md5,e3a16d533203066c26ddf0bf1fb9ea9b"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T17:37:39.928554"
+    }
+}

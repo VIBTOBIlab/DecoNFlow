@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process DMRFINDER_PREPROCESSING"
+    script "modules/dmr_selection_dmrfinder/preprocessing/main.nf"
+    process "DMRFINDER_PREPROCESSING"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                // tuple val(meta), val(entity), path(cov)
+                input[0] = Channel.of([
+                    "SRR1045638",
+                    "lung_1",
+                    file(params.pipelines_testdata_base_path + '/covs/SRR1045638_1M.cov.gz')
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

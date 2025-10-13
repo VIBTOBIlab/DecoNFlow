@@ -1,0 +1,19 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "celfie_matrix.txt:md5,dc59a604e2f663037582bbdbc3b4e3db"
+                ],
+                "merged_table": [
+                    "celfie_matrix.txt:md5,dc59a604e2f663037582bbdbc3b4e3db"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-13T16:11:14.065409"
+    }
+}
