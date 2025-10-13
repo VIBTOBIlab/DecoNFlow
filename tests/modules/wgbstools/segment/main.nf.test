@@ -6,17 +6,6 @@ nextflow_process {
 
     test("Should run without failures") {
 
-        setup {
-            run("INIT_GENOME") {
-                script "modules/wgbstools/init_genome/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of(file(params.pipelines_testdata_base_path + '/resources/hg19_chr1_1M.fa'))
-                    """
-                }
-            }
-        }
-
         when {
             params {
                 // define parameters here. Example:
