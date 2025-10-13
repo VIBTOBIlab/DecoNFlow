@@ -522,6 +522,12 @@
                     "fa_icon": "fas fa-question-circle",
                     "hidden": true
                 },
+                "pipelines_testdata_base_path": {
+                    "type": "string",
+                    "description": "GitHub repository base path for test data.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
                 "validate_params": {
                     "type": "boolean",
                     "description": "Boolean whether to validate parameters against the schema at runtime",
