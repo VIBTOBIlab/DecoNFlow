@@ -1,0 +1,147 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("-profile test (limma + meth_atlas)") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                DMRselection = 'limma'
+                meth_atlas = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size()
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: all reference-based + limma") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                DMRselection = 'limma'
+                meth_atlas = true
+                celfie = true
+                metdecode = true
+                epidish = true
+                houseman_eq = true
+                houseman_ineq = true
+                cibersort = true
+                episcore = true
+                uxm = true
+                prmeth = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size()
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: all reference-based + DMRfinder") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                DMRselection = 'DMRfinder'
+                top = 50
+                dmrfinder_pvalue = 1
+                dmrfinder_qvalue = 1
+                delta = 0
+                meth_atlas = true
+                celfie = true
+                metdecode = true
+                epidish = true
+                houseman_eq = true
+                houseman_ineq = true
+                cibersort = true
+                episcore = true
+                uxm = true
+                prmeth = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size()
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: all reference-based + wgbstools") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                DMRselection = 'wgbstools'
+                min_cpg_uxm = 1
+                meth_atlas = true
+                celfie = true
+                metdecode = true
+                epidish = true
+                houseman_eq = true
+                houseman_ineq = true
+                cibersort = true
+                episcore = true
+                uxm = true
+                prmeth = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size()
+                ).match() }
+            )
+        }
+    }
+
+
+    test("Test scenario: reference-free (RefFreeCellMix) + RRBS20-200 regions ") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                ref_freecell_mix = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size()
+                ).match() }
+            )
+        }
+    }
+}

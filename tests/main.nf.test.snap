@@ -1,0 +1,52 @@
+{
+    "Test scenario: reference-free (RefFreeCellMix) + RRBS20-200 regions ": {
+        "content": [
+            6
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-20T17:36:17.626662"
+    },
+    "Test scenario: all reference-based + wgbstools": {
+        "content": [
+            55
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-20T15:05:56.016856"
+    },
+    "-profile test (limma + meth_atlas)": {
+        "content": [
+            16
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-20T10:04:42.655887"
+    },
+    "Test scenario: all reference-based + limma": {
+        "content": [
+            55
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-20T10:11:08.87142"
+    },
+    "Test scenario: all reference-based + DMRfinder": {
+        "content": [
+            55
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-20T15:05:02.151186"
+    }
+}
