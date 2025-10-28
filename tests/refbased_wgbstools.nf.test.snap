@@ -1,0 +1,13 @@
+{
+    "Test scenario: all reference-based + wgbstools": {
+        "content": [
+            55,
+            "combined_results.csv:md5,589fbfaa960255d8c2be5bdaa66401ec"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-28T15:56:25.671532"
+    }
+}

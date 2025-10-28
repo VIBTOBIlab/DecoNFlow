@@ -1,0 +1,13 @@
+{
+    "Test scenario: all reference-based + DMRfinder": {
+        "content": [
+            55,
+            "combined_results.csv:md5,e8e9a85b82e396ae13aa88fa78d6563b"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-28T15:51:16.055485"
+    }
+}

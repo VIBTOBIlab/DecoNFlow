@@ -1,0 +1,37 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Test scenario: all reference-based + limma") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                DMRselection = 'limma'
+                meth_atlas = true
+                celfie = true
+                metdecode = true
+                epidish = true
+                houseman_eq = true
+                houseman_ineq = true
+                cibersort = true
+                episcore = true
+                uxm = true
+                prmeth = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    path("$outputDir/deconvolution_results/combined_results.csv")
+                ).match() }
+            )
+        }
+    }
+}

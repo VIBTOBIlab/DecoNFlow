@@ -1,0 +1,28 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Test scenario: -profile test (limma + meth_atlas)") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                DMRselection = 'limma'
+                meth_atlas = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    path("$outputDir/deconvolution_results/combined_results.csv")
+                ).match() }
+            )
+        }
+    }
+}

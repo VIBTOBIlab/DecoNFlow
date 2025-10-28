@@ -1,0 +1,13 @@
+{
+    "Test scenario: -profile test (limma + meth_atlas)": {
+        "content": [
+            16,
+            "combined_results.csv:md5,eb533978b4f89dc347293553bb44f4f4"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-28T15:45:05.875397"
+    }
+}

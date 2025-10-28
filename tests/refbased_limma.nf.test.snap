@@ -1,0 +1,13 @@
+{
+    "Test scenario: all reference-based + limma": {
+        "content": [
+            55,
+            "combined_results.csv:md5,f72a8f04ce9cfb7f0c70267bc5704f87"
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2025-10-28T15:48:47.083462"
+    }
+}

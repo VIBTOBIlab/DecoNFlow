@@ -1,0 +1,47 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Test scenario: reference-free (RefFreeCellMix) + RRBS20-200 regions ") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                meth_atlas = false
+                ref_freecell_mix = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    path("$outputDir/deconvolution_results/combined_results.csv")
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: reference-free (MeDeCom) + RRBS20-200 regions ") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "${outputDir}"
+                meth_atlas = false
+                medecom = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path("$outputDir/deconvolution_results/combined_results.csv").readLines().size() == 4 }
+            )
+        }
+    }
+}
