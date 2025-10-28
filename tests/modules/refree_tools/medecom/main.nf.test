@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process MEDECOM"
+    script "modules/refree_tools/medecom/main.nf"
+    process "MEDECOM"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                outdir = "$outputDir"
+                save_intermeds = true
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                                file(params.pipelines_testdata_base_path + '/modules/refree_tools/test_matrix.csv')
+                            )
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def outputFile = path(process.out.output.get(0))
+            assert outputFile.readLines().size() == 4
+        }
+
+    }
+
+}
