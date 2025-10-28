@@ -266,7 +266,7 @@ workflow DNAmDeconv{
      * PROCESS: Combine results in a unique table
      */
     proportion_ch = proportion_ch
-                        .toList()
+                        .toSortedList{ a, b -> a[0] <=> b[0] }
                         .map { list ->
                             def methods = []
                             def files = []
@@ -276,6 +276,7 @@ workflow DNAmDeconv{
                             }
                             [methods, files]
                         }
+
     COMBINE_FILES( proportion_ch )
 
 }
