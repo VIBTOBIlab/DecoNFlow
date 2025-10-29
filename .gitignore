@@ -10,3 +10,5 @@ test_folder/
 null/
 .nf-test.log
 .nf-test/
+.github/actions
+.github/workflows
