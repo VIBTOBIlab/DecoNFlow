@@ -41,6 +41,12 @@
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
                 },
+                "storedir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The store directory where the results are saved. You have to use absolute paths to storage on Cloud infrastructure.",
+                    "fa_icon": "fas fa-folder-open"
+                },
                 "ref_bams": {
                     "type": "string",
                     "format": "file-path",
