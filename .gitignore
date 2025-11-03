@@ -10,5 +10,7 @@ test_folder/
 null/
 .nf-test.log
 .nf-test/
-.github/actions
-.github/workflows
+.github/workflows/fix_linting.yml
+.github/workflows/linting.yml
+.github/workflows/linting_comment.yml
+.github/workflows/template-version-comment.yml
