@@ -15,7 +15,7 @@ process FINDMARKERS {
 
     script:
     def args = ""
-    args += "-@ ${(task.cpus - 2) as int}"
+    args += "-@ ${(task.cpus) as int}"
     def delta = params.delta
     def pval = params.adjp
     if (params.only_hypo) {
