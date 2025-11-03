@@ -130,8 +130,8 @@ jobs:
 
   confirm-pass:
     runs-on:
-      - runs-on=${{ github.run_id }}-confirm-pass
-      - runner=2cpu-linux-x64
+      - runs-on=ubuntu-latest
+      #- runner=2cpu-linux-x64
     needs: [nf-test]
     if: always()
     steps:
