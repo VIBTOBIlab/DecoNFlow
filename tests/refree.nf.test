@@ -2,6 +2,7 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
+    tags "cpu"
 
     test("Test scenario: reference-free (RefFreeCellMix) + RRBS20-200 regions ") {
 

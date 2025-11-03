@@ -2,6 +2,7 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
+    tags "cpu"
 
     test("Test scenario: all reference-based + limma") {
 
