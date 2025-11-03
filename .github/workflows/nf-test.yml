@@ -123,7 +123,7 @@ jobs:
           shard: ${{ matrix.shard }}
           total_shards: ${{ needs.get-shards.outputs.total_shards }}
           filters: ${{ matrix.filters }}
-          #tags: "cpu"
+          run_all: true
 
       - name: Report test status
         if: ${{ always() }}
