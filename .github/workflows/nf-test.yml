@@ -37,8 +37,9 @@ env:
 jobs:
   get-shards:
     runs-on:
-      - runs-on=${{ github.run_id }}-nf-test-get-shards
-      - runner=2cpu-linux-x64
+      ubuntu-latest
+      #- runs-on=${{ github.run_id }}-nf-test-get-shards
+      #- runner=2cpu-linux-x64
     name: "Get Shards"
     outputs:
       shard: ${{ steps.set-shards.outputs.shard }}
@@ -67,8 +68,9 @@ jobs:
   nf-test:
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }} | ${{ matrix.NXF_VER }} | ${{ matrix.filters }}"
     needs: [get-shards]
-    runs-on: # use self-hosted runners
-      - runs-on=ubuntu-latest
+    runs-on:
+      ubuntu-latest # use GitHub runners
+      #- runs-on=ubuntu-latest
       #- runner=4cpu-linux-x64
       #- image=ubuntu22-full-x64
     env:
@@ -130,7 +132,8 @@ jobs:
 
   confirm-pass:
     runs-on:
-      - runs-on=ubuntu-latest
+      ubuntu-latest
+      #- runs-on=ubuntu-latest
       #- runner=2cpu-linux-x64
     needs: [nf-test]
     if: always()
