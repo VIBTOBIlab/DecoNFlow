@@ -19,18 +19,6 @@ on:
           - "self-hosted"
         default: "ubuntu-latest"
 
-debug-conditions:
-  runs-on: ubuntu-latest
-  needs: [get-shards]
-  steps:
-    - name: Debug outputs
-      run: |
-        echo "Shard output: ${{ needs.get-shards.outputs.shard }}"
-        echo "Total shards: ${{ needs.get-shards.outputs.total_shards }}"
-        echo "Event name: ${{ github.event_name }}"
-        echo "Repository: ${{ github.repository }}"
-        echo "Condition result: ${{ needs.get-shards.outputs.total_shards > 0 }}"
-
 # Cancel if a newer run is started
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -75,6 +63,18 @@ jobs:
         run: |
           echo "shard=${{ steps.set-shards.outputs.shard }}" >> $GITHUB_ENV
           echo "total_shards=${{ steps.set-shards.outputs.total_shards }}" >> $GITHUB_ENV
+
+  debug-conditions:
+    runs-on: ubuntu-latest
+    needs: [get-shards]
+    steps:
+      - name: Debug outputs
+        run: |
+          echo "Shard output: ${{ needs.get-shards.outputs.shard }}"
+          echo "Total shards: ${{ needs.get-shards.outputs.total_shards }}"
+          echo "Event name: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Condition result: ${{ needs.get-shards.outputs.total_shards > 0 }}"
 
   nf-test:
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }} | ${{ matrix.NXF_VER }} | ${{ matrix.filters }}"
