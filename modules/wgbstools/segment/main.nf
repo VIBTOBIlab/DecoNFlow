@@ -15,7 +15,7 @@ process SEGMENT {
 
     script:
     def args = ''
-    args += "-@ ${(task.cpus) as int}"
+    args += "-@ ${task.cpus as int}"
     """
     wgbstools segment \
     --betas $betas \
