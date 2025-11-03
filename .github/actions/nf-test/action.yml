@@ -73,8 +73,7 @@ runs:
           --profile=${{ inputs.profile }} \
           --filter ${{ inputs.filters }} \
           --tap=test.tap \
-          --verbose \
-          --tag ${{ inputs.tags }}
+          --verbose
 
     - name: Generate test summary
       if: always()
