@@ -68,9 +68,9 @@ jobs:
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }} | ${{ matrix.NXF_VER }} | ${{ matrix.filters }}"
     needs: [get-shards]
     runs-on: # use self-hosted runners
-      - runs-on=${{ github.run_id }}-nf-test
-      - runner=4cpu-linux-x64
-      - image=ubuntu22-full-x64
+      - runs-on=ubuntu-latest
+      #- runner=4cpu-linux-x64
+      #- image=ubuntu22-full-x64
     env:
       NXF_VER: ${{ matrix.NXF_VER }}
       NXF_ANSI_LOG: false
