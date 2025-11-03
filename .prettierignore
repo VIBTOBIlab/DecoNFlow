@@ -8,3 +8,4 @@ testing*
 *.pyc
 bin/
 *.nf.test.snap
+.github/*
