@@ -37,8 +37,6 @@ env:
 jobs:
   get-shards:
     runs-on: ubuntu-latest
-      #- runs-on=${{ github.run_id }}-nf-test-get-shards
-      #- runner=2cpu-linux-x64
     name: "Get Shards"
     outputs:
       shard: ${{ steps.set-shards.outputs.shard }}
@@ -80,9 +78,6 @@ jobs:
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }} | ${{ matrix.NXF_VER }} | ${{ matrix.filters }}"
     needs: [get-shards]
     runs-on: ubuntu-latest # use GitHub runners
-      #- runs-on=ubuntu-latest
-      #- runner=4cpu-linux-x64
-      #- image=ubuntu22-full-x64
     env:
       NXF_VER: ${{ matrix.NXF_VER }}
       NXF_ANSI_LOG: false
@@ -141,8 +136,6 @@ jobs:
 
   confirm-pass:
     runs-on: ubuntu-latest
-      #- runs-on=ubuntu-latest
-      #- runner=2cpu-linux-x64
     needs: [nf-test]
     if: always()
     steps:
