@@ -116,7 +116,14 @@ The scripts and containers have been written and built by Edoardo Giuili ([@edog
 
 # Citations
 
-If you use this pipeline for your analysis, please cite it using the following doi: (...).
+If you use this pipeline for your analysis, please cite:
+
+> A benchmark of DNA methylation deconvolution methods for tumoral fraction estimation using DecoNFlow
+>
+> Edoardo Giuili, Sofie Van de Velde, Sam Kint, Maísa R Ferro dos Santos, Lotte Cornelli, Sofie Roelandt, Kathleen Schoofs, Renske Imschoot, Ruben Van Paemel, Leander Meuris, Celine Everaert, Katleen De Preter.
+>
+> bioRxiv 2025 Nov 27. doi: [10.1101/2025.11.27.688590](https://www.biorxiv.org/content/10.1101/2025.11.27.688590v1)
+
 You can cite the nf-core publication as follows:
 
 > The nf-core framework for community-curated bioinformatics pipelines.
