@@ -2,7 +2,7 @@
 
 process DMRFINDER_PREPROCESSING {
 
-    container 'ubuntu:rolling'
+    container 'ubuntu:24.04'
 
     label 'process_low'
 
