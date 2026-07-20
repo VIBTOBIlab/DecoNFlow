@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process MEDECOM {
-    container 'egiuili/medecom:v1'
+    container 'egiuili/medecom:v2'
 
     label 'process_high'
 
@@ -10,6 +10,7 @@ process MEDECOM {
 
     output:
     path '*deconv_output*.csv', emit: output
+    path '*.rds', emit: output_rds
 
     script:
     """

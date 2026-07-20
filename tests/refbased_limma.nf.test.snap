@@ -2,7 +2,7 @@
     "Test scenario: all reference-based + limma": {
         "content": [
             55,
-            "combined_results.csv:md5,f72a8f04ce9cfb7f0c70267bc5704f87"
+            "combined_results.csv:md5,2a91b9258bf3112881fe7b0906e29ef4"
         ],
         "meta": {
             "nf-test": "0.9.0",

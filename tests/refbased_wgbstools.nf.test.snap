@@ -2,7 +2,7 @@
     "Test scenario: all reference-based + wgbstools": {
         "content": [
             55,
-            "combined_results.csv:md5,589fbfaa960255d8c2be5bdaa66401ec"
+            "combined_results.csv:md5,630cc998dcb1a8370b7b26fbd6451d08"
         ],
         "meta": {
             "nf-test": "0.9.0",
