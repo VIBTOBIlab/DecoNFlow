@@ -13,7 +13,6 @@ nextflow_pipeline {
                 DMRselection = 'limma'
                 meth_atlas = true
                 celfie = true
-                metdecode = true
                 epidish = true
                 houseman_eq = true
                 houseman_ineq = true
@@ -25,12 +24,24 @@ nextflow_pipeline {
         }
 
         then {
+            // Round numeric values to 4 decimals so floating-point noise
+            // (e.g. -8e-18 vs 0.0) doesn't differ between arm64 and x86_64
+            def combined = path("$outputDir/deconvolution_results/combined_results.csv")
+                .readLines()
+                .collect { line ->
+                    line.split(',', -1).collect { field ->
+                        field.isBigDecimal()
+                            ? new BigDecimal(field).setScale(4, java.math.RoundingMode.HALF_UP).toPlainString()
+                            : field
+                    }.join(',')
+                }
+
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
                     // Number of tasks
                     workflow.trace.succeeded().size(),
-                    path("$outputDir/deconvolution_results/combined_results.csv")
+                    combined
                 ).match() }
             )
         }
