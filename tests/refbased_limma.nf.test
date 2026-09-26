@@ -13,7 +13,6 @@ nextflow_pipeline {
                 DMRselection = 'limma'
                 meth_atlas = true
                 celfie = true
-                metdecode = true
                 epidish = true
                 houseman_eq = true
                 houseman_ineq = true

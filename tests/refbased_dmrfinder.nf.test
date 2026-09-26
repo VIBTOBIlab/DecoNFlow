@@ -17,7 +17,6 @@ nextflow_pipeline {
                 delta = 0
                 meth_atlas = true
                 celfie = true
-                metdecode = true
                 epidish = true
                 houseman_eq = true
                 houseman_ineq = true

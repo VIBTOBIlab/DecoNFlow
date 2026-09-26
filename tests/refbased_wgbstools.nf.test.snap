@@ -1,7 +1,7 @@
 {
     "Test scenario: all reference-based + wgbstools": {
         "content": [
-            55,
+            51,
             [
                 "sample,colon,lung,pancreas,tool",
                 "SRR536238,0.2411,0.7589,0.0000,CIBERSORT",
@@ -22,9 +22,6 @@
                 "SRR536238,0.3938,0.5491,0.0000,Houseman_ineq",
                 "SRR620008,0.0735,0.2971,0.4985,Houseman_ineq",
                 "SRR641695,0.7592,0.0000,0.1740,Houseman_ineq",
-                "SRR536238,0.2280,0.7720,0.0000,MetDecode",
-                "SRR620008,0.0900,0.0750,0.8350,MetDecode",
-                "SRR641695,0.8260,0.0250,0.1500,MetDecode",
                 "SRR536238,0.2051,0.7949,0.0000,PRMeth",
                 "SRR620008,0.1365,0.2658,0.5976,PRMeth",
                 "SRR641695,0.6673,0.1131,0.2196,PRMeth",
@@ -36,7 +33,7 @@
                 "SRR641695,0.7840,0.0520,0.1640,meth_atlas"
             ]
         ],
-        "timestamp": "2026-09-26T17:05:50.992037",
+        "timestamp": "2026-09-26T17:25:35.2929",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "24.04.4"

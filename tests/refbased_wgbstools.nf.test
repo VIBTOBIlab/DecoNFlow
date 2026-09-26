@@ -14,7 +14,6 @@ nextflow_pipeline {
                 min_cpg_uxm = 1
                 meth_atlas = true
                 celfie = true
-                metdecode = true
                 epidish = true
                 houseman_eq = true
                 houseman_ineq = true

@@ -1,7 +1,7 @@
 {
     "Test scenario: all reference-based + limma": {
         "content": [
-            55,
+            51,
             [
                 "sample,colon,lung,pancreas,tool",
                 "SRR536238,0.4139,0.5861,0.0000,CIBERSORT",
@@ -22,9 +22,6 @@
                 "SRR536238,0.5849,0.3727,0.0000,Houseman_ineq",
                 "SRR620008,0.1117,0.3754,0.3797,Houseman_ineq",
                 "SRR641695,0.7441,0.1014,0.0487,Houseman_ineq",
-                "SRR536238,0.6800,0.3200,0.0000,MetDecode",
-                "SRR620008,0.2010,0.0680,0.7310,MetDecode",
-                "SRR641695,0.3830,0.3190,0.2980,MetDecode",
                 "SRR536238,0.4060,0.5940,0.0000,PRMeth",
                 "SRR620008,0.2950,0.2701,0.4349,PRMeth",
                 "SRR641695,0.8257,0.0000,0.1743,PRMeth",
@@ -36,7 +33,7 @@
                 "SRR641695,0.8370,0.0870,0.0760,meth_atlas"
             ]
         ],
-        "timestamp": "2026-09-26T17:12:58.333324",
+        "timestamp": "2026-09-26T17:23:34.491975",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "24.04.4"

@@ -1,7 +1,7 @@
 {
     "Test scenario: all reference-based + DMRfinder": {
         "content": [
-            55,
+            51,
             [
                 "sample,lung,pancreas,colon,tool",
                 "SRR536238,0.5151,0.0000,0.4849,CIBERSORT",
@@ -22,9 +22,6 @@
                 "SRR536238,0.3853,0.0000,0.6147,Houseman_ineq",
                 "SRR620008,0.1180,0.7503,0.0290,Houseman_ineq",
                 "SRR641695,0.0000,0.2847,0.5898,Houseman_ineq",
-                "SRR536238,0.4270,0.0000,0.5730,MetDecode",
-                "SRR620008,0.0160,0.9840,0.0000,MetDecode",
-                "SRR641695,0.0000,0.2330,0.7670,MetDecode",
                 "SRR536238,0.4759,0.0000,0.5241,PRMeth",
                 "SRR620008,0.0795,0.8629,0.0576,PRMeth",
                 "SRR641695,0.0000,0.4118,0.5882,PRMeth",
@@ -36,7 +33,7 @@
                 "SRR641695,0.0000,0.3260,0.6740,meth_atlas"
             ]
         ],
-        "timestamp": "2026-09-26T17:09:34.624775",
+        "timestamp": "2026-09-26T17:24:40.123558",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "24.04.4"
