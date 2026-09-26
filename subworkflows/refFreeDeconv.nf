@@ -38,7 +38,7 @@ workflow refFreeDeconv {
     }  
     if (params.ref_freecell_mix || params.benchmark) {
         REF_FREECELL_MIX(MERGE_SAMPLES.out.fin_matrix)
-        refree_outputChannels = refree_outputChannels.mix( REF_FREECELL_MIX.out.output.map { file -> tuple('RefFreeCellMix', file) } )
+        refree_outputChannels = refree_outputChannels.mix( REF_FREECELL_MIX.out.output_samples.map { file -> tuple('RefFreeCellMix', file) } )
     }   
 
     emit:

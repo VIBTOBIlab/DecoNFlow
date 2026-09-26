@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process REF_FREECELL_MIX {
-    container 'egiuili/prmeth:v1'
+    container 'egiuili/prmeth:v3'
 
     label 'process_medium'
 
@@ -9,7 +9,8 @@ process REF_FREECELL_MIX {
     path(matrix)
 
     output:
-    path "*deconv_output*.csv", emit: output
+    path "test_samples_deconv_output*.csv", emit: output_samples
+    path "test_samples_deconv_W_mod*.csv", emit: output_components
 
     script:
     """
