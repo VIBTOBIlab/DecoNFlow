@@ -48,7 +48,7 @@ workflow PIPELINE_INITIALISATION {
     def before_text = ""
     def after_text = '\n' + citationText() + '\n' + bannerText()
 
-    def command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --test_set test_set.csv --regions regions.bed --outdir <OUTDIR>"
+    def command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --bulk_samples bulk_samples.csv --regions regions.bed --outdir <OUTDIR>"
 
     UTILS_NFSCHEMA_PLUGIN (
         workflow,
@@ -113,14 +113,11 @@ workflow PIPELINE_COMPLETION {
 // Check and validate pipeline parameters
 //
 def validateInputParameters() {
-    if (!params.medecom && !params.ref_freecell_mix && !params.uxm && !params.houseman_eq && !params.houseman_ineq && !params.meth_atlas && !params.celfie && !params.metdecode && !params.epidish && !params.prmeth && !params.methyl_resolver && !params.episcore && !params.cibersort && !params.benchmark) {
+    if (!params.medecom && !params.ref_freecell_mix && !params.houseman_eq && !params.houseman_ineq && !params.meth_atlas && !params.celfie && !params.metdecode && !params.epidish && !params.prmeth && !params.methyl_resolver && !params.episcore && !params.cibersort && !params.benchmark) {
         error("\n----> ERROR: specify at least one deconvolution tool. <----\n")
     }
     if ((params.celfie || params.metdecode) && !params.input) {
         error("\n----> ERROR: you need to specify the reference samples (--input) when using CelFiE or MetDecode. <----\n")
-    }
-    if (params.DMRselection != "wgbstools" && params.DMRselection != "DMRfinder" && params.DMRselection != "limma" && !params.ref_matrix && !params.uxm_atlas && !params.ref_freecell_mix && !params.medecom) {
-        error("\n----> ERROR: you need to specify one DMR selection approach (--DMRselection). <----\n")
     }
 }
 
