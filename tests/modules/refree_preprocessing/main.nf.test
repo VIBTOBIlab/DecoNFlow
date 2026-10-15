@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process REFREE_PREPROCESSING"
-    script "modules/refree_preprocessing/main.nf"
+    script "modules/local/refree_preprocessing/main.nf"
     process "REFREE_PREPROCESSING"
 
     test("Should run without failures") {

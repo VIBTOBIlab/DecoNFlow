@@ -1,14 +1,14 @@
 nextflow_process {
 
     name "Test Process BAM2PAT"
-    script "modules/wgbstools/bam2pat/main.nf"
+    script "modules/local/wgbstools/bam2pat/main.nf"
     process "BAM2PAT"
 
     test("Should run without failures") {
 
         setup {
             run("INIT_GENOME") {
-                script "modules/wgbstools/init_genome/main.nf"
+                script "modules/local/wgbstools/init_genome/main.nf"
                 process {
                     """
                     input[0] = Channel.of(file(params.pipelines_testdata_base_path + '/resources/hg19_chr1_1M.fa'))

@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SELECT_REGIONS"
-    script "modules/wgbstools/select_regions/main.nf"
+    script "modules/local/wgbstools/select_regions/main.nf"
     process "SELECT_REGIONS"
 
     test("Should run without failures") {

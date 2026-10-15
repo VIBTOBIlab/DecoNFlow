@@ -6,22 +6,21 @@
     IMPORT MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { paramsSummaryLog                       } from 'plugin/nf-schema'
 include { samplesheetToList                      } from 'plugin/nf-schema'
-include { inHousePrep                            } from "../subworkflows/inHousePrep"
-include { DMRfinderPrep                          } from "../subworkflows/DMRfinderPrep"
-include { refBasedDeconv                         } from "../subworkflows/refBasedDeconv"
-include { refFreeDeconv                          } from "../subworkflows/refFreeDeconv"
-include { CELFIE                                 } from "../subworkflows/celfie"
-include { CELFIE_PREPROCESSING                   } from "../modules/celfie/preprocessing/main"
-include { TEST_PREPROCESSING                     } from "../modules/test_preprocessing/main"
-include { COMBINE_FILES                          } from "../modules/combine_files/main"
-include { MERGE_SAMPLES                          } from "../modules/merge_samples/main"
-include { LIMMA                                  } from "../modules/dmr_selection_limma/limma/main"
-include { UXM                                    } from "../subworkflows/uxm"
-include { WGBSTOOLS                              } from "../subworkflows/wgbstools"
-include { PROCESS_REF_MATRIX                     } from "../modules/process_ref_matrix/main"
-include { METDECODE                              } from "../subworkflows/metdecode"
+include { inHousePrep                            } from "../subworkflows/local/inHousePrep"
+include { DMRfinderPrep                          } from "../subworkflows/local/DMRfinderPrep"
+include { refBasedDeconv                         } from "../subworkflows/local/refBasedDeconv"
+include { refFreeDeconv                          } from "../subworkflows/local/refFreeDeconv"
+include { CELFIE                                 } from "../subworkflows/local/celfie"
+include { CELFIE_PREPROCESSING                   } from "../modules/local/celfie/preprocessing/main"
+include { TEST_PREPROCESSING                     } from "../modules/local/test_preprocessing/main"
+include { COMBINE_FILES                          } from "../modules/local/combine_files/main"
+include { MERGE_SAMPLES                          } from "../modules/local/merge_samples/main"
+include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
+include { UXM                                    } from "../subworkflows/local/uxm"
+include { WGBSTOOLS                              } from "../subworkflows/local/wgbstools"
+include { PROCESS_REF_MATRIX                     } from "../modules/local/process_ref_matrix/main"
+include { METDECODE                              } from "../subworkflows/local/metdecode"
 
 
 /*
@@ -31,25 +30,6 @@ include { METDECODE                              } from "../subworkflows/metdeco
 */
 
 workflow DNAmDeconv{
-
-    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-
-    // Print parameter summary log to screen
-    log.info paramsSummaryLog(workflow) + citation
-
-    // Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
-    log.info """
-        ==============================================================================================
-
-            ██████╗*███████╗*██████╗*██████╗*███╗***██╗███████╗██╗******██████╗*██╗****██╗
-            ██╔══██╗██╔════╝██╔════╝██╔═══██╗████╗**██║██╔════╝██║*****██╔═══██╗██║****██║
-            ██║**██║█████╗**██║*****██║***██║██╔██╗*██║█████╗**██║*****██║***██║██║*█╗*██║
-            ██║**██║██╔══╝**██║*****██║***██║██║╚██╗██║██╔══╝**██║*****██║***██║██║███╗██║
-            ██████╔╝███████╗╚██████╗╚██████╔╝██║*╚████║██║*****███████╗╚██████╔╝╚███╔███╔╝
-            ╚═════╝*╚══════╝*╚═════╝*╚═════╝*╚═╝**╚═══╝╚═╝*****╚══════╝*╚═════╝**╚══╝╚══╝*
-
-        ==============================================================================================
-        """.stripIndent()
 
     /*
      * Initiliaze the channels

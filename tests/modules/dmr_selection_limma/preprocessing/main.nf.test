@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process PREPROCESSING"
-    script "modules/dmr_selection_limma/preprocessing/main.nf"
+    script "modules/local/dmr_selection_limma/preprocessing/main.nf"
     process "PREPROCESSING"
 
     test("Should run without failures") {

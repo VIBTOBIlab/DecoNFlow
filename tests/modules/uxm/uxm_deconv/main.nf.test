@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process UXM_DECONV"
-    script "modules/uxm/uxm_deconv/main.nf"
+    script "modules/local/uxm/uxm_deconv/main.nf"
     process "UXM_DECONV"
 
     test("Should run without failures") {

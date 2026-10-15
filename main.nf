@@ -1,63 +1,70 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    DecoNFlow
+    VIBTOBIlab/DecoNFlow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/VIBTOBIlab/DecoNFlow
 ----------------------------------------------------------------------------------------
 */
 
-include { validateParameters; paramsHelp } from 'plugin/nf-schema'
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOW FOR PIPELINE
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { DNAmDeconv } from './workflows/DNAmDeconv'
+include { DNAmDeconv              } from './workflows/DNAmDeconv'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_deconflow_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_deconflow_pipeline'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    NAMED WORKFLOWS FOR PIPELINE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 //
-// WORKFLOW: Run main nf-core/DNAmDeconv analysis pipeline
+// WORKFLOW: Run main DecoNFlow analysis pipeline
 //
 workflow RUN_DNAmDeconv {
+
+    main:
     DNAmDeconv ()
 }
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN ALL WORKFLOWS
+    RUN MAIN WORKFLOW
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-//
-// WORKFLOW: Execute a single named workflow for the pipeline
-// See: https://github.com/nf-core/rnaseq/issues/619
-//
 workflow {
 
     main:
-    // Print help message, supply typical command line usage for the pipeline
-    if (params.help) {
-        def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-        def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-        def command = "nextflow run main.nf --input input_file.csv -test_set test.csv --outdir results/ --regions_file regions.bed -profile <profile>"
-        log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
-        System.exit(0)
-    }
+    //
+    // SUBWORKFLOW: Run initialisation tasks
+    //
+    PIPELINE_INITIALISATION (
+        params.version,
+        params.validate_params,
+        args,
+        params.outdir,
+        params.help,
+        params.help_full,
+        params.show_hidden
+    )
 
-    // Validate input parameters
-    if (params.validate_params) {
-        validateParameters()
-    }
-
-    WorkflowMain.initialise(workflow, params, log)
-
+    //
+    // WORKFLOW: Run main workflow
+    //
     RUN_DNAmDeconv ()
 
-    onComplete:
-    NfcoreTemplate.dump_parameters(workflow, params)
-    NfcoreTemplate.summary(workflow, params, log)
+    //
+    // SUBWORKFLOW: Run completion tasks
+    //
+    PIPELINE_COMPLETION (
+        params.monochrome_logs,
+    )
 }
 
 /*

@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process FINDMARKERS"
-    script "modules/wgbstools/findmarkers/main.nf"
+    script "modules/local/wgbstools/findmarkers/main.nf"
     process "FINDMARKERS"
 
     test("Should run without failures") {

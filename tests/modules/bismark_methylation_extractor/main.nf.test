@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process BISMARK_METHYLATIONEXTRACTOR"
-    script "modules/bismark_methylation_extractor/main.nf"
+    script "modules/local/bismark_methylation_extractor/main.nf"
     process "BISMARK_METHYLATIONEXTRACTOR"
 
     test("Should run without failures") {

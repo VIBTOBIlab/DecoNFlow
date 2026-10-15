@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process METH_ATLAS"
-    script "modules/refbased_tools/meth_atlas/main.nf"
+    script "modules/local/refbased_tools/meth_atlas/main.nf"
     process "METH_ATLAS"
 
     test("Should run without failures") {

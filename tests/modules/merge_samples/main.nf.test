@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process MERGE_SAMPLES"
-    script "modules/merge_samples/main.nf"
+    script "modules/local/merge_samples/main.nf"
     process "MERGE_SAMPLES"
 
     test("step: atlas") {

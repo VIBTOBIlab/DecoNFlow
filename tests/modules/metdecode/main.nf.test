@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process METDECODE_DECONV"
-    script "modules/metdecode/main.nf"
+    script "modules/local/metdecode/main.nf"
     process "METDECODE_DECONV"
 
     test("Should run without failures") {

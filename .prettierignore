@@ -1,3 +1,4 @@
+
 .nextflow*
 work/
 data/
@@ -7,5 +8,6 @@ testing/
 testing*
 *.pyc
 bin/
-*.nf.test.snap
-.github/*
+.nf-test/
+modules/nf-core/
+subworkflows/nf-core/

@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process DMRFINDER_SELECTION"
-    script "modules/dmr_selection_dmrfinder/dmrfinder/main.nf"
+    script "modules/local/dmr_selection_dmrfinder/dmrfinder/main.nf"
     process "DMRFINDER_SELECTION"
 
     test("Should run without failures") {

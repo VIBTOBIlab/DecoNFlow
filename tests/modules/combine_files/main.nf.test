@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process COMBINE_FILES"
-    script "modules/combine_files/main.nf"
+    script "modules/local/combine_files/main.nf"
     process "COMBINE_FILES"
 
     test("Should run without failures") {

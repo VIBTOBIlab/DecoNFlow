@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process CONVERT_ATLAS"
-    script "modules/convert_atlas/main.nf"
+    script "modules/local/convert_atlas/main.nf"
     process "CONVERT_ATLAS"
 
     test("convert atlas | mean collapse method") {

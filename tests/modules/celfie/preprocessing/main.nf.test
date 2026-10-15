@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process CELFIE_PREPROCESSING"
-    script "modules/celfie/preprocessing/main.nf"
+    script "modules/local/celfie/preprocessing/main.nf"
     process "CELFIE_PREPROCESSING"
 
     test("Should run without failures") {

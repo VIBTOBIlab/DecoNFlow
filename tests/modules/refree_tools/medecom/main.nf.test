@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process MEDECOM"
-    script "modules/refree_tools/medecom/main.nf"
+    script "modules/local/refree_tools/medecom/main.nf"
     process "MEDECOM"
 
     test("Should run without failures") {

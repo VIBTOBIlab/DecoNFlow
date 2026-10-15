@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process METHYL_RESOLVER"
-    script "modules/refbased_tools/methyl_resolver/main.nf"
+    script "modules/local/refbased_tools/methyl_resolver/main.nf"
     process "METHYL_RESOLVER"
 
     test("Should run without failures") {
