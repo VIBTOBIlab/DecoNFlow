@@ -176,12 +176,12 @@ workflow DECONFLOW{
         if (!params.regions) {
             nextflow.Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
         }
-        if (!params.test_set) {
-            nextflow.Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
+        if (!params.bulk_samples) {
+            nextflow.Nextflow.error "\n----> ERROR: Please provide a bulk_samples samplesheet to the pipeline e.g. '--bulk_samples samplesheet.csv' <----\n"
         }
         // Set the testing samples channel
         test_ch = channel.fromList(
-            samplesheetToList(params.test_set, "assets/schema_testset.json"))
+            samplesheetToList(params.bulk_samples, "assets/schema_bulk_samples.json"))
             .map { meta, cov -> tuple(meta.id, cov) }
         regions_ch = channel.fromPath(params.regions)
         refFreeDeconv(test_ch, regions_ch.first())
