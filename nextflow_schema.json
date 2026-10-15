@@ -29,12 +29,6 @@
                     "format": "file-path",
                     "description": "The path of the reference matrix that you want to use for ref-based deconvolution."
                 },
-                "merged_matrix": {
-                    "type": "string",
-                    "pattern": "^\\S+\\.(csv)$",
-                    "format": "file-path",
-                    "description": "The path of a matrix containing regions and samples where to perform DMR selection."
-                },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
@@ -74,9 +68,15 @@
                     "format": "file-path",
                     "description": "Path to the uxm-like atlas."
                 },
-                "test_set": {
+                "bulk_samples": {
                     "type": "string",
-                    "description": "Path to comma-separated file containing information about the samples to deconvolve.."
+                    "format": "file-path",
+                    "schema": "assets/schema_bulk_samples.json",
+                    "mimetype": "csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file containing information about the samples to deconvolve.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
                 },
                 "test_bams": {
                     "type": "string",
