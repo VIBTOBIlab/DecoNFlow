@@ -1,3 +1,3 @@
 input: ./assets/reference.csv
 outdir: ./results
-test_set: ./assets/test.csv
+bulk_samples: ./assets/test.csv

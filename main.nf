@@ -32,14 +32,7 @@ params {
     ref_matrix: String?
     // The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
     outdir: String?
-    // Path to comma-separated file containing information about the reference bam samples.
-    ref_bams: String?
-    // Path to the genome fasta file used to align samples.
-    fasta: String?
-    // File (.csv) of the groups.
-    groups_file: String?
-    // Path to the uxm-like atlas.
-    uxm_atlas: String?
+
     // Path to comma-separated file containing information about the samples to deconvolve.
     bulk_samples: String?
 
@@ -92,8 +85,6 @@ params {
     bulk_min_counts: Integer = 0
 
     // DMR analysis general options
-    // DMR selection approach adopted
-    DMRselection: String?
     // Adjusted p-value threshold
     adjp: Float = 0.001
     // Method to collapse the sample values for each region
@@ -102,11 +93,9 @@ params {
     direction: String = 'both'
     // Take the top x number of DMRs per cell state.
     top: Integer = 250
-    // Threshold for calling DMRs
-    delta: Float = 0.1
 
     // Limma options
-    // Path to region file if DMRselection == "custom"
+    // Path to the region file used for limma DMR selection and reference-free deconvolution.
     regions: String?
     // Multiple testing correction method among the ones available in limma R package
     adj_method: String = 'BH'
@@ -160,10 +149,6 @@ params {
     no_coverage: Boolean
     // Disable the unsupervised refinment of the proportions.
     supervised: Boolean
-
-    // Bismark parameters
-    // If true, bismark will run under 'single_end' option
-    single_end: Boolean
 
     // Generic options
     // Display version and exit.
