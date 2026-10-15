@@ -13,7 +13,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { DNAmDeconv              } from './workflows/DNAmDeconv'
+include { DECONFLOW              } from './workflows/deconflow'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_deconflow_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_deconflow_pipeline'
 
@@ -30,8 +30,6 @@ params {
     input: String?
     // The path of the reference matrix that you want to use for ref-based deconvolution.
     ref_matrix: String?
-    // The path of a matrix containing regions and samples where to perform DMR selection.
-    merged_matrix: String?
     // The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
     outdir: String?
     // Path to comma-separated file containing information about the reference bam samples.
@@ -42,10 +40,8 @@ params {
     groups_file: String?
     // Path to the uxm-like atlas.
     uxm_atlas: String?
-    // Path to comma-separated file containing information about the samples to deconvolve..
-    test_set: String?
-    // Path to comma-separated file containing information about the bam samples to deconvolve.
-    test_bams: String?
+    // Path to comma-separated file containing information about the samples to deconvolve.
+    bulk_samples: String?
 
     // Intermediate files options
     // Save intermediate files.
@@ -76,8 +72,6 @@ params {
     meth_atlas: Boolean
     // Run the corresponding tool
     cibersort: Boolean
-    // Run the corresponding tool
-    uxm: Boolean
     // Run the corresponding tool
     metdecode: Boolean
 
@@ -118,24 +112,6 @@ params {
     adj_method: String = 'BH'
     // When merging samples for limma DMR analysis, include the regions even if some samples have missing values
     include_na: Boolean
-
-    // DMRfinder options
-    // Maximum p-value [0,1]
-    dmrfinder_pvalue: Float = 0.05
-    // Maximum q-value [0,1]
-    dmrfinder_qvalue: Float = 0.05
-
-    // wgbs_tools options
-    // Name of the genome that you want to initialize.
-    genome: String = 'hg19'
-    // Maximum length in bp for the blocks.
-    max_bp: Integer = 2000
-    // Minimum number of CpGs for the blocks.
-    min_cpg_uxm: Integer = 3
-    // Minimal CpGs per read required to consider the reads.
-    rlen: Integer = 3
-    // Take only hypomethylated markers.
-    only_hypo: Boolean
 
     // Reference-free deconvolution options.
     // Number of cell types expected (necessary for ref-free modality)
@@ -213,10 +189,10 @@ params {
 //
 // WORKFLOW: Run main DecoNFlow analysis pipeline
 //
-workflow RUN_DNAmDeconv {
+workflow RUN_DECONFLOW {
 
     main:
-    DNAmDeconv ()
+    DECONFLOW ()
 }
 
 /*
@@ -244,7 +220,7 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    RUN_DNAmDeconv ()
+    RUN_DECONFLOW ()
 
     //
     // SUBWORKFLOW: Run completion tasks
