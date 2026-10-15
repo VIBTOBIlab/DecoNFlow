@@ -149,10 +149,6 @@ params {
     // Disable the unsupervised refinment of the proportions.
     supervised: Boolean
 
-    // Bismark parameters
-    // If true, bismark will run under 'single_end' option
-    single_end: Boolean
-
     // Generic options
     // Display version and exit.
     version: Boolean

@@ -357,18 +357,6 @@
                 }
             }
         },
-        "bismark_parameters": {
-            "title": "Bismark parameters",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "single_end": {
-                    "type": "boolean",
-                    "description": "If true, bismark will run under 'single_end' option"
-                }
-            }
-        },
         "institutional_config_options": {
             "title": "Institutional config options",
             "type": "object",
@@ -522,9 +510,6 @@
         },
         {
             "$ref": "#/$defs/metdecode_parameters"
-        },
-        {
-            "$ref": "#/$defs/bismark_parameters"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

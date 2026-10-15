@@ -15,7 +15,6 @@ include { CELFIE_PREPROCESSING                   } from "../modules/local/celfie
 include { TEST_PREPROCESSING                     } from "../modules/local/test_preprocessing/main"
 include { COMBINE_FILES                          } from "../modules/local/combine_files/main"
 include { MERGE_SAMPLES                          } from "../modules/local/merge_samples/main"
-include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/local/process_ref_matrix/main"
 include { METDECODE                              } from "../subworkflows/local/metdecode"
 
