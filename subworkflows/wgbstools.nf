@@ -32,12 +32,12 @@ workflow WGBSTOOLS {
      */
     // Enforce dependency on atlas_tsv, but do not use its value
     atlas_tsv.map{ null }
-    fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
-    reference_csv = Channel.empty()
-    reference_tsv = Channel.empty()
+    fasta = params.fasta ? channel.value(file(params.fasta)) : channel.value(file("${params.outdir}/no_file"))
+    reference_csv = channel.empty()
+    reference_tsv = channel.empty()
 
     if (params.ref_bams) {
-        samples_ch_original = Channel.fromList(
+        samples_ch_original = channel.fromList(
             samplesheetToList(params.ref_bams, "assets/schema_refbams.json"))
             .map { 
             meta, entity, bam, bai ->
@@ -74,7 +74,7 @@ workflow WGBSTOOLS {
      * If an uxm-like atlas has been specified, skip the the processing step
      */
     if (params.uxm_atlas) {
-        wgbstools_atlas = Channel.fromPath( params.uxm_atlas )
+        wgbstools_atlas = channel.fromPath( params.uxm_atlas )
     }
     else {
 
@@ -105,7 +105,7 @@ workflow WGBSTOOLS {
         /*
          * Find markers 
          */
-        group_ch = Channel.fromPath(params.groups_file)
+        group_ch = channel.fromPath(params.groups_file)
         FINDMARKERS(
             SEGMENT.out.blocks,
             group_ch,
@@ -145,7 +145,7 @@ workflow WGBSTOOLS {
         }
         if (params.input) {
 
-            Channel.fromList(
+            channel.fromList(
                 samplesheetToList(params.input, "assets/schema_input.json"))
                 .map {
                     meta, entity, cov ->

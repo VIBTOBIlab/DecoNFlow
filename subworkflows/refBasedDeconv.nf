@@ -18,7 +18,7 @@ workflow refBasedDeconv {
     main:
 
     // List to collect output channels
-    outputChannels = Channel.empty()
+    outputChannels = channel.empty()
 
     // Run deconvolution tool(s)
     if (params.meth_atlas || params.benchmark) {

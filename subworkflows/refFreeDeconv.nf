@@ -29,7 +29,7 @@ workflow refFreeDeconv {
     MERGE_SAMPLES('atlas',refree_procTest)
 
     // List to collect output channels
-    refree_outputChannels = Channel.empty()
+    refree_outputChannels = channel.empty()
     
     // Run deconvolution tool(s)
     if (params.medecom || params.benchmark) {

@@ -16,7 +16,7 @@ workflow inHousePrep {
          * If only the merged matrix has been specified, skip the preprocessing step
          */
         if (params.merged_matrix) {
-                fin_matrix = Channel.fromPath(params.merged_matrix)
+                fin_matrix = channel.fromPath(params.merged_matrix)
                 LIMMA(fin_matrix)
                 atlas_tsv = LIMMA.out.reference_tsv.first()
                 atlas_csv = LIMMA.out.reference_csv.first()
@@ -29,7 +29,7 @@ workflow inHousePrep {
         else {
                 
                 // Read the cluster file
-                regions_ch = Channel.fromPath(params.regions).first()
+                regions_ch = channel.fromPath(params.regions).first()
 
                 // Pass the input data and region file to the preprocessing module
                 PREPROCESSING(samples, regions_ch) 

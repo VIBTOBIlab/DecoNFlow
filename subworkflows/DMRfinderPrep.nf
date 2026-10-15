@@ -19,12 +19,12 @@ workflow DMRfinderPrep {
         condition = samples_new
             .map{ condition, _sample_id -> condition }
             .collect()
-            .map { it.join(',')}
+            .map { conds -> conds.join(',') }
  
         sampleid = samples_new
-            .map{ _condition,sample_id -> sample_id.collect{ it + "_dmrfinder_format" }.join(',') }
+            .map{ _condition,sample_id -> sample_id.collect{ sid -> sid + "_dmrfinder_format" }.join(',') }
             .collect()
-            .map { it.join(' ')}
+            .map { ids -> ids.join(' ') }
 
         // Pass the input data to the preprocessing module
         DMRFINDER_PREPROCESSING(samples)

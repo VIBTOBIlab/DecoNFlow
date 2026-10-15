@@ -17,7 +17,7 @@ workflow UXM {
 
     main:
     
-    fasta = params.fasta ? Channel.value(file(params.fasta)) : Channel.value(file("${params.outdir}/no_file"))
+    fasta = params.fasta ? channel.value(file(params.fasta)) : channel.value(file("${params.outdir}/no_file"))
     atlas_ready = atlas.map { _it -> true }
 
     /*
@@ -32,8 +32,8 @@ workflow UXM {
             nextflow.Nextflow.error "\n----> ERROR: A group file (--groups_file) needs to be specified when using UXM deconvolution. <---- \n"
         }
 
-        group_ch = Channel.fromPath(params.groups_file)
-        samples_ch_original = Channel.fromList(
+        group_ch = channel.fromPath(params.groups_file)
+        samples_ch_original = channel.fromList(
             samplesheetToList(params.ref_bams, "assets/schema_refbams.json"))
             .map { 
             meta, entity, bam, bai ->

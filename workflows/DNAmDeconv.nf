@@ -3,36 +3,10 @@
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    PRINT PARAMS SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-include {paramsSummaryLog} from 'plugin/nf-schema'
-
-def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-def summary_params = paramsSummaryLog(workflow)
-
-// Print parameter summary log to screen
-log.info paramsSummaryLog(workflow) + citation
-
-// Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
-log.info """
-    ==============================================================================================
-
-        ██████╗*███████╗*██████╗*██████╗*███╗***██╗███████╗██╗******██████╗*██╗****██╗
-        ██╔══██╗██╔════╝██╔════╝██╔═══██╗████╗**██║██╔════╝██║*****██╔═══██╗██║****██║
-        ██║**██║█████╗**██║*****██║***██║██╔██╗*██║█████╗**██║*****██║***██║██║*█╗*██║
-        ██║**██║██╔══╝**██║*****██║***██║██║╚██╗██║██╔══╝**██║*****██║***██║██║███╗██║
-        ██████╔╝███████╗╚██████╗╚██████╔╝██║*╚████║██║*****███████╗╚██████╔╝╚███╔███╔╝
-        ╚═════╝*╚══════╝*╚═════╝*╚═════╝*╚═╝**╚═══╝╚═╝*****╚══════╝*╚═════╝**╚══╝╚══╝*
-
-    ==============================================================================================
-    """.stripIndent()
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+include { paramsSummaryLog                       } from 'plugin/nf-schema'
 include { samplesheetToList                      } from 'plugin/nf-schema'
 include { inHousePrep                            } from "../subworkflows/inHousePrep"
 include { DMRfinderPrep                          } from "../subworkflows/DMRfinderPrep"
@@ -58,12 +32,31 @@ include { METDECODE                              } from "../subworkflows/metdeco
 
 workflow DNAmDeconv{
 
+    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+
+    // Print parameter summary log to screen
+    log.info paramsSummaryLog(workflow) + citation
+
+    // Set a header made using https://patorjk.com/software/taag (but be sure to escape characters such as dollar signs and backslashes, e.g., '$'=> '\\$' and '\' =>'\\')
+    log.info """
+        ==============================================================================================
+
+            ██████╗*███████╗*██████╗*██████╗*███╗***██╗███████╗██╗******██████╗*██╗****██╗
+            ██╔══██╗██╔════╝██╔════╝██╔═══██╗████╗**██║██╔════╝██║*****██╔═══██╗██║****██║
+            ██║**██║█████╗**██║*****██║***██║██╔██╗*██║█████╗**██║*****██║***██║██║*█╗*██║
+            ██║**██║██╔══╝**██║*****██║***██║██║╚██╗██║██╔══╝**██║*****██║***██║██║███╗██║
+            ██████╔╝███████╗╚██████╗╚██████╔╝██║*╚████║██║*****███████╗╚██████╔╝╚███╔███╔╝
+            ╚═════╝*╚══════╝*╚═════╝*╚═════╝*╚═╝**╚═══╝╚═╝*****╚══════╝*╚═════╝**╚══╝╚══╝*
+
+        ==============================================================================================
+        """.stripIndent()
+
     /*
      * Initiliaze the channels
      */
-    proportion_ch = Channel.empty()
-    samples_ch = Channel.empty()
-    atlas_tsv = Channel.empty()
+    proportion_ch = channel.empty()
+    samples_ch = channel.empty()
+    atlas_tsv = channel.empty()
 
 
     /*
@@ -72,7 +65,7 @@ workflow DNAmDeconv{
      * skip the preprocessing and DMR selection steps
      */
     if (params.ref_matrix) {
-        atlas_tsv = Channel.fromPath(params.ref_matrix).first()
+        atlas_tsv = channel.fromPath(params.ref_matrix).first()
         PROCESS_REF_MATRIX(atlas_tsv)
         atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
     }
@@ -80,7 +73,7 @@ workflow DNAmDeconv{
 
     if (params.input) {
 
-        Channel.fromList(
+        channel.fromList(
             samplesheetToList(params.input, "assets/schema_input.json"))
             .map {
                 meta, entity, cov ->
@@ -156,7 +149,7 @@ workflow DNAmDeconv{
         if (!params.test_bams) {
             nextflow.Nextflow.error "\n----> ERROR: The flag --test_bams (.csv file) is required for UXM tool. <----\n"
         }
-        test_bams = Channel.fromList(
+        test_bams = channel.fromList(
         samplesheetToList(params.test_bams, "assets/schema_testbams.json"))
             .map {
             meta, bam, bai ->
@@ -192,7 +185,7 @@ workflow DNAmDeconv{
         }
 
         // Set the testing samples channel
-        test_ch = Channel.fromList(
+        test_ch = channel.fromList(
             samplesheetToList(params.test_set, "assets/schema_testset.json"))
             .map { meta, cov -> tuple(meta.id, cov) }
 
@@ -253,10 +246,10 @@ workflow DNAmDeconv{
             nextflow.Nextflow.error "\n----> ERROR: Please provide an test_set samplesheet to the pipeline e.g. '--test_set samplesheet.csv' <----\n"
         }
         // Set the testing samples channel
-        test_ch = Channel.fromList(
+        test_ch = channel.fromList(
             samplesheetToList(params.test_set, "assets/schema_testset.json"))
             .map { meta, cov -> tuple(meta.id, cov) }
-        regions_ch = Channel.fromPath(params.regions)
+        regions_ch = channel.fromPath(params.regions)
         refFreeDeconv(test_ch, regions_ch.first())
         proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)
     }
@@ -281,17 +274,6 @@ workflow DNAmDeconv{
 
 }
 
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    NfcoreTemplate.dump_parameters(workflow, params)
-    NfcoreTemplate.summary(workflow, params, log)
-}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
