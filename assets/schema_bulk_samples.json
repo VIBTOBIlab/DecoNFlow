@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "DNAmDeconv pipeline - params.test_set schema",
-    "description": "Schema for the file provided with params.test_set",
+    "title": "DecoNFlow pipeline - params.bulk_samples schema",
+    "description": "Schema for the file provided with params.bulk_samples",
     "type": "array",
     "items": {
         "type": "object",

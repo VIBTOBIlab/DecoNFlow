@@ -10,7 +10,6 @@ nextflow_pipeline {
             params {
                 // define parameters here. Example:
                 outdir = "${outputDir}"
-                DMRselection = 'limma'
                 meth_atlas = true
             }
         }
