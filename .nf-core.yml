@@ -1,0 +1,57 @@
+repository_type: pipeline
+
+nf_core_version: 4.1.0
+
+lint:
+  files_unchanged:
+    - .prettierignore
+    - docs/CONTRIBUTING.md
+    - CODE_OF_CONDUCT.md
+    - assets/nf-core-deconflow_logo_light.png
+    - docs/images/nf-core-deconflow_logo_light.png
+    - docs/images/nf-core-deconflow_logo_dark.png
+    - .github/ISSUE_TEMPLATE/bug_report.yml
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - assets/email_template.txt
+    - docs/README.md
+    - .prettierignore
+    - assets/sendmail_template.txt
+  nextflow_config:
+    - manifest.name
+    - manifest.homePage
+  multiqc_config: false
+  files_exist:
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
+    - CODE_OF_CONDUCT.md
+    - assets/nf-core-deconflow_logo_light.png
+    - docs/images/nf-core-deconflow_logo_light.png
+    - docs/images/nf-core-deconflow_logo_dark.png
+    - .github/ISSUE_TEMPLATE/config.yml
+    - .github/workflows/awstest.yml
+    - .github/workflows/awsfulltest.yml
+    - assets/email_template.html
+    - assets/sendmail_template.txt
+    - assets/email_template.txt
+    - assets/multiqc_config.yml
+
+template:
+  org: VIBTOBIlab
+  name: DecoNFlow
+  description: DecoNFlow is a bioinformatics analysis pipeline used for computational
+    deconvolution of DNA methylation data. It allows deconvolution of samples using
+    both reference-based and reference-free deconvolution tools.
+  author: Edoardo Giuili
+  version: 2.3.0
+  force: false
+  outdir: .
+  skip_features:
+    - igenomes
+    - multiqc
+    - fastqc
+    - gpu
+    - email
+    - seqera_platform
+    - rocrate
+    - codespaces
+  is_nfcore: false
