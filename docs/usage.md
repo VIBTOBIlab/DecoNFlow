@@ -9,9 +9,7 @@
   - [Default behaviours](#default-behaviours)
 - [Core Nextflow arguments](#core-nextflow-arguments)
 - [DMR selection arguments](#dmr-selection-arguments)
-  - [DMRfinder arguments](#dmrfinder-arguments)
   - [limma arguments](#limma-arguments)
-  - [wgbs_tools](#wgbs_tools-arguments)
 - [Deconvolution parameters](#deconvolution-parameters)
   - [EpiDISH params](#epidish-params)
   - [MethylResolver params](#methylresolver-params)
@@ -19,9 +17,7 @@
   - [PRMeth params](#prmeth-params)
   - [MeDeCom params](#medecom-params)
   - [CelFiE params](#celfie-params)
-  - [UXM params](#uxm-params)
   - [MetDecode params](#metdecode-params)
-- [Bismark parameters](#bismark-parameters)
 - [Other parameters](#other-parameters)
 - [Resource requests](#resource-requests)
 - [Running in the background](#running-in-the-background)
@@ -71,7 +67,7 @@ An [example samplesheet](../assets/reference.csv) has been provided with the pip
 Use this parameter to specify its location. It has to be a comma-separated file with 2 columns, and a header row as shown in the example below.
 
 ```bash
---test_set '[path to samplesheet file]'
+--bulk_samples '[path to samplesheet file]'
 ```
 
 where the samplesheet file looks like the following:
@@ -98,7 +94,7 @@ For the reference-free deconvolution tools, the required files are the [regions 
 The typical command for running the pipeline is the following:
 
 ```bash
-nextflow run main.nf --input assets/reference.csv --test_set assets/bulk_samples.csv --outdir ./results -profile docker
+nextflow run main.nf --input assets/reference.csv --bulk_samples assets/bulk_samples.csv --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -122,7 +118,7 @@ with `params.yaml` containing:
 
 ```yaml
 input: 'assets/reference.csv'
-test_set: 'assets/test.csv'
+bulk_samples: 'assets/test.csv'
 outdir: './results/'
 <...>
 ```
@@ -131,7 +127,7 @@ You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-c
 
 ## Default behaviours (depracated)
 
-By default, when the `--input` is specified, the pipeline will run the reference-based deconvolution workflow and deconvolve the samples given with the `--test_set` parameter using `meth_atlas`. If the `--input` file is not specified, the pipeline will deconvolve the samples using the `PRMeth` tool with the reference-free modality.
+By default, when the `--input` is specified, the pipeline will run the reference-based deconvolution workflow and deconvolve the samples given with the `--bulk_samples` parameter using `meth_atlas`. If the `--input` file is not specified, the pipeline will deconvolve the samples using the `PRMeth` tool with the reference-free modality.
 
 ## Core Nextflow arguments
 
@@ -168,11 +164,7 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ## DMR selection arguments
 
-> **NOTE** Whatever DMR selection tool is chosen, the pipeline will filter out from the coverage files all those CpGs not mapping to chromosomes ((chr)1-22/X/Y/M/MT). Thus, all those CpGs located in unplaced or unlocalized genomic sequences (e.g. chr1_gl000192_random, chrUn_gl000215, etc) will be filtered out.
-
-### `--DMRselection`
-
-Choose one of the following: 'limma', 'DMRfinder', 'wgbstools'. If using 'limma' DMR selection, a region file must be specified using the flag `--regions` (read below).
+> **NOTE** The pipeline uses limma for DMR selection. It will filter out from the coverage files all those CpGs not mapping to chromosomes ((chr)1-22/X/Y/M/MT). Thus, all those CpGs located in unplaced or unlocalized genomic sequences (e.g. chr1_gl000192_random, chrUn_gl000215, etc) will be filtered out.
 
 ### `--adjp`
 
@@ -194,27 +186,13 @@ Direction of methylation: can be either "hypo","hyper","both" or "random" (def. 
 
 Take the top x number (integer) of DMRs per cell state (def. null): it can be used only if direction flag is specified.
 
-### `--delta`
-
-Threshold for calling DMRs (default: 0.1).
-
-### DMRfinder arguments
-
-#### `--dmrfinder_pvalue`
-
-Maximum p-value for DMRfinder (default: 0.05)
-
-#### `--dmrfinder_qvalue`
-
-Maximum q-value (fdr) for DMRfinder (default: 0.05)
-
 ### limma arguments
 
 #### `--regions`
 
 > **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented by the "chr" string + the chromosome number).
 
-If _limma_ `--DMRselection`, you must provide also a regions file using this paramater. It has to be a tab-separated file with three columns, and no header as shown in the example below.
+For limma DMR selection, you must provide a regions file using this parameter. It has to be a tab-separated file with three columns, and no header as shown in the example below.
 
 ```bash
 --regions '[path to regions file]'
@@ -250,76 +228,13 @@ Activate this parameter to allow missing values when merging the reference sampl
 
 #### `--big_covs`
 
-If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma or for DMR finder combine process) running with a memory-efficient algorithm. When specifying this flag within `limma` workflow, it's necessary to specify the `--genome_order` flag as well.
+If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma) running with a memory-efficient algorithm. When specifying this flag within `limma` workflow, it's necessary to specify the `--genome_order` flag as well.
 
 #### `--genome_order`
 
 > **NOTE** The coverage files are expected to be sorted by chromosome position (chr1, chr11, chr12) instead of natural order (chr1, chr2, chr3). You can achieve this using the UNIX sort utility to sort cov files by chromosome and then by position. That is, _sort -k1,1 -k2,2n in.cov > in.sorted.cov_ .
 
 When `--big_covs` is specified, you need to specify the genome version of the files and if the chromosome name is represented just by the number (e.g. human.hg38.nochr) or with the "chr" string (e.g. human.38). You can choose among the following parameters: [`human.hg19`, `human.hg38`, `human.hg19.nochr`, `human.hg38.nochr`, `mouse.mm9`, `mouse.mm10`, `mouse.mm9.nochr`, `mouse.mm10.nochr`].
-
-### wgbs_tools arguments
-
-Alternatively to DMRfinder and limma DMR selection, one can choose to use _wgbs_tools_, a software developed by the same authors of [UXM](https://www.nature.com/articles/s41586-022-05580-6). This software is necessary to perform the preprocessing and generate a UXM-like atlas. However, this atlas will automatically be converted into a standard atlas that can be used by "classical" deconvolution tools when these are specified with the corresponding flag. To use _wgbs_tools_ selection, you will need to create a samplesheet (`--ref_bams`) similar to `--input` but with paths to `bam` (and .bam.bai) files instead of .cov files:
-
-`ref_bams.csv`
-
-```plaintext:
-name,type,bam,bai
-DNAXX1,healthy,DNAXX1.bam,DNAXX1.bam.bai
-DNAXX2,healthy,DNAXX2.bam,DNAXX2.bam.bai
-DNAXX3,healthy,DNAXX3.bam,DNAXX3.bam.bai
-DNAXX4,nbl,DNAXX4.bam,DNAXX4.bam.bai
-DNAXX5,nbl,DNAXX5.bam,DNAXX5.bam.bai
-DNAXX6,nbl,DNAXX6.bam,DNAXX6.bam.bai
-```
-
-| Column | Description                                                                                  |
-| ------ | -------------------------------------------------------------------------------------------- |
-| `name` | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
-| `type` | Cell type name                                                                               |
-| `bam`  | Full path to .bam file.                                                                      |
-| `bai`  | Full path to .bam.bai file.                                                                  |
-
-An [example samplesheet](../assets/ref_bam.csv) has been provided with the pipeline.
-
-### `--genome` and `--fasta`
-
-Genome name to use. It must be the same genome used to align both the reference samples and the samples to deconvolve. It can be either 'hg19' or 'hg38'. If `--fasta` flag is not specified, it will download the corresponding fasta file and initialize the genome, otherwise it will use the genome fasta file specified and initialize it.
-
-### `--groups_file`
-
-File (.csv) linking each file to a group (or entity) to perform DMR selection using the `find_markers` module. The file need to be in the following format:
-
-`groups.csv`
-
-```plaintext:
-name,group
-DNAXX1,healthy
-DNAXX2,healthy
-DNAXX3,healthy
-DNAXX4,nbl
-DNAXX5,nbl
-DNAXX6,nbl
-```
-
-An [example group file](../assets/groups.csv) has been provided with the pipeline.
-
-### `--max_bp`
-
-Max bp length of the blocks used for DMR analysis (def. 2000).
-
-### `min_cpg_uxm`
-
-Minimum number of CpGs for the blocks (def. 3).
-
-### `--rlen`
-
-Minimal number of CpGs per read required to consider the read (def. 3).
-
-### `--only_hypo`
-
-If true, it takes only hypomethylated markers (def. false).
 
 ## Deconvolution parameters
 
@@ -401,35 +316,6 @@ CelFiE: Convergence criteria for EM (def. 0.0001)
 
 CelFiE will perform several random restarts and select the one with the highest log-likelihood (def. 10).
 
-### UXM params
-
-#### `--test_bams`
-
-To use _uxm_ deconvolution, you will need to create a samplesheet (`--test_bams`) similar to `--ref_bams` (read _wgbs_tools_ documentation above) without the _type_ column:
-
-`test_bams.csv`
-
-```plaintext:
-name,bam,bai
-bulk1,bulk1.bam,bulk1.bam.bai
-bulk2,bulk2.bam,bulk2.bam.bai
-bulk3,bulk3.bam,bulk3.bam.bai
-bulk4,bulk4.bam,bulk4.bam.bai
-bulk5,bulk5.bam,bulk5.bam.bai
-```
-
-| Column | Description                                                                                  |
-| ------ | -------------------------------------------------------------------------------------------- |
-| `name` | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
-| `bam`  | Full path to .bam file.                                                                      |
-| `bai`  | Full path to .bam.bai file.                                                                  |
-
-An [example samplesheet](../assets/test_bam.csv) has been provided with the pipeline.
-
-#### `--uxm_atlas`
-
-If you want to avoid DMR selection because you already have a UXM-like atlas, you can specify it using this flag. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/wgbstools/Atlas.l3.tsv).
-
 ### MetDecode params
 
 #### `--unknown_tissues`
@@ -447,20 +333,6 @@ If specified, it disables CpG coverage factor (def. false).
 #### `--supervised`
 
 If specified, it disables the unsupervised refinment of the proportions (def. false).
-
-### Bismark parameters
-
-#### `--bismark_multicore`
-
-If true, activate multicore option (def. false).
-
-#### `--single_end`
-
-If true, bismark will run under 'single_end' option (def. false).
-
-#### `--bismark_buffer_size`
-
-If true, bismark will run using buffer_size option (def.false).
 
 ## Other parameters
 
@@ -485,23 +357,6 @@ chr   start     end         entity1 entity2     entity3
 ```
 
 The file needs to be a tab separated (.tsv/.bed) file. The values in the matrix are methylation beta values. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/limma/reference_matrix_limma.tsv).
-
-### `--merged_matrix`
-
-If this parameter is specified, the pipeline skips the preprocessing step and immediately performs limma DMR selection step. The merged matrix corresponds to a matrix composed of one column corresponding to the DMR coordinates collapsed and the remaining columns to the individual samples containing methylation beta values. These columns need to have column names that end with "-V". Below you can find an example of the structure of the merged matrix:
-
-`merged_matrix.csv`
-
-```plaintext:
-,chr,start,end,healthy_3-V,nbl_2-V,nbl_3-V,healthy_1-V,healthy_2-V,nbl_1-V
-0,1,10497,10588,0.902439,0.968421,0.946197,0.938053,0.820513,0.972149
-1,1,136876,136924,0.959184,0.972678,0.989583,0.884181,0.934272,0.926941
-2,1,661865,661927,1.0,1.0,0.972222,0.986111,0.927536,0.885965
-3,1,662657,662705,0.936508,0.97037,0.977778,0.961905,0.979798,0.922705
-4,1,714254,714299,0.0,0.0162162,0.0252101,0.00319489,0.0,0.0240964
-```
-
-The file needs to be a comma separated (.csv) file. The values in the matrix are methylation beta values. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/limma/atlas_matrix.csv).
 
 ## Resource requests
 
