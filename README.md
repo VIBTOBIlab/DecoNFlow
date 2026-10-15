@@ -14,12 +14,10 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a w
 # Pipeline Summary
 
 ![Presentation1](docs/images/animated.map.svg)
-The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit [docs](docs/) for more information.
+The pipeline allows you to run both reference-based and reference-free deconvolution tools. Differentially methylated regions (DMRs) are selected with limma. Visit [docs](docs/) for more information.
 
 1. DMR selection
-   1. DMRfinder
-   2. limma
-   3. wgbs_tools
+   - limma
 2. Deconvolution
    1. Reference-based deconvolution
       - meth_atlas (.cov)
@@ -32,7 +30,6 @@ The pipeline allows you to run both reference-based and reference-free deconvolu
       - PRMeth (.cov)
       - CelFiE (.cov)
       - MetDecode (.cov)
-      - UXM (.bam)
    2. Reference-free deconvolution
       - MeDeCom (.cov)
       - RefFreeCellMix (.cov)
@@ -82,7 +79,7 @@ Each row represents a coverage file, with the first column representing the samp
 
 > **NOTE** For more information, please refer to the [docs](docs/README.md).
 
-Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one deconvolution tool to use (e.g. `--meth_atlas`). If you specify a reference-based deconvolution tool, also a DMR selection approach needs to be specified (e.g. `--DMRselection DMRfinder`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)). If you want to run the pipeline using UXM, refer to the [documentation](./docs/usage.md).
+Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one deconvolution tool to use (e.g. `--meth_atlas`). If you specify a reference-based deconvolution tool, you also need to provide either the reference samples (`--input`) together with a region file (`--regions`) for limma DMR selection, or a reference matrix (`--ref_matrix`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)).
 
 You can run the pipeline using docker profile:
 
@@ -103,9 +100,9 @@ The params.yaml file looks like the following:
 ```plaintext:
 input: ./resources/reference.csv
 outdir: ./results
-test_set: ./resources/test.csv
+bulk_samples: ./resources/test.csv
 meth_atlas: true
-DMRselection: DMRfinder
+regions: ./resources/regions.bed
 ```
 
 All the parameters specified in the file can also be specified in the command line using the corresponding flags.
