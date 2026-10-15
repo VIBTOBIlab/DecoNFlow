@@ -99,7 +99,7 @@
             "properties": {
                 "save_intermeds": {
                     "type": "boolean",
-                    "description": "Display help text.",
+                    "description": "Save intermediate files.",
                     "fa_icon": "fas fa-question-circle",
                     "default": false
                 }

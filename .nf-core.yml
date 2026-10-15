@@ -19,9 +19,9 @@ lint:
     - assets/email_template.txt
     - docs/README.md
     - assets/sendmail_template.txt
-  nextflow_config:
-    - manifest.name
-    - manifest.homePage
+  # nf-core/tools does not support typed parameters yet (https://nf-co.re/blog/2026/parameter-types)
+  nextflow_config: false
+  schema_params: false
   multiqc_config: false
   nf_test_content: false
   files_exist:
