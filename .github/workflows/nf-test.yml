@@ -1,5 +1,10 @@
 name: Run nf-test
 on:
+  push:
+    branches:
+      - master
+      - main
+      - dev-refactoring
   pull_request:
     paths-ignore:
       - "docs/**"
