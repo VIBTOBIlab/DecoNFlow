@@ -14,6 +14,8 @@
 - Renamed the main workflow from `DNAmDeconv` to `DECONFLOW` and the limma DMR selection subworkflow from `inHousePrep` to `markerSelection`. Local modules and subworkflows now live in `modules/local/` and `subworkflows/local/`.
 - Limma marker selection now only runs when a reference-based tool needs the reference atlas. Reference-free runs (MeDeCom, RefFreeCellMix) no longer preprocess the reference samples or run limma.
 - Updated the documentation, citations and README.
+- **New HTML report** (`deconvolution_report.html`, `DECONV_REPORT` module) with a per-sample comparison of all reference-based tools (stacked bars plus the mean, SD and range of each cell type across tools) and the results of each tool (stacked bars per sample and tables).
+- **Reference-based and reference-free results are now saved separately**, in `combined_results_refbased.csv` and `combined_results_reffree.csv`, instead of a single `combined_results.csv`. Reference-free tools estimate unlabelled components (e.g. `LMC1`, `V1`) rather than the cell types of the reference, so combining them in one table mixed unrelated columns.
 
 ### 🧪 Tests and CI
 

@@ -1,4 +1,4 @@
-# DNAmDeconv: Output
+# DecoNFlow: Output
 
 ## Introduction
 
@@ -18,17 +18,40 @@ If `--save_intermeds` flag is not specified, the pipeline will produce two folde
 
 **Final output directory: `results/deconvolution_results`**
 
-- Contains a .csv file with the cell type proportions estimated. Each row contains the information on the cell type proportion estimated by one single tool (specified in the column tool) for a single sample.
+Reference-based and reference-free results are saved in separate tables, since reference-free tools do not estimate the cell types of a reference but unlabelled latent components (e.g. `LMC1`, `LMC2` for MeDeCom and `V1`, `V2` for RefFreeCellMix). Each table is only produced if at least one tool of that type was run.
 
-`combined_results.csv`
+`combined_results_refbased.csv`
+
+Cell type proportions estimated by the reference-based tools. Each row contains the proportions estimated by one tool (column `tool`) for one bulk sample.
 
 ```plaintext:
 sample,proportion_entity1,proportion_entity2,proportion_entity3,tool
-bulk_sample_1,0.68,0.02,0.06,CelFiE
-bulk_sample_2,0.68,0.15,0.10,CelFiE
-bulk_sample_3,0.68,0.05,0.25,CelFiE
-bulk_sample_4,0.68,0.24,0.01,CelFiE
+bulk_sample_1,0.68,0.02,0.30,CelFiE
+bulk_sample_2,0.68,0.15,0.17,CelFiE
+bulk_sample_3,0.68,0.05,0.27,CelFiE
+bulk_sample_4,0.68,0.24,0.08,CelFiE
 ```
+
+`combined_results_reffree.csv`
+
+Proportions of the latent components estimated by the reference-free tools, with the same structure. Each tool has its own component columns, which are empty (`NaN`) for the rows of the other tools.
+
+```plaintext:
+sample,LMC1,LMC2,tool,V1,V2
+bulk_sample_1,1.0,0.0,MeDeCom,,
+bulk_sample_2,0.18,0.82,MeDeCom,,
+bulk_sample_1,,,RefFreeCellMix,1.0,0.0
+bulk_sample_2,,,RefFreeCellMix,0.18,0.82
+```
+
+`deconvolution_report.html`
+
+Self-contained HTML report (it can be opened offline in any browser) with:
+
+- **Per-sample comparison**: one card per bulk sample comparing the cell type proportions estimated by every reference-based tool, with a stacked bar per tool, the mean, standard deviation (SD), minimum and maximum of each cell type across tools, and the cell type the tools disagree on the most. Reference-free tools are not included, since their components are not labelled with cell types and cannot be compared between tools.
+- **Per-tool results**: one card per tool (reference-based and reference-free sections) with a stacked bar per bulk sample and a table with the exact values.
+
+Negative estimates (possible for some tools) are drawn as 0 in the charts but kept in the tables.
 
 ## Other output data
 

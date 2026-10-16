@@ -15,9 +15,11 @@
 %%metro file: bulk_in | CSV | Bulk\nsamples
 %%metro file: bulk_rf_in | CSV | Bulk\nsamples
 %%metro file: regions_rf_in | BED | Regions
-%%metro file: results_out | CSV | Combined\nproportions
+%%metro file: refbased_out | CSV | Ref-based\nproportions
+%%metro file: reffree_out | CSV | Ref-free\nproportions
+%%metro file: report_out | HTML | Report
 
-%%metro off_track: refmat_in
+%%metro off_track: refmat_in, refbased_out, reffree_out
 
 %%metro grid: markers | 0,0
 %%metro grid: bulkprep | 1,0
@@ -92,10 +94,18 @@ graph LR
     end
 
     subgraph output [Results]
-        combine[Combine results]
-        results_out[ ]
+        combine_rb[Combine ref-based]
+        combine_rf[Combine ref-free]
+        refbased_out[ ]
+        reffree_out[ ]
+        report[HTML report]
+        report_out[ ]
 
-        combine -->|classic,em,reffree| results_out
+        combine_rb -->|classic,em| refbased_out
+        combine_rf -->|reffree| reffree_out
+        combine_rb -->|classic,em| report
+        combine_rf -->|reffree| report
+        report -->|classic,em,reffree| report_out
     end
 
     limma -->|classic,em| test_prep
@@ -112,15 +122,15 @@ graph LR
 
     test_prep -->|em| celfie_prep
 
-    meth_atlas -->|classic| combine
-    houseman_eq -->|classic| combine
-    houseman_ineq -->|classic| combine
-    epidish -->|classic| combine
-    cibersort -->|classic| combine
-    prmeth -->|classic| combine
-    episcore -->|classic| combine
-    methyl_resolver -->|classic| combine
-    celfie -->|em| combine
-    metdecode -->|em| combine
-    medecom -->|reffree| combine
-    refcellmix -->|reffree| combine
+    meth_atlas -->|classic| combine_rb
+    houseman_eq -->|classic| combine_rb
+    houseman_ineq -->|classic| combine_rb
+    epidish -->|classic| combine_rb
+    cibersort -->|classic| combine_rb
+    prmeth -->|classic| combine_rb
+    episcore -->|classic| combine_rb
+    methyl_resolver -->|classic| combine_rb
+    celfie -->|em| combine_rb
+    metdecode -->|em| combine_rb
+    medecom -->|reffree| combine_rf
+    refcellmix -->|reffree| combine_rf
