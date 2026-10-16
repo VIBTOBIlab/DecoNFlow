@@ -34,6 +34,13 @@ workflow DECONFLOW{
     proportion_ch = channel.empty()
     samples_ch = channel.empty()
     atlas_tsv = channel.empty()
+    /*
+     * Reference-based tools are the only consumers of the reference atlas
+     */
+    def run_ref_based = params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
+        params.prmeth || params.methyl_resolver || params.episcore || params.cibersort ||
+        params.celfie || params.metdecode || params.benchmark
+    def run_ref_free = params.medecom || params.ref_freecell_mix || params.benchmark
 
     /*
      * If no bulk_samples samplesheet has been specified, throw an error
@@ -57,6 +64,13 @@ workflow DECONFLOW{
     }
 
     /*
+     * If ref-based tools have been specified, but no reference matrix or reference samples have been specified, throw an error
+     */
+    if (run_ref_based && !params.ref_matrix && !params.input) {
+        nextflow.Nextflow.error "\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input) for reference-based deconvolution. <----\n"
+    }
+
+    /*
      * If reference matrix has been specified, and neither
      * CelFiE or MetDecode have been specified, then:
      * skip the preprocessing and DMR selection steps
@@ -68,10 +82,10 @@ workflow DECONFLOW{
     }
 
     /*
-     * If reference samples have been specified, then:
-     * run the preprocessing and DMR selection steps
+     * If reference samples have been specified and a reference-based
+     * tool needs the atlas, then: run the preprocessing and DMR selection steps
      */
-    else if (params.input) {
+    else if (params.input && run_ref_based) {
         channel.fromList(
             samplesheetToList(params.input, "assets/schema_input.json"))
             .map {
@@ -115,8 +129,7 @@ workflow DECONFLOW{
     /*
      * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools
      */
-    if (params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
-        params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+    if (run_ref_based) {
 
         // Set the testing samples channel
         test_ch = channel.fromList(
@@ -172,7 +185,7 @@ workflow DECONFLOW{
      * SUBWORKFLOW: If reference-free deconvolution tools
      * have been specified, run ref-free deconvolution
      */
-    if (params.medecom || params.ref_freecell_mix || params.benchmark) {
+    if (run_ref_free) {
         if (!params.regions) {
             nextflow.Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
         }
