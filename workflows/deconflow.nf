@@ -13,7 +13,9 @@ include { refFreeDeconv                          } from "../subworkflows/local/r
 include { CELFIE                                 } from "../subworkflows/local/celfie"
 include { CELFIE_PREPROCESSING                   } from "../modules/local/celfie/preprocessing/main"
 include { TEST_PREPROCESSING                     } from "../modules/local/test_preprocessing/main"
-include { COMBINE_FILES                          } from "../modules/local/combine_files/main"
+include { COMBINE_FILES as COMBINE_REFBASED      } from "../modules/local/combine_files/main"
+include { COMBINE_FILES as COMBINE_REFFREE       } from "../modules/local/combine_files/main"
+include { DECONV_REPORT                          } from "../modules/local/deconv_report/main"
 include { MERGE_SAMPLES                          } from "../modules/local/merge_samples/main"
 include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/local/process_ref_matrix/main"
@@ -31,7 +33,8 @@ workflow DECONFLOW{
     /*
      * Initiliaze the channels
      */
-    proportion_ch = channel.empty()
+    refbased_proportions = channel.empty()
+    reffree_proportions = channel.empty()
     samples_ch = channel.empty()
     atlas_tsv = channel.empty()
     /*
@@ -162,11 +165,11 @@ workflow DECONFLOW{
             // Run the subworkflows based on the parameters specified
             if (params.celfie || params.benchmark) {
                 CELFIE(ref_celfie_format, test_celfie_format)
-                proportion_ch = proportion_ch.mix( CELFIE.out.output.map { file -> tuple('CelFiE', file) } )
+                refbased_proportions = refbased_proportions.mix( CELFIE.out.output.map { file -> tuple('CelFiE', file) } )
             }
             if (params.metdecode || params.benchmark) {
                 METDECODE(ref_celfie_format, test_celfie_format)
-                proportion_ch = proportion_ch.mix( METDECODE.out.output.map { file -> tuple('MetDecode', file) } )
+                refbased_proportions = refbased_proportions.mix( METDECODE.out.output.map { file -> tuple('MetDecode', file) } )
             }
         }
 
@@ -176,7 +179,7 @@ workflow DECONFLOW{
         if (params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
             params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
             refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
-            proportion_ch = proportion_ch.concat(refBasedDeconv.out.refbased_proportions)
+            refbased_proportions = refbased_proportions.concat(refBasedDeconv.out.refbased_proportions)
         }
     }
 
@@ -198,27 +201,47 @@ workflow DECONFLOW{
             .map { meta, cov -> tuple(meta.id, cov) }
         regions_ch = channel.fromPath(params.regions)
         refFreeDeconv(test_ch, regions_ch.first())
-        proportion_ch = proportion_ch.concat(refFreeDeconv.out.refree_proportions)
+        reffree_proportions = reffree_proportions.concat(refFreeDeconv.out.refree_proportions)
     }
 
 
     /*
-     * PROCESS: Combine results in a unique table
+     * PROCESS: Combine the results of each type of deconvolution in a table.
+     * Reference-based and reference-free results are kept separate, since
+     * reference-free tools estimate unlabelled components (e.g. LMC1, V1)
+     * instead of the cell types of the reference.
      */
-    proportion_ch = proportion_ch
-                        .toSortedList{ a, b -> a[0] <=> b[0] }
-                        .map { list ->
-                            def methods = []
-                            def files = []
-                            list.each { item ->
-                                methods.add(item[0])
-                                files.add(item[1])
-                            }
-                            [methods, files]
-                        }
+    COMBINE_REFBASED( collectResults(refbased_proportions) )
+    COMBINE_REFFREE( collectResults(reffree_proportions) )
 
-    COMBINE_FILES( proportion_ch )
 
+    /*
+     * PROCESS: Generate an HTML report with the results of each tool
+     */
+    DECONV_REPORT(
+        COMBINE_REFBASED.out.clusters
+            .mix(COMBINE_REFFREE.out.clusters)
+            .collect()
+    )
+
+}
+
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    FUNCTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+/*
+ * Gather the (tool, result) tuples of a channel into a single [tools, results]
+ * pair, sorted by tool name. Emits nothing when no tool of that type was run.
+ */
+def collectResults(results) {
+    return results
+        .toSortedList { a, b -> a[0] <=> b[0] }
+        .filter { list -> !list.isEmpty() }
+        .map { list -> [list.collect { item -> item[0] }, list.collect { item -> item[1] }] }
 }
 
 
