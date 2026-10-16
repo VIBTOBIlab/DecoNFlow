@@ -72,6 +72,8 @@ nextflow_pipeline {
                 outdir = "${outputDir}"
                 input = null
                 regions = null
+                // The test profile enables meth_atlas, which would let the run continue
+                meth_atlas = false
                 celfie = true
             }
         }
