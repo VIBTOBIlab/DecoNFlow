@@ -24,7 +24,7 @@ nextflow_pipeline {
         then {
             // Round numeric values to 4 decimals so floating-point noise
             // (e.g. -8e-18 vs 0.0) doesn't differ between arm64 and x86_64
-            def combined = path("$outputDir/deconvolution_results/combined_results.csv")
+            def combined = path("$outputDir/deconvolution_results/combined_results_refbased.csv")
                 .readLines()
                 .collect { line ->
                     line.split(',', -1).collect { field ->
@@ -36,6 +36,7 @@ nextflow_pipeline {
 
             assertAll(
                 { assert workflow.success },
+                { assert path("$outputDir/deconvolution_results/deconvolution_report.html").exists() },
                 { assert snapshot(
                     // Number of tasks
                     workflow.trace.succeeded().size(),

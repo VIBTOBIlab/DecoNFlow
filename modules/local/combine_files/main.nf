@@ -12,11 +12,12 @@ process COMBINE_FILES {
     path '*.csv', emit: clusters
 
     script:
+    def prefix = task.ext.prefix ?: 'combined_results'
     """
     combine_files.py \
     --tool_names ${names.join(' ')} \
     --results $proportions \
-    -o combined_results
+    -o ${prefix}
     """
 
 }

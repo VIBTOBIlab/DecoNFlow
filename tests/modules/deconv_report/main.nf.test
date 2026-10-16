@@ -1,0 +1,38 @@
+nextflow_process {
+
+    name "Test Process DECONV_REPORT"
+    script "modules/local/deconv_report/main.nf"
+    process "DECONV_REPORT"
+
+    test("Should generate the HTML report") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    file(params.pipelines_testdata_base_path + 'modules/meth_atlas/test_matrix_deconv_output.csv')
+                ).map { result ->
+                    // Build a combined results table, as produced by COMBINE_FILES
+                    def combined = file("\${workDir}/combined_results_refbased.csv")
+                    def lines = result.readLines()
+                    combined.text = (["sample," + lines[0].split(',', 2)[1] + ",tool"] +
+                        lines.drop(1).collect { line -> line + ",meth_atlas" }).join('\\n') + '\\n'
+                    combined
+                }.collect()
+                """
+            }
+        }
+
+        then {
+            def report = path(process.out.report[0])
+            assertAll(
+                { assert process.success },
+                { assert report.exists() },
+                { assert report.text.contains("Reference-based deconvolution") },
+                { assert report.text.contains("meth_atlas") }
+            )
+        }
+
+    }
+
+}

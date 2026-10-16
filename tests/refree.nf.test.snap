@@ -1,13 +1,13 @@
 {
     "Test scenario: reference-free (RefFreeCellMix) + RRBS20-200 regions ": {
         "content": [
-            6,
-            "combined_results.csv:md5,9b10787ee7dd4422d4a43e8ecfbf15ea"
+            7,
+            "combined_results_reffree.csv:md5,9b10787ee7dd4422d4a43e8ecfbf15ea"
         ],
+        "timestamp": "2026-10-16T14:58:30.747685",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2025-11-03T20:44:01.072149"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     }
 }
