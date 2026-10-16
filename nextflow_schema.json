@@ -10,7 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["outdir"],
+            "required": ["outdir", "bulk_samples"],
             "properties": {
                 "input": {
                     "type": "string",
@@ -27,7 +27,8 @@
                     "type": "string",
                     "pattern": "^\\S+\\.(bed|tsv|txt)$",
                     "format": "file-path",
-                    "description": "The path of the reference matrix that you want to use for ref-based deconvolution."
+                    "description": "The path of the reference matrix that you want to use for ref-based deconvolution.",
+                    "exists": true
                 },
                 "outdir": {
                     "type": "string",
@@ -49,7 +50,8 @@
                     "pattern": "^\\S+\\.csv$",
                     "description": "Path to comma-separated file containing information about the samples to deconvolve.",
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
-                    "fa_icon": "fas fa-file-csv"
+                    "fa_icon": "fas fa-file-csv",
+                    "exists": true
                 }
             }
         },
@@ -152,7 +154,17 @@
                 "genome_order": {
                     "type": "string",
                     "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
-                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]"
+                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]",
+                    "enum": [
+                        "human.hg19",
+                        "human.hg38",
+                        "human.hg19.nochr",
+                        "human.hg38.nochr",
+                        "mouse.mm9",
+                        "mouse.mm10",
+                        "mouse.mm9.nochr",
+                        "mouse.mm10.nochr"
+                    ]
                 }
             }
         },
@@ -188,17 +200,20 @@
                 "collapse_method": {
                     "type": "string",
                     "default": "mean",
-                    "description": "Method to collapse the sample values for each region"
+                    "description": "Method to collapse the sample values for each region",
+                    "enum": ["mean", "median"]
                 },
                 "direction": {
                     "type": "string",
                     "description": "Direction of methylation.",
-                    "help_text": "Default takes all the regions: it can be either \"hypo\",\"hyper\",\"both\" or \"random\""
+                    "help_text": "Can be either \"hypo\", \"hyper\", \"both\" or \"random\" (default: \"both\").",
+                    "enum": ["hypo", "hyper", "both", "random"]
                 },
                 "top": {
                     "type": "integer",
                     "description": "Take the top x number of DMRs per cell state.",
-                    "help_text": "Default is \"None\". It can be used only if \"direction\" flag is specified."
+                    "help_text": "Default is \"None\". It can be used only if \"direction\" flag is specified.",
+                    "minimum": 1
                 }
             }
         },
@@ -210,12 +225,15 @@
             "properties": {
                 "regions": {
                     "type": "string",
-                    "description": "Path to the region file used for limma DMR selection and reference-free deconvolution."
+                    "description": "Path to the region file used for limma DMR selection and reference-free deconvolution.",
+                    "format": "file-path",
+                    "exists": true
                 },
                 "adj_method": {
                     "type": "string",
                     "default": "BH",
-                    "description": "Multiple testing correction method among the ones available in limma R package"
+                    "description": "Multiple testing correction method among the ones available in limma R package",
+                    "enum": ["holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"]
                 },
                 "include_na": {
                     "type": "boolean",
@@ -233,7 +251,8 @@
                 "clusters": {
                     "type": "integer",
                     "default": 2,
-                    "description": "Number of cell types expected (necessary for ref-free modality)"
+                    "description": "Number of cell types expected (necessary for ref-free modality)",
+                    "minimum": 2
                 }
             }
         },
@@ -296,7 +315,8 @@
                     "type": "string",
                     "default": "QP",
                     "description": "PRMeth deconv modality",
-                    "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based)."
+                    "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based).",
+                    "enum": ["QP", "NMF"]
                 },
                 "prmeth_NMF_entities": {
                     "type": "integer",

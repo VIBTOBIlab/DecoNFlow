@@ -1,0 +1,87 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    tag "cpu"
+
+    test("Test scenario: reference matrix (--ref_matrix) + meth_atlas + Houseman") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                // A reference matrix replaces the reference samples and the DMR selection
+                input = null
+                regions = null
+                meth_atlas = true
+                houseman_ineq = true
+            }
+        }
+
+        then {
+            // Round numeric values to 4 decimals so floating-point noise
+            // doesn't differ between arm64 and x86_64
+            def combined = path("$outputDir/deconvolution_results/combined_results_refbased.csv")
+                .readLines()
+                .collect { line ->
+                    line.split(',', -1).collect { field ->
+                        field.isBigDecimal()
+                            ? new BigDecimal(field).setScale(4, java.math.RoundingMode.HALF_UP).toPlainString()
+                            : field
+                    }.join(',')
+                }
+
+            assertAll(
+                { assert workflow.success },
+                { assert !workflow.trace.tasks().any { task -> task.name.contains('LIMMA') } },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    combined
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: reference matrix + CelFiE is skipped with a warning") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                input = null
+                regions = null
+                meth_atlas = true
+                celfie = true
+            }
+        }
+
+        then {
+            // nf-test runs Nextflow with -quiet, so warnings are only in the log file
+            def log = path("${outputDir}/../meta/nextflow.log").text
+            assertAll(
+                { assert workflow.success },
+                { assert log.contains("CelFiE and MetDecode need the reference samples (--input) and are skipped") },
+                { assert !path("$outputDir/deconvolution_results/combined_results_refbased.csv").text.contains("CelFiE") }
+            )
+        }
+    }
+
+    test("Test scenario: reference matrix + only CelFiE fails") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                input = null
+                regions = null
+                celfie = true
+            }
+        }
+
+        then {
+            def log = (workflow.stdout + workflow.stderr).join('\n')
+            assertAll(
+                { assert workflow.failed },
+                { assert log.contains("CelFiE and MetDecode need the reference samples (--input) and cannot be used with a reference matrix") }
+            )
+        }
+    }
+}

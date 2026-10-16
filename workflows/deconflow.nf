@@ -20,6 +20,10 @@ include { MERGE_SAMPLES                          } from "../modules/local/merge_
 include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/local/process_ref_matrix/main"
 include { METDECODE                              } from "../subworkflows/local/metdecode"
+include { classicToolsSelected                   } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
+include { celfieLikeToolsSelected                } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
+include { refBasedToolsSelected                  } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
+include { refFreeToolsSelected                   } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
 
 
 /*
@@ -37,58 +41,31 @@ workflow DECONFLOW{
     reffree_proportions = channel.empty()
     samples_ch = channel.empty()
     atlas_tsv = channel.empty()
-    /*
-     * Reference-based tools are the only consumers of the reference atlas
-     */
-    def run_ref_based = params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
-        params.prmeth || params.methyl_resolver || params.episcore || params.cibersort ||
-        params.celfie || params.metdecode || params.benchmark
-    def run_ref_free = params.medecom || params.ref_freecell_mix || params.benchmark
 
     /*
-     * If no bulk_samples samplesheet has been specified, throw an error
+     * Deconvolution tools to run. The combinations of parameters have already
+     * been checked by validateInputParameters() in PIPELINE_INITIALISATION.
      */
-    if (!params.bulk_samples) {
-        nextflow.Nextflow.error "\n----> ERROR: Please provide bulk samples to the pipeline e.g. '--bulk_samples bulksamples.csv' <----\n"
-    }
+    def run_classic = classicToolsSelected()
+    def run_celfie_like = celfieLikeToolsSelected()
+    def run_ref_based = refBasedToolsSelected()
+    def run_ref_free = refFreeToolsSelected()
 
     /*
-     * If both reference matrix and reference samples have been specified, throw an error
+     * If a reference matrix has been specified, skip the
+     * preprocessing and DMR selection steps
      */
-    if (params.ref_matrix && params.input) {
-        nextflow.Nextflow.error "\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input), but not both.<----\n"
-    }
-
-    /*
-     * If neither reference matrix nor reference samples have been specified, throw an error
-     */
-    if (!params.regions || !params.input && (!params.medecom || !params.ref_freecell_mix)) {
-        nextflow.Nextflow.error "\n----> ERROR: With limma DMR selection you need both a cluster file (--regions) and reference samples (--input). Or run a reference-free deconvolution. (MeDeCom or RefFreeCellMix). <----\n"
-    }
-
-    /*
-     * If ref-based tools have been specified, but no reference matrix or reference samples have been specified, throw an error
-     */
-    if (run_ref_based && !params.ref_matrix && !params.input) {
-        nextflow.Nextflow.error "\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input) for reference-based deconvolution. <----\n"
-    }
-
-    /*
-     * If reference matrix has been specified, and neither
-     * CelFiE or MetDecode have been specified, then:
-     * skip the preprocessing and DMR selection steps
-     */
-    if (params.ref_matrix) {
+    if (run_ref_based && params.ref_matrix) {
         atlas_tsv = channel.fromPath(params.ref_matrix).first()
         PROCESS_REF_MATRIX(atlas_tsv)
         atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
     }
 
     /*
-     * If reference samples have been specified and a reference-based
-     * tool needs the atlas, then: run the preprocessing and DMR selection steps
+     * Otherwise build the atlas from the reference samples:
+     * run the preprocessing and DMR selection steps
      */
-    else if (params.input && run_ref_based) {
+    else if (run_ref_based) {
         channel.fromList(
             samplesheetToList(params.input, "assets/schema_input.json"))
             .map {
@@ -155,7 +132,7 @@ workflow DECONFLOW{
          * Note that CELFIE_PREPROCESSING performs the preprocessing that can be used by
          * both CelFiE and MetDecode (similar structure)
          */
-        if (params.celfie || params.metdecode || params.benchmark) {
+        if (run_celfie_like) {
 
             // Generate CelFiE (or MetDecode) like matrices
             test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
@@ -176,8 +153,7 @@ workflow DECONFLOW{
         /*
          * If not MetDecode or CelFiE, run "classical" deconvolution tools
          */
-        if (params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
-            params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark) {
+        if (run_classic) {
             refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
             refbased_proportions = refbased_proportions.concat(refBasedDeconv.out.refbased_proportions)
         }
@@ -189,12 +165,6 @@ workflow DECONFLOW{
      * have been specified, run ref-free deconvolution
      */
     if (run_ref_free) {
-        if (!params.regions) {
-            nextflow.Nextflow.error "\n----> ERROR: Please provide an cluster file (--regions) for reference-free deconvolution. <----\n"
-        }
-        if (!params.bulk_samples) {
-            nextflow.Nextflow.error "\n----> ERROR: Please provide a bulk_samples samplesheet to the pipeline e.g. '--bulk_samples samplesheet.csv' <----\n"
-        }
         // Set the testing samples channel
         test_ch = channel.fromList(
             samplesheetToList(params.bulk_samples, "assets/schema_bulk_samples.json"))

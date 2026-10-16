@@ -110,14 +110,68 @@ workflow PIPELINE_COMPLETION {
 */
 
 //
-// Check and validate pipeline parameters
+// Deconvolution tools selected with the pipeline parameters. Also used by the
+// DECONFLOW workflow, so that the tool lists are defined in one place only.
+//
+
+// "Classical" reference-based tools, which only need a reference matrix
+def classicToolsSelected() {
+    return params.meth_atlas || params.epidish || params.houseman_eq || params.houseman_ineq ||
+        params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark
+}
+
+// CelFiE and MetDecode, which also need the reference samples (--input)
+def celfieLikeToolsRequested() {
+    return params.celfie || params.metdecode || params.benchmark
+}
+
+// CelFiE and MetDecode are skipped when a reference matrix replaces the reference samples
+def celfieLikeToolsSelected() {
+    return celfieLikeToolsRequested() && !params.ref_matrix
+}
+
+def refBasedToolsSelected() {
+    return classicToolsSelected() || celfieLikeToolsSelected()
+}
+
+def refFreeToolsSelected() {
+    return params.medecom || params.ref_freecell_mix || params.benchmark
+}
+
+//
+// Check the combinations of pipeline parameters. Single parameters (types,
+// allowed values, existing files, required ones) are validated against nextflow_schema.json.
 //
 def validateInputParameters() {
-    if (!params.medecom && !params.ref_freecell_mix && !params.houseman_eq && !params.houseman_ineq && !params.meth_atlas && !params.celfie && !params.metdecode && !params.epidish && !params.prmeth && !params.methyl_resolver && !params.episcore && !params.cibersort && !params.benchmark) {
+    if (!classicToolsSelected() && !celfieLikeToolsRequested() && !refFreeToolsSelected()) {
         error("\n----> ERROR: specify at least one deconvolution tool. <----\n")
     }
-    if ((params.celfie || params.metdecode) && !params.input) {
-        error("\n----> ERROR: you need to specify the reference samples (--input) when using CelFiE or MetDecode. <----\n")
+    if (params.ref_matrix && params.input) {
+        error("\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input), but not both. <----\n")
+    }
+    if (params.big_covs && !params.genome_order) {
+        error("\n----> ERROR: Please provide the genome order (--genome_order) when using --big_covs. <----\n")
+    }
+    if (celfieLikeToolsRequested() && params.ref_matrix) {
+        if (!classicToolsSelected() && !refFreeToolsSelected()) {
+            error("\n----> ERROR: CelFiE and MetDecode need the reference samples (--input) and cannot be used with a reference matrix (--ref_matrix). <----\n")
+        }
+        log.warn "CelFiE and MetDecode need the reference samples (--input) and are skipped when using a reference matrix (--ref_matrix)."
+    }
+    if (refBasedToolsSelected() && !params.ref_matrix && !params.input) {
+        error("\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input) for reference-based deconvolution. <----\n")
+    }
+    if (refBasedToolsSelected() && params.input && !params.regions) {
+        error("\n----> ERROR: Please provide a regions file (--regions) for the limma DMR selection on the reference samples (--input). <----\n")
+    }
+    if (refFreeToolsSelected() && !params.regions) {
+        error("\n----> ERROR: Please provide a regions file (--regions) for reference-free deconvolution. <----\n")
+    }
+    if (!refBasedToolsSelected() && params.input) {
+        log.warn "No reference-based tool selected: the reference samples (--input) are ignored."
+    }
+    if (!refBasedToolsSelected() && params.ref_matrix) {
+        log.warn "No reference-based tool selected: the reference matrix (--ref_matrix) is ignored."
     }
 }
 

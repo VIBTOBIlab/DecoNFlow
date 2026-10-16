@@ -10,6 +10,7 @@ nextflow_pipeline {
             params {
                 // define parameters here. Example:
                 outdir = "${outputDir}"
+                ref_matrix = null
                 meth_atlas = true
             }
         }

@@ -11,17 +11,7 @@ workflow markerSelection {
 
         main:
 
-
-        /*
-         * If no regions are specified, we cannot proceed with the DMR analysis
-         */
-        if (!params.regions) {
-            nextflow.Nextflow.error "\n----> ERROR: Please provide a regions file (--regions) to the pipeline. <----\n"
-        }
-
-        /*
-         * Otherwise run everything
-         */
+        // --regions is required with --input (checked in validateInputParameters)
         regions_ch = channel.fromPath(params.regions).first()
 
         // Pass the input data and region file to the preprocessing module

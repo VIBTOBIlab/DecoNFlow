@@ -8,6 +8,8 @@
 - **Removed DMR selection methods**: DMRfinder and wgbstools, together with the UXM deconvolution tool (`DMRfinderPrep`, `wgbstools` and `uxm` subworkflows and their modules, plus the bundled hg19 genome files in `assets/genome/`). Limma is now the only DMR selection method and the `--DMRselection` parameter has been removed.
 - **Removed parameters** tied to the dropped tools: `--DMRselection`, `--merged_matrix`, `--ref_bams`, `--test_bams`, `--fasta`, `--groups_file`, `--uxm`, `--uxm_atlas`, `--dmrfinder_pvalue`, `--dmrfinder_qvalue`, `--max_bp`, `--min_cpg_uxm`, `--rlen` and `--only_hypo`.
 - **Renamed `--test_set` to `--bulk_samples`** for the samplesheet of the bulk samples to deconvolve.
+- **Stricter parameter validation** at launch: `--bulk_samples` is now required, `--regions`, `--ref_matrix` and `--bulk_samples` must point to existing files, and `--direction`, `--collapse_method`, `--adj_method`, `--prmeth_mod` and `--genome_order` only accept their documented values. `--clusters` must be at least 2 and `--top` at least 1. Values that used to fail midway through a run (e.g. a typo in `--direction`, which only failed at the limma step) are now rejected before anything runs.
+- **limma DMR selection fits the model on M-values** instead of beta values (`test_DMR.R`). DMRs are still ranked and split into hyper/hypo by their delta beta, but the p-values, and therefore the DMRs passing `--adjp`, can differ from previous versions.
 
 ### 🚀 Improvements
 
@@ -17,9 +19,25 @@
 - **New HTML report** (`deconvolution_report.html`, `DECONV_REPORT` module) with a per-sample comparison of all reference-based tools (stacked bars plus the mean, SD and range of each cell type across tools) and the results of each tool (stacked bars per sample and tables).
 - **Reference-based and reference-free results are now saved separately**, in `combined_results_refbased.csv` and `combined_results_reffree.csv`, instead of a single `combined_results.csv`. Reference-free tools estimate unlabelled components (e.g. `LMC1`, `V1`) rather than the cell types of the reference, so combining them in one table mixed unrelated columns.
 
+### 🐛 Bug fixes
+
+- **Reference matrix (`--ref_matrix`) runs were always rejected** by a faulty parameter check, which also required `--regions` although the reference matrix route does not use it. Both now work as intended.
+- **Reference-free runs without reference samples were rejected** unless both MeDeCom and RefFreeCellMix were selected. A single reference-free tool can now be run with only `--bulk_samples` and `--regions`.
+- **CelFiE and MetDecode with a reference matrix**: they need the reference samples (`--input`), so with `--ref_matrix` (including through `--benchmark`) they are now skipped with a warning instead of being silently dropped. The run fails with a clear error if no other tool is left.
+- **`--big_covs` without `--genome_order`** is now caught at launch, instead of failing in the preprocessing with a missing `null.genome` file.
+- **Unused inputs**: a warning is printed when `--input` or `--ref_matrix` is given but no reference-based tool is selected, and the reference matrix is no longer processed in that case.
+- **Reference matrix check (`check_file.py`)**: an invalid matrix now stops the run with the reason (it used to exit successfully and fail later with a missing `reference.csv`), and duplicated cell type names are now detected.
+
+### 🔧 Maintenance
+
+- Parameter checks are grouped in `validateInputParameters()` (combinations of parameters) and `nextflow_schema.json` (single parameters), with the selected tools defined once and shared with the `DECONFLOW` workflow.
+- Cleaned up and documented the helper scripts (`build_matrix.py`, `check_file.py`, `combine_files.py`, `intersect.py`, `merge_tables.py`), with identical outputs.
+- Fixed the config type warnings in `nextflow.config` and `conf/base.config`.
+
 ### 🧪 Tests and CI
 
 - End-to-end tests now use bulk samples (`--bulk_samples`), and the snapshots have been updated.
+- New end-to-end tests for the reference matrix route (`tests/refmatrix.nf.test`), including the CelFiE warning and error cases, and a module test for `DECONV_REPORT`.
 - The nf-test GitHub action now also runs on pushes to `main`, `master` and `dev-refactoring` (the previous `branch:` trigger was invalid), and tests against Nextflow 26.04.0 and `latest-everything`.
 
 ## [v2.5.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.5.0) - 2026-09-26
