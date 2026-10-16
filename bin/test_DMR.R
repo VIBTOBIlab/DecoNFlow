@@ -7,10 +7,13 @@
 #   of counts produced by bisulfite sequencing data.
 # Underlying statistics are performed using the R package 'limma'
 #   (https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/intro.html).
+# The linear model is fitted on M-values (logit2 of the beta values, Du et al. 2010),
+#   while DMRs are ranked and split into hyper/hypo by their delta beta
+#   (difference in mean methylation between target and background groups).
 suppressPackageStartupMessages(library(limma))
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))
-version <- "0.1"
+version <- "0.2"
 copyright <- "Copyright (C) 2024 Edoardo Giuili (edoardo.giuili@ugent.be)"
 
 
@@ -53,6 +56,7 @@ adj_method <- "BH"
 collapse_method <- "mean"
 top <- "None" # takes all the DMRs
 direction <- "None"
+m_offset <- 0.01 # offset added to beta values to avoid infinite M-values at 0 and 1
 
 
 # get CL args
@@ -134,19 +138,25 @@ rownames(df) <- paste0(df$chr, ":", df$start, "-", df$end)
 beta_matrix <- as.matrix(df[, 4:(dim(df)[2])])
 rownames(beta_matrix) <- paste0(df$chr, ":", df$start, "-", df$end)
 print(head(beta_matrix))
-Sys.sleep(1)
+
+
+# Transform beta values into M-values
+cat("\n   Converting beta values into M-values (offset =", m_offset, ")...\n")
+beta_to_m <- function(beta, alpha = m_offset) {
+  log2((beta + alpha) / (1 - beta + alpha))
+}
+m_matrix <- beta_to_m(beta_matrix)
+print(head(m_matrix))
 
 
 # Define groups
 cat("\n2) Defining groups for comparison...\n")
-Sys.sleep(1)
 columns <- colnames(beta_matrix)
 groups <- sub("_\\d+.V", "", columns)
 groups <- factor(groups)
 group_levels <- levels(groups)
 cat("\nGroup levels created: \n")
 print(group_levels)
-Sys.sleep(1)
 
 
 # Create design matrix
@@ -155,9 +165,8 @@ colnames(design) <- group_levels
 
 
 # Fit the linear model
-cat("\n3) Fitting the linear model...\n")
-fit <- lmFit(beta_matrix, design)
-Sys.sleep(1)
+cat("\n3) Fitting the linear model on M-values...\n")
+fit <- lmFit(m_matrix, design)
 
 
 # Create contrasts for comparisons
@@ -184,7 +193,9 @@ cat("\n4) Apply empirical Bayes moderation using the following contrasts: \n")
 print(contrast_matrix)
 fit <- contrasts.fit(fit, contrast_matrix)
 fit <- eBayes(fit)
-Sys.sleep(1)
+
+# Delta beta per contrast (same contrasts applied to the group means of the beta values)
+delta_beta <- contrasts.fit(lmFit(beta_matrix, design), contrast_matrix)$coefficients
 
 
 # Extract results for each contrast
@@ -204,8 +215,8 @@ get_top_genes <- function(topTableResults, n_top = top, direction = direction) {
   }
 
   # Count hyper/hypo DMRs
-  num_over <- sum(topTableResults$logFC > 0)
-  num_under <- sum(topTableResults$logFC < 0)
+  num_over <- sum(topTableResults$DeltaBeta > 0)
+  num_under <- sum(topTableResults$DeltaBeta < 0)
   total_genes <- nrow(topTableResults)
 
   # Error handling for zero DMRs in the specified direction
@@ -243,15 +254,15 @@ get_top_genes <- function(topTableResults, n_top = top, direction = direction) {
 
   # Select DMRs based on direction
   if (direction == "hyper" || direction == "both") {
-    top_overexpressed <- topTableResults[topTableResults$logFC > 0, ]
-    top_overexpressed <- top_overexpressed[order(-top_overexpressed$logFC), ][seq_len(n_over), ]
+    top_overexpressed <- topTableResults[topTableResults$DeltaBeta > 0, ]
+    top_overexpressed <- top_overexpressed[order(-top_overexpressed$DeltaBeta), ][seq_len(n_over), ]
   } else {
     top_overexpressed <- data.frame()
   }
 
   if (direction == "hypo" || direction == "both") {
-    top_underexpressed <- topTableResults[topTableResults$logFC < 0, ]
-    top_underexpressed <- top_underexpressed[order(top_underexpressed$logFC), ][seq_len(n_under), ]
+    top_underexpressed <- topTableResults[topTableResults$DeltaBeta < 0, ]
+    top_underexpressed <- top_underexpressed[order(top_underexpressed$DeltaBeta), ][seq_len(n_under), ]
   } else {
     top_underexpressed <- data.frame()
   }
@@ -270,12 +281,13 @@ get_top_genes <- function(topTableResults, n_top = top, direction = direction) {
 results_df <- data.frame()
 for (contrast_name in colnames(contrast_matrix)) {
   contrast_results <- topTable(fit, coef = contrast_name, adjust.method = adj_method, number = Inf, p.value = pvalue)
+  contrast_results$DeltaBeta <- delta_beta[rownames(contrast_results), contrast_name]
   if (direction != "None") {
     contrast_results <- get_top_genes(contrast_results,top,direction)
   }
   contrast_results <- rownames_to_column(contrast_results, "DMR")
   contrast_label <- paste0(unlist(strsplit(contrast_name, "-"))[1], "-all")
-  colnames(contrast_results)[2] <- "MethylDiff"
+  contrast_results <- rename(contrast_results, MValueDiff = logFC, MethylDiff = DeltaBeta)
   contrast_results$Contrast <- contrast_label
   results_df <- rbind(results_df, contrast_results)
 }
