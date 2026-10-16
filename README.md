@@ -9,11 +9,14 @@
 
 DecoNFlow is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It allows deconvolution of samples using both reference-based and reference-free deconvolution tools. It also allows benchmarking of the different tools included in the pipeline.
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
+The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=26.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
 
 # Pipeline Summary
 
-![Presentation1](docs/images/animated.map.svg)
+[![DecoNFlow metro map](docs/images/deconflow_metro.svg)](docs/images/deconflow_metro.html)
+
+_Click the map to open the interactive version ([deconflow_metro.html](docs/images/deconflow_metro.html)), which you can pan, zoom and filter by line._
+
 The pipeline allows you to run both reference-based and reference-free deconvolution tools. Differentially methylated regions (DMRs) are selected with limma. Visit [docs](docs/) for more information.
 
 1. DMR selection
