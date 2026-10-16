@@ -1,5 +1,25 @@
 # DecoNFlow Pipeline
 
+## [v3.0.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v3.0.0) - 2026-10-16
+
+### ⚠️ Breaking changes
+
+- **Minimum Nextflow version** raised to **26.04.0**. The pipeline is migrated to the Nextflow strict syntax and rebuilt on the nf-core template (nf-core/tools 4.1.0), with parameter validation through the `nf-schema` plugin.
+- **Removed DMR selection methods**: DMRfinder and wgbstools, together with the UXM deconvolution tool (`DMRfinderPrep`, `wgbstools` and `uxm` subworkflows and their modules, plus the bundled hg19 genome files in `assets/genome/`). Limma is now the only DMR selection method and the `--DMRselection` parameter has been removed.
+- **Removed parameters** tied to the dropped tools: `--DMRselection`, `--merged_matrix`, `--ref_bams`, `--test_bams`, `--fasta`, `--groups_file`, `--uxm`, `--uxm_atlas`, `--dmrfinder_pvalue`, `--dmrfinder_qvalue`, `--max_bp`, `--min_cpg_uxm`, `--rlen` and `--only_hypo`.
+- **Renamed `--test_set` to `--bulk_samples`** for the samplesheet of the bulk samples to deconvolve.
+
+### 🚀 Improvements
+
+- Renamed the main workflow from `DNAmDeconv` to `DECONFLOW` and the limma DMR selection subworkflow from `inHousePrep` to `markerSelection`. Local modules and subworkflows now live in `modules/local/` and `subworkflows/local/`.
+- Limma marker selection now only runs when a reference-based tool needs the reference atlas. Reference-free runs (MeDeCom, RefFreeCellMix) no longer preprocess the reference samples or run limma.
+- Updated the documentation, citations and README.
+
+### 🧪 Tests and CI
+
+- End-to-end tests now use bulk samples (`--bulk_samples`), and the snapshots have been updated.
+- The nf-test GitHub action now also runs on pushes to `main`, `master` and `dev-refactoring` (the previous `branch:` trigger was invalid), and tests against Nextflow 26.04.0 and `latest-everything`.
+
 ## [v2.5.0](https://github.ugent.be/DePreterLab/DecoNFlow/releases/tag/v2.5.0) - 2026-09-26
 
 - Update the RefFreeCellMix module to also output the methylation components for downstream latent component analysis.
