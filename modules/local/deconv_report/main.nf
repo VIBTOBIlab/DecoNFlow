@@ -7,15 +7,19 @@ process DECONV_REPORT {
 
     input:
     path results
+    path ground_truth   // optional: [] when --ground_truth is not provided
 
     output:
     path 'deconvolution_report.html', emit: report
+    path 'evaluation_metrics.csv',    emit: metrics, optional: true
 
     script:
+    def evaluation = ground_truth ? "--ground_truth ${ground_truth} --metrics evaluation_metrics.csv" : ''
     """
     deconv_report.py \
     --results ${results} \
     --pipeline_version ${workflow.manifest.version} \
+    ${evaluation} \
     -o deconvolution_report.html
     """
 

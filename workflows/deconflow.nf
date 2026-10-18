@@ -16,6 +16,8 @@ include { TEST_PREPROCESSING                     } from "../modules/local/test_p
 include { COMBINE_FILES as COMBINE_REFBASED      } from "../modules/local/combine_files/main"
 include { COMBINE_FILES as COMBINE_REFFREE       } from "../modules/local/combine_files/main"
 include { DECONV_REPORT                          } from "../modules/local/deconv_report/main"
+include { FORMAT_COVERAGE as FORMAT_REF_COVERAGE  } from "../modules/local/format_coverage/main"
+include { FORMAT_COVERAGE as FORMAT_BULK_COVERAGE } from "../modules/local/format_coverage/main"
 include { MERGE_SAMPLES                          } from "../modules/local/merge_samples/main"
 include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/local/process_ref_matrix/main"
@@ -50,6 +52,16 @@ workflow DECONFLOW{
     def run_celfie_like = celfieLikeToolsSelected()
     def run_ref_based = refBasedToolsSelected()
     def run_ref_free = refFreeToolsSelected()
+
+    /*
+     * Read the bulk samples to deconvolve and convert their coverage files
+     * (Bismark .cov or MethylDackel .bedGraph) into the common CpG format
+     */
+    bulk_samples_ch = channel.fromList(
+        samplesheetToList(params.bulk_samples, "assets/schema_bulk_samples.json"))
+        .map { meta, cov -> tuple(meta.id, cov) }
+    FORMAT_BULK_COVERAGE(bulk_samples_ch)
+    test_ch = FORMAT_BULK_COVERAGE.out.coverage
 
     /*
      * If a reference matrix has been specified, skip the
@@ -97,6 +109,10 @@ workflow DECONFLOW{
                 return newEntry
             }
 
+        // Convert the coverage files of the reference samples into the common CpG format
+        FORMAT_REF_COVERAGE(samples_ch.map { id, label, cov -> tuple([id, label], cov) })
+        samples_ch = FORMAT_REF_COVERAGE.out.coverage.map { key, cov -> [key[0], key[1], cov] }
+
         /*
          *  Run limma DMR selection
          */
@@ -110,11 +126,6 @@ workflow DECONFLOW{
      * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools
      */
     if (run_ref_based) {
-
-        // Set the testing samples channel
-        test_ch = channel.fromList(
-            samplesheetToList(params.bulk_samples, "assets/schema_bulk_samples.json"))
-            .map { meta, cov -> tuple(meta.id, cov) }
 
         /*
          * Preprocess test samples
@@ -165,10 +176,6 @@ workflow DECONFLOW{
      * have been specified, run ref-free deconvolution
      */
     if (run_ref_free) {
-        // Set the testing samples channel
-        test_ch = channel.fromList(
-            samplesheetToList(params.bulk_samples, "assets/schema_bulk_samples.json"))
-            .map { meta, cov -> tuple(meta.id, cov) }
         regions_ch = channel.fromPath(params.regions)
         refFreeDeconv(test_ch, regions_ch.first())
         reffree_proportions = reffree_proportions.concat(refFreeDeconv.out.refree_proportions)
@@ -186,12 +193,15 @@ workflow DECONFLOW{
 
 
     /*
-     * PROCESS: Generate an HTML report with the results of each tool
+     * PROCESS: Generate an HTML report with the results of each tool and,
+     * if a ground truth is provided, the evaluation of the reference-based tools
      */
+    def ground_truth = params.ground_truth && run_ref_based ? file(params.ground_truth) : []
     DECONV_REPORT(
         COMBINE_REFBASED.out.clusters
             .mix(COMBINE_REFFREE.out.clusters)
-            .collect()
+            .collect(),
+        ground_truth
     )
 
 }

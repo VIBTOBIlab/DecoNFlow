@@ -173,6 +173,57 @@ def validateInputParameters() {
     if (!refBasedToolsSelected() && params.ref_matrix) {
         log.warn "No reference-based tool selected: the reference matrix (--ref_matrix) is ignored."
     }
+    if (params.ground_truth) {
+        if (refBasedToolsSelected()) {
+            validateGroundTruth()
+        } else {
+            log.warn "No reference-based tool selected: the ground truth (--ground_truth) is ignored, since reference-free tools do not estimate the cell types of the reference."
+        }
+    }
+}
+
+//
+// Check that the ground truth has a 'sample' column and the same cell types as the reference
+//
+def validateGroundTruth() {
+    def header = csvFields(file(params.ground_truth).readLines()[0], ',')
+    if (header[0] != 'sample') {
+        error("\n----> ERROR: The first column of the ground truth (--ground_truth) must be named 'sample', found '${header[0]}'. <----\n")
+    }
+    def truth_cell_types = header.drop(1).toSet()
+    def reference_cell_types = referenceCellTypes()
+
+    def missing = reference_cell_types - truth_cell_types
+    def extra = truth_cell_types - reference_cell_types
+    if (missing || extra) {
+        def details = []
+        if (missing) {
+            details << "missing in the ground truth: ${missing.sort().join(', ')}"
+        }
+        if (extra) {
+            details << "not in the reference: ${extra.sort().join(', ')}"
+        }
+        error("\n----> ERROR: The cell types of the ground truth (--ground_truth) must be the same as in the reference (${details.join('; ')}). <----\n")
+    }
+}
+
+//
+// Cell types of the reference: the columns of the reference matrix, or the 'type' column of the reference samplesheet
+//
+def referenceCellTypes() {
+    if (params.ref_matrix) {
+        return csvFields(file(params.ref_matrix).readLines()[0], '\t').drop(3).toSet()
+    }
+    def lines = file(params.input).readLines().findAll { line -> line.trim() }
+    def type_column = csvFields(lines[0], ',').indexOf('type')
+    return lines.drop(1).collect { line -> csvFields(line, ',')[type_column] }.toSet()
+}
+
+//
+// Split a line of a delimited file, removing quotes and surrounding spaces
+//
+def csvFields(String line, String separator) {
+    return line.split(separator, -1).collect { field -> field.trim().replaceAll('^"|"$', '') }
 }
 
 //
