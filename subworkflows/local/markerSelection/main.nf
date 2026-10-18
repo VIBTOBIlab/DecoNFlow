@@ -8,14 +8,12 @@ include { MERGE_SAMPLES                                     } from "../../../mod
 workflow markerSelection {
         take:
         samples         // channel: [ val(meta), val(entity), path(cov) ]
+        regions         // value channel: path(regions)
 
         main:
 
-        // --regions is required with --input (checked in validateInputParameters)
-        regions_ch = channel.fromPath(params.regions).first()
-
         // Pass the input data and region file to the preprocessing module
-        PREPROCESSING(samples, regions_ch)
+        PREPROCESSING(samples, regions)
 
         // Merge the samples in a unique matrix
         procSamples = PREPROCESSING

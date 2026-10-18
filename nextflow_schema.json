@@ -239,6 +239,13 @@
                     "format": "file-path",
                     "exists": true
                 },
+                "cgi_genome": {
+                    "type": "string",
+                    "enum": ["hg19", "hg38", "mm10", "mm39"],
+                    "description": "Genome whose CpG islands are used as regions when no regions file (--regions) is provided.",
+                    "help_text": "The CpG islands are downloaded from UCSC (cpgIslandExt table of the given assembly), converted to the 1-based coordinates used by the pipeline and restricted to the primary chromosomes. Ignored if --regions is given.",
+                    "fa_icon": "fas fa-dna"
+                },
                 "adj_method": {
                     "type": "string",
                     "default": "BH",

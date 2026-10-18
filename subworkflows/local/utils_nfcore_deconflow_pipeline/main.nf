@@ -138,6 +138,11 @@ def refFreeToolsSelected() {
     return params.medecom || params.ref_freecell_mix || params.benchmark
 }
 
+// Regions are given as a file (--regions), or as the CpG islands of a genome (--cgi_genome)
+def regionsProvided() {
+    return params.regions || params.cgi_genome
+}
+
 //
 // Check the combinations of pipeline parameters. Single parameters (types,
 // allowed values, existing files, required ones) are validated against nextflow_schema.json.
@@ -161,11 +166,14 @@ def validateInputParameters() {
     if (refBasedToolsSelected() && !params.ref_matrix && !params.input) {
         error("\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input) for reference-based deconvolution. <----\n")
     }
-    if (refBasedToolsSelected() && params.input && !params.regions) {
-        error("\n----> ERROR: Please provide a regions file (--regions) for the limma DMR selection on the reference samples (--input). <----\n")
+    if (refBasedToolsSelected() && params.input && !regionsProvided()) {
+        error("\n----> ERROR: Please provide a regions file (--regions) or a genome to use its CpG islands as regions (--cgi_genome) for the limma DMR selection on the reference samples (--input). <----\n")
     }
-    if (refFreeToolsSelected() && !params.regions) {
-        error("\n----> ERROR: Please provide a regions file (--regions) for reference-free deconvolution. <----\n")
+    if (refFreeToolsSelected() && !regionsProvided()) {
+        error("\n----> ERROR: Please provide a regions file (--regions) or a genome to use its CpG islands as regions (--cgi_genome) for reference-free deconvolution. <----\n")
+    }
+    if (params.regions && params.cgi_genome) {
+        log.warn "Both a regions file (--regions) and a genome (--cgi_genome) were given: the regions file is used and --cgi_genome is ignored."
     }
     if (!refBasedToolsSelected() && params.input) {
         log.warn "No reference-based tool selected: the reference samples (--input) are ignored."

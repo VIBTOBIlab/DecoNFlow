@@ -99,6 +99,8 @@ params {
     // Limma options
     // Path to the region file used for limma DMR selection and reference-free deconvolution.
     regions: String?
+    // Genome whose CpG islands (UCSC cpgIslandExt) are used as regions when no regions file is provided.
+    cgi_genome: String?
     // Multiple testing correction method among the ones available in limma R package
     adj_method: String = 'BH'
     // When merging samples for limma DMR analysis, include the regions even if some samples have missing values

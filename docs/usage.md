@@ -249,7 +249,7 @@ Take the top x number (integer) of DMRs per cell state (def. null): it can be us
 
 > **NOTE** The chromosome name must be consistent among coverage and region files. Always use the same format (in the example below the chromosome name is represented by the "chr" string + the chromosome number).
 
-For limma DMR selection, you must provide a regions file using this parameter. It has to be a tab-separated file with three columns, and no header as shown in the example below.
+For limma DMR selection and reference-free deconvolution, you must provide a regions file using this parameter, or use the CpG islands of a genome as regions with [`--cgi_genome`](#--cgi_genome). It has to be a tab-separated file with three columns, and no header as shown in the example below.
 
 ```bash
 --regions '[path to regions file]'
@@ -282,6 +282,18 @@ The RRBS regions files provided with the pipeline were generated from the in sil
 > ```bash
 > awk -v OFS='\t' '{ print $1, $2 + 1, $3 }' regions_0based.bed > regions.bed
 > ```
+
+#### `--cgi_genome`
+
+Instead of a regions file, the CpG islands (CGIs) of a genome can be used as regions, by giving the genome assembly: `hg19`, `hg38`, `mm10` or `mm39`.
+
+```bash
+--cgi_genome hg38
+```
+
+The CpG islands are downloaded from UCSC (`https://hgdownload.soe.ucsc.edu/goldenPath/<genome>/database/cpgIslandExt.txt.gz`), and converted into a regions file with the same coordinates as described above: the UCSC starts are 0-based, so 1 is added to them. Only the primary chromosomes are kept (alt, random and unplaced contigs are removed). If a regions file (`--regions`) is also given, the regions file is used and `--cgi_genome` is ignored.
+
+> **NOTE** The UCSC chromosome names start with `chr` (e.g. `chr1`). The chromosome names of the coverage files must use the same format.
 
 #### `--min_counts`
 

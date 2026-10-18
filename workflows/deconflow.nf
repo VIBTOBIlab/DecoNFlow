@@ -17,6 +17,7 @@ include { COMBINE_FILES as COMBINE_REFBASED      } from "../modules/local/combin
 include { COMBINE_FILES as COMBINE_REFFREE       } from "../modules/local/combine_files/main"
 include { DECONV_REPORT                          } from "../modules/local/deconv_report/main"
 include { FORMAT_COVERAGE as FORMAT_REF_COVERAGE  } from "../modules/local/format_coverage/main"
+include { CGI_REGIONS                            } from "../modules/local/cgi_regions/main"
 include { FORMAT_COVERAGE as FORMAT_BULK_COVERAGE } from "../modules/local/format_coverage/main"
 include { MERGE_SAMPLES                          } from "../modules/local/merge_samples/main"
 include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
@@ -52,6 +53,22 @@ workflow DECONFLOW{
     def run_celfie_like = celfieLikeToolsSelected()
     def run_ref_based = refBasedToolsSelected()
     def run_ref_free = refFreeToolsSelected()
+
+    /*
+     * Regions used by the limma DMR selection and the reference-free deconvolution:
+     * the regions file (--regions) or, if not given, the CpG islands of a genome
+     * downloaded from UCSC (--cgi_genome)
+     */
+    def needs_regions = (run_ref_based && !params.ref_matrix) || run_ref_free
+    regions_ch = channel.empty()
+    if (needs_regions && params.regions) {
+        regions_ch = channel.fromPath(params.regions).first()
+    }
+    else if (needs_regions) {
+        def cgi_url = "https://hgdownload.soe.ucsc.edu/goldenPath/${params.cgi_genome}/database/cpgIslandExt.txt.gz"
+        CGI_REGIONS(channel.of([params.cgi_genome, file(cgi_url)]))
+        regions_ch = CGI_REGIONS.out.regions.first()
+    }
 
     /*
      * Read the bulk samples to deconvolve and convert their coverage files
@@ -116,7 +133,7 @@ workflow DECONFLOW{
         /*
          *  Run limma DMR selection
          */
-        markerSelection(samples_ch)
+        markerSelection(samples_ch, regions_ch)
         atlas_tsv = markerSelection.out.atlas_tsv
         atlas_csv = markerSelection.out.atlas_csv
     }
@@ -176,8 +193,7 @@ workflow DECONFLOW{
      * have been specified, run ref-free deconvolution
      */
     if (run_ref_free) {
-        regions_ch = channel.fromPath(params.regions)
-        refFreeDeconv(test_ch, regions_ch.first())
+        refFreeDeconv(test_ch, regions_ch)
         reffree_proportions = reffree_proportions.concat(refFreeDeconv.out.refree_proportions)
     }
 

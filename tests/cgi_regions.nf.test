@@ -1,0 +1,28 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    tag "cpu"
+
+    test("Test scenario: CpG islands of hg19 as regions (--cgi_genome) + meth_atlas") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                ref_matrix = null
+                // Use the CpG islands downloaded from UCSC instead of a regions file
+                regions = null
+                cgi_genome = 'hg19'
+                meth_atlas = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.succeeded().any { task -> task.name.contains('CGI_REGIONS') } },
+                { assert path("$outputDir/deconvolution_results/combined_results_refbased.csv").exists() }
+            )
+        }
+    }
+}
