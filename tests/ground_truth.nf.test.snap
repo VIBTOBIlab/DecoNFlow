@@ -1,0 +1,16 @@
+{
+    "Test scenario: evaluation against a ground truth (meth_atlas + Houseman)": {
+        "content": [
+            [
+                "tool,samples,MSE,RMSE,Spearman",
+                "Houseman_ineq,3.0000,0.0499,0.2233,0.7576",
+                "meth_atlas,3.0000,0.0523,0.2287,0.6725"
+            ]
+        ],
+        "timestamp": "2026-10-18T14:40:45.555575",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    }
+}

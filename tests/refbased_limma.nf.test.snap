@@ -1,7 +1,7 @@
 {
     "Test scenario: all reference-based + limma": {
         "content": [
-            35,
+            46,
             [
                 "sample,colon,lung,pancreas,tool",
                 "SRR536238,0.4139,0.5861,0.0000,CIBERSORT",
@@ -30,7 +30,7 @@
                 "SRR641695,0.8370,0.0870,0.0760,meth_atlas"
             ]
         ],
-        "timestamp": "2026-10-16T14:58:12.820118",
+        "timestamp": "2026-10-17T13:40:46.895495",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"

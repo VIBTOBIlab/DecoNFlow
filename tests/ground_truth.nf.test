@@ -1,0 +1,60 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    tag "cpu"
+
+    test("Test scenario: evaluation against a ground truth (meth_atlas + Houseman)") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                ref_matrix = null
+                meth_atlas = true
+                houseman_ineq = true
+                // Example expected proportions of the test bulk samples
+                ground_truth = "${projectDir}/tests/data/ground_truth.csv"
+            }
+        }
+
+        then {
+            // Round numeric values to 4 decimals so floating-point noise
+            // doesn't differ between arm64 and x86_64
+            def metrics = path("$outputDir/deconvolution_results/evaluation_metrics.csv")
+                .readLines()
+                .collect { line ->
+                    line.split(',', -1).collect { field ->
+                        field.isBigDecimal()
+                            ? new BigDecimal(field).setScale(4, java.math.RoundingMode.HALF_UP).toPlainString()
+                            : field
+                    }.join(',')
+                }
+
+            assertAll(
+                { assert workflow.success },
+                { assert path("$outputDir/deconvolution_results/deconvolution_report.html").text.contains("Evaluation against ground truth") },
+                { assert snapshot(metrics).match() }
+            )
+        }
+    }
+
+    test("Test scenario: ground truth with cell types not in the reference fails") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                ref_matrix = null
+                meth_atlas = true
+                ground_truth = "${projectDir}/tests/data/ground_truth_wrong_cell_types.csv"
+            }
+        }
+
+        then {
+            def log = (workflow.stdout + workflow.stderr).join('\n')
+            assertAll(
+                { assert workflow.failed },
+                { assert log.contains("The cell types of the ground truth (--ground_truth) must be the same as in the reference") }
+            )
+        }
+    }
+}
