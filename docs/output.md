@@ -53,7 +53,7 @@ Self-contained HTML report (it can be opened offline in any browser) with:
 
 Negative estimates (possible for some tools) are drawn as 0 in the charts but kept in the tables.
 
-If a ground truth is provided (`--ground_truth`), the report starts with an **Evaluation against ground truth** section: the MSE, RMSE and Spearman correlation of each reference-based tool (sorted by RMSE, with the best values highlighted), and a plot of the estimated vs expected proportions of each tool.
+If a ground truth is provided (`--ground_truth`), the report starts with an **Evaluation against ground truth** section: the MSE, RMSE and Spearman correlation of each reference-based tool (sorted by RMSE, with the best values highlighted), and an interactive plot of the estimated vs expected proportions. In the plot you can choose which tools and cell types to show (one, several or all), colour the points by tool or by cell type, and see the MSE, RMSE and Spearman correlation of the selected points only.
 
 `evaluation_metrics.csv`
 
