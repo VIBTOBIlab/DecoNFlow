@@ -35,6 +35,8 @@ params {
 
     // Path to comma-separated file containing information about the samples to deconvolve.
     bulk_samples: String?
+    // Path to comma-separated file with the expected cell type proportions of the bulk samples, to evaluate the reference-based tools.
+    ground_truth: String?
 
     // Intermediate files options
     // Save intermediate files.
