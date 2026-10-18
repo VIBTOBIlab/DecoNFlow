@@ -23,19 +23,21 @@ The pipeline allows you to run both reference-based and reference-free deconvolu
    - limma
 2. Deconvolution
    1. Reference-based deconvolution
-      - meth_atlas (.cov)
-      - CIBERSORT (.cov)
-      - EpiDISH (.cov)
+      - meth_atlas
+      - CIBERSORT
+      - EpiDISH
       - Houseman's CP (equality)
       - Houseman's CP (inequality)
-      - EpiSCORE (.cov)
-      - MethylResolver (.cov)
-      - PRMeth (.cov)
-      - CelFiE (.cov)
-      - MetDecode (.cov)
+      - EpiSCORE
+      - MethylResolver
+      - PRMeth
+      - CelFiE
+      - MetDecode
    2. Reference-free deconvolution
-      - MeDeCom (.cov)
-      - RefFreeCellMix (.cov)
+      - MeDeCom
+      - RefFreeCellMix
+
+The methylation data of the reference and bulk samples can be provided as Bismark coverage files (`.cov.gz`) or MethylDackel bedGraph files (`.bedGraph.gz`).
 
 # Usage
 

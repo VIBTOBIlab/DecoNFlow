@@ -18,6 +18,7 @@
 %%metro file: refbased_out | CSV | Ref-based\nproportions
 %%metro file: reffree_out | CSV | Ref-free\nproportions
 %%metro file: report_out | HTML | Report
+%%metro file: gt_in | CSV | Ground\ntruth
 
 %%metro off_track: refmat_in, refbased_out, reffree_out
 
@@ -33,12 +34,14 @@ graph LR
         ref_in[ ]
         regions_in[ ]
         refmat_in[ ]
+        format_ref[Format coverage]
         preprocessing[Preprocessing]
         merge_atlas[Merge samples]
         limma[limma DMRs]
         process_refmat[Process ref. matrix]
 
-        ref_in -->|classic,em| preprocessing
+        ref_in -->|classic,em| format_ref
+        format_ref -->|classic,em| preprocessing
         regions_in -->|classic,em| preprocessing
         preprocessing -->|classic,em| merge_atlas
         merge_atlas -->|classic,em| limma
@@ -47,10 +50,12 @@ graph LR
 
     subgraph bulkprep [Bulk sample preprocessing]
         bulk_in[ ]
+        format_bulk[Format coverage]
         test_prep[Bulk preprocessing]
         merge_test[Merge samples]
 
-        bulk_in -->|classic,em| test_prep
+        bulk_in -->|classic,em| format_bulk
+        format_bulk -->|classic,em| test_prep
         test_prep -->|classic| merge_test
     end
 
@@ -81,12 +86,14 @@ graph LR
     subgraph reffree [Reference-free deconvolution]
         bulk_rf_in[ ]
         regions_rf_in[ ]
+        format_rf[Format coverage]
         refree_prep[Preprocessing]
         merge_rf[Merge samples]
         medecom[MeDeCom]
         refcellmix[RefFreeCellMix]
 
-        bulk_rf_in -->|reffree| refree_prep
+        bulk_rf_in -->|reffree| format_rf
+        format_rf -->|reffree| refree_prep
         regions_rf_in -->|reffree| refree_prep
         refree_prep -->|reffree| merge_rf
         merge_rf -->|reffree| medecom
@@ -98,6 +105,7 @@ graph LR
         combine_rf[Combine ref-free]
         refbased_out[ ]
         reffree_out[ ]
+        gt_in[ ]
         report[HTML report]
         report_out[ ]
 
@@ -105,6 +113,7 @@ graph LR
         combine_rf -->|reffree| reffree_out
         combine_rb -->|classic,em| report
         combine_rf -->|reffree| report
+        gt_in -->|classic,em| report
         report -->|classic,em,reffree| report_out
     end
 

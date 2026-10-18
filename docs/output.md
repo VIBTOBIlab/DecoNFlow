@@ -53,6 +53,19 @@ Self-contained HTML report (it can be opened offline in any browser) with:
 
 Negative estimates (possible for some tools) are drawn as 0 in the charts but kept in the tables.
 
+If a ground truth is provided (`--ground_truth`), the report starts with an **Evaluation against ground truth** section: the MSE, RMSE and Spearman correlation of each reference-based tool (sorted by RMSE, with the best values highlighted), and a plot of the estimated vs expected proportions of each tool.
+
+`evaluation_metrics.csv`
+
+Only produced when a ground truth is provided. Evaluation metrics of each reference-based tool, computed over all the cell types of the samples present in both the results and the ground truth, sorted by RMSE.
+
+```plaintext:
+tool,samples,MSE,RMSE,Spearman
+EpiDISH,3,0.0016,0.0401,0.9660
+meth_atlas,3,0.0023,0.0481,0.9660
+CelFiE,3,0.0983,0.3136,0.8768
+```
+
 ## Other output data
 
 If `--save_intermeds` flag is specified, then also the intermediate files are saved. So, the preprocessing of the reference and bulk samples, the DMR analyses results and all other intermediates files will be saved in the corresponding folders. Moreover, for each tool specified with the corresponding flag, a results .csv file containing the cell type proportions for the bulk samples will be generated within the `results/deconvolution_results` folder.

@@ -58,7 +58,7 @@ DNAXX6,nbl,DNAXX6.cov.gz
 | ------ | -------------------------------------------------------------------------------------------- |
 | `name` | Custom sample name. Spaces in sample names are automatically converted to underscores (`_`). |
 | `type` | Cell type name                                                                               |
-| `file` | Full path to .cov file. File has to be gzipped and have the extension ".cov.gz".             |
+| `file` | Full path to the coverage file of the sample (see [Coverage files](#coverage-files)).        |
 
 An [example samplesheet](../assets/reference.csv) has been provided with the pipeline.
 
@@ -83,7 +83,64 @@ bulk4,bulk4.cov.gz
 bulk5,bulk5.cov.gz
 ```
 
+| Column   | Description                                                                           |
+| -------- | ------------------------------------------------------------------------------------- |
+| `name`   | Custom sample name.                                                                   |
+| `sample` | Full path to the coverage file of the sample (see [Coverage files](#coverage-files)). |
+
 An [example samplesheet](../assets/bulk_samples.csv) has been provided with the pipeline.
+
+### Coverage files
+
+The reference and bulk samples can be provided in two formats. Both contain the methylated and unmethylated read counts of each CpG, which the pipeline needs to filter CpGs by coverage (`--min_counts`, `--bulk_min_counts`), to compute the methylation of each region and to run CelFiE and MetDecode.
+
+- **Bismark coverage files** (`.cov` or `.cov.gz`), produced by `bismark_methylation_extractor` (or `coverage2cytosine`). Positions are 1-based:
+
+  ```plaintext:
+  chr1	10469	10469	0	0	1
+  chr1	10471	10471	100	1	0
+  ```
+
+- **MethylDackel bedGraph files** (`.bedGraph` or `.bedGraph.gz`), produced by `MethylDackel extract`, with or without `--mergeContext`. Positions are 0-based (`start` is one base before the cytosine), and the `track` header line is optional:
+
+  ```plaintext:
+  track type="bedGraph" description="SRR1182519.sorted CpG methylation levels"
+  1	25114	25115	66	2	1
+  1	25115	25116	100	3	0
+  ```
+
+The columns are: chromosome, start, end, methylation percentage, number of methylated reads and number of unmethylated reads. At the start of the pipeline, the MethylDackel coordinates are converted to the 1-based coordinates of the Bismark coverage files by adding 1 to `start` (e.g. `1 25114 25115` becomes `1 25115 25115`, as Bismark reports it), so both formats give the same results. CpGs merged across strands (`--mergeContext`) keep their two bases (`1 25114 25116` becomes `1 25115 25116`).
+
+**Mixing formats.** Bismark and MethylDackel files can be mixed, both within a samplesheet and between the reference and the bulk samplesheets (e.g. reference samples processed with Bismark and bulk samples processed with nf-core/methylseq and bwa-meth). Since all files are converted to the same positions, a CpG gets the same coordinates whichever format it comes from, and the results do not depend on the format.
+
+> **NOTE** The [regions file](#--regions) must use the same 1-based coordinates as the Bismark coverage files. See [Coordinates of the regions file](#coordinates-of-the-regions-file).
+
+> **NOTE** The bedGraph files produced by Bismark (`bismark2bedGraph`) only contain the methylation percentage, without the read counts, and cannot be used: use the Bismark coverage files (`.cov.gz`) instead.
+
+### Ground truth (optional)
+
+If the expected cell type proportions of the bulk samples are known (e.g. in silico mixtures or benchmarking datasets), they can be provided to evaluate the reference-based tools:
+
+```bash
+--ground_truth '[path to ground truth file]'
+```
+
+It has to be a comma-separated file with a header row: a `sample` column with the names of the bulk samples (as in the `name` column of the [bulk samplesheet](#bulk-samples)), followed by one column per cell type with the expected proportions (between 0 and 1, not percentages).
+
+`ground_truth.csv`
+
+```plaintext:
+sample,colon,lung,pancreas
+bulk1,0.50,0.50,0.00
+bulk2,0.05,0.05,0.90
+bulk3,0.70,0.05,0.25
+```
+
+The cell types must be exactly the same as in the reference: the `type` column of the [reference samplesheet](#reference-samples), or the columns of the reference matrix (`--ref_matrix`). This is checked when the pipeline starts. Samples that are not listed in the ground truth are not evaluated.
+
+For each reference-based tool, the estimated proportions are compared with the expected ones over all the cell types of the evaluated samples, computing the mean squared error (MSE), the root mean squared error (RMSE) and the Spearman correlation. The metrics are added to the [HTML report](output.md), with a plot of the estimated vs expected proportions of each tool, and saved in `evaluation_metrics.csv`.
+
+> **NOTE** Reference-free tools are not evaluated, since their components are not labelled with cell types. If only reference-free tools are selected, the ground truth is ignored.
 
 ## Reference-free deconvolution
 
@@ -213,6 +270,18 @@ chr22  50064090    50064112
 ```
 
 An [example regions file](../assets/RRBS_regions20-200_chr.bed) has been provided with the pipeline.
+
+##### Coordinates of the regions file
+
+The regions must use **1-based coordinates, with both `start` and `end` included**: `chr1 10497 10588` is the region from base 10497 to base 10588. This is the convention of the Bismark coverage files, to which all coverage files are converted (see [Coverage files](#coverage-files)), so that each CpG is assigned to the right region.
+
+The RRBS regions files provided with the pipeline were generated from the in silico MspI digestion of the genome (`mkrrgenome`), by copying its `start..end` fragment coordinates (1-based, both ends included) into the `start` and `end` columns. A region therefore starts at the CpG of the MspI site (`C^CGG`) and ends right before the next one.
+
+> **WARNING** Standard BED files (e.g. from UCSC, ENCODE or `bedtools`) use 0-based coordinates, where `start` is one base before the first base of the region. They are not detected by the pipeline and would shift every region by one base, so CpGs at the edges of the regions could be assigned to the wrong region. Convert them first by adding 1 to `start`:
+>
+> ```bash
+> awk -v OFS='\t' '{ print $1, $2 + 1, $3 }' regions_0based.bed > regions.bed
+> ```
 
 #### `--min_counts`
 
