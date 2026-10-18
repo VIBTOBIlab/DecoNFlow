@@ -52,6 +52,16 @@
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv",
                     "exists": true
+                },
+                "ground_truth": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file with the expected cell type proportions of the bulk samples, to evaluate the reference-based tools.",
+                    "help_text": "Optional. One row per bulk sample: a 'sample' column with the names used in the bulk samplesheet, followed by one column per cell type of the reference with the expected proportions (between 0 and 1). If provided, the report includes the MSE, RMSE and Spearman correlation of each reference-based tool.",
+                    "fa_icon": "fas fa-bullseye"
                 }
             }
         },
