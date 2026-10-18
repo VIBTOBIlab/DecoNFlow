@@ -13,7 +13,7 @@ nextflow_pipeline {
                 meth_atlas = true
                 houseman_ineq = true
                 // Example expected proportions of the test bulk samples
-                ground_truth = "${projectDir}/tests/data/ground_truth.csv"
+                ground_truth = params.pipelines_testdata_base_path + "resources/ground_truth.csv"
             }
         }
 
@@ -45,7 +45,7 @@ nextflow_pipeline {
                 outdir = "${outputDir}"
                 ref_matrix = null
                 meth_atlas = true
-                ground_truth = "${projectDir}/tests/data/ground_truth_wrong_cell_types.csv"
+                ground_truth = params.pipelines_testdata_base_path + "resources/ground_truth_wrong_cell_types.csv"
             }
         }
 
