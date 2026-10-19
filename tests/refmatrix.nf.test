@@ -115,16 +115,19 @@ nextflow_pipeline {
                             : field
                     }.join(',')
                 }
+            // MetDecode is not deterministic: check that it ran, but keep its values out of the snapshot
+            def metdecode = combined.findAll { line -> line.endsWith(',MetDecode') }
 
             assertAll(
                 { assert workflow.success },
                 { assert !workflow.trace.tasks().any { task -> task.name.contains('LIMMA') } },
                 { assert workflow.trace.tasks().any { task -> task.name.contains('PROCESS_CELFIE_MATRIX') } },
                 { assert workflow.trace.tasks().any { task -> task.name.contains('PROCESS_METDECODE_MATRIX') } },
+                { assert metdecode.size() == 3 },
                 { assert snapshot(
                     // Number of tasks
                     workflow.trace.succeeded().size(),
-                    combined
+                    combined - metdecode
                 ).match() }
             )
         }
