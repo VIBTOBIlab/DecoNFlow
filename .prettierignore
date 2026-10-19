@@ -11,3 +11,5 @@ bin/
 .nf-test/
 modules/nf-core/
 subworkflows/nf-core/
+# Material for MkDocs needs 4-space indents for the cards and content tabs of the home page
+docs/index.md

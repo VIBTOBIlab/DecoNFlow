@@ -17,35 +17,57 @@ exclude_docs: |
 nav:
   - Home: index.md
   - Usage: usage.md
-  - Output: output.md
   - Parameters: parameters.md
-  - Citations: citations.md
-  - Changelog: changelog.md
-  - Contributing: CONTRIBUTING.md
+  - Output: output.md
+  - About:
+      - Citations: citations.md
+      - Changelog: changelog.md
+      - Contributing: CONTRIBUTING.md
 
 theme:
   name: material
   logo: images/logo.png
   favicon: images/logo.png
+  icon:
+    repo: fontawesome/brands/github
   features:
     - content.code.copy
+    - content.tabs.link
+    - navigation.footer
+    - navigation.instant
     - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
+    - navigation.tracking
     - search.highlight
+    - search.suggest
     - toc.follow
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: teal
+      accent: deep orange
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: teal
+      accent: deep orange
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-sunny
         name: Switch to light mode
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/VIBTOBIlab/DecoNFlow
+      name: DecoNFlow on GitHub
+    - icon: fontawesome/solid/book
+      link: https://www.biorxiv.org/content/10.1101/2025.11.27.688590v1
+      name: DecoNFlow preprint
 
 extra_css:
   - stylesheets/extra.css
@@ -65,8 +87,17 @@ markdown_extensions:
   - mdx_truly_sane_lists:
       nested_indent: 2
   - pymdownx.details
-  - pymdownx.highlight
+  # Material icons (e.g. :material-rocket-launch:) for the cards of the home page
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
   - pymdownx.superfences
+  # Content tabs (e.g. Docker / Singularity)
+  - pymdownx.tabbed:
+      alternate_style: true
   # Include CHANGELOG.md and CITATIONS.md from the root of the repository
   - pymdownx.snippets:
       base_path: ["."]

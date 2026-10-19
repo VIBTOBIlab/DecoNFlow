@@ -2,3 +2,36 @@
 .md-typeset table:not([class]) td:first-child code {
   white-space: nowrap;
 }
+
+/* Home page: centred hero with logo, tagline, buttons and badges */
+.dnf-hero {
+  text-align: center;
+  padding: 1rem 0 1.5rem;
+}
+
+.dnf-hero__logo {
+  width: 10rem;
+  border-radius: 0.6rem;
+}
+
+.md-typeset .dnf-hero h1 {
+  margin: 0.8rem 0 0.4rem;
+  font-weight: 700;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset .dnf-hero__tagline {
+  max-width: 36rem;
+  margin: 0 auto 1.2rem;
+  font-size: 1.05rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .dnf-hero .md-button {
+  margin: 0 0.3rem 1rem;
+}
+
+/* Home page: the four cards on one row on wide screens, two or one on narrower ones */
+.md-typeset .grid.cards.dnf-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
