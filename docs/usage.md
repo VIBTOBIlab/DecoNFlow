@@ -463,7 +463,7 @@ chr1    10497   10588   549         617         241         271         46      
 chr1    15089   15188   12          15          15          19          2               3
 ```
 
-The matrix is checked when the pipeline runs: each `_meth` column must be followed by the `_depth` column of the same cell type, there must be at least two cell types, and the counts must be numeric, not missing and with `_meth` not larger than `_depth`. With `--save_intermeds`, the reference atlas built from the reference samples is saved as `preprocessing/reference_samples_preprocessing/filtered_samples/final_celfie_atlas_matrix.csv`, which (without its first, index column, and tab separated) can be reused as a reference matrix. You can find an example [here](../tests/fixtures/count_ref_matrix.tsv).
+The matrix is checked when the pipeline runs: each `_meth` column must be followed by the `_depth` column of the same cell type, there must be at least two cell types, and the counts must be numeric, not missing and with `_meth` not larger than `_depth`. With `--save_intermeds`, the reference atlas built from the reference samples is saved as `preprocessing/reference_samples_preprocessing/filtered_samples/final_celfie_atlas_matrix.csv`, which (without its first, index column, and tab separated) can be reused as a reference matrix. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/count_ref_matrix.tsv).
 
 ## Resource requests
 

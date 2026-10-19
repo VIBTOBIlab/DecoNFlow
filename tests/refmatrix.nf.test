@@ -100,8 +100,8 @@ nextflow_pipeline {
                 celfie = true
                 metdecode = true
                 // Read counts of the atlas built by the limma route of the test profile
-                celfie_ref_matrix = "${projectDir}/tests/fixtures/count_ref_matrix.tsv"
-                metdecode_ref_matrix = "${projectDir}/tests/fixtures/count_ref_matrix.tsv"
+                celfie_ref_matrix = "https://github.com/VIBTOBIlab/deconflow_testdata/raw/main/resources/count_ref_matrix.tsv"
+                metdecode_ref_matrix = "https://github.com/VIBTOBIlab/deconflow_testdata/raw/main/resources/count_ref_matrix.tsv"
             }
         }
 
@@ -193,7 +193,7 @@ nextflow_pipeline {
                 ref_matrix = null
                 meth_atlas = false
                 celfie = true
-                celfie_ref_matrix = "${projectDir}/tests/fixtures/count_ref_matrix.tsv"
+                celfie_ref_matrix = "https://github.com/VIBTOBIlab/deconflow_testdata/raw/main/resources/count_ref_matrix.tsv"
             }
         }
 
