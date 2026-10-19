@@ -1,0 +1,4 @@
+/* Keep the parameter names of the tables (e.g. --celfie_ref_matrix) on one line */
+.md-typeset table:not([class]) td:first-child code {
+  white-space: nowrap;
+}

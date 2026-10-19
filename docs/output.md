@@ -24,7 +24,7 @@ Reference-based and reference-free results are saved in separate tables, since r
 
 Cell type proportions estimated by the reference-based tools. Each row contains the proportions estimated by one tool (column `tool`) for one bulk sample.
 
-```plaintext:
+```plaintext
 sample,proportion_entity1,proportion_entity2,proportion_entity3,tool
 bulk_sample_1,0.68,0.02,0.30,CelFiE
 bulk_sample_2,0.68,0.15,0.17,CelFiE
@@ -36,7 +36,7 @@ bulk_sample_4,0.68,0.24,0.08,CelFiE
 
 Proportions of the latent components estimated by the reference-free tools, with the same structure. Each tool has its own component columns, which are empty (`NaN`) for the rows of the other tools.
 
-```plaintext:
+```plaintext
 sample,LMC1,LMC2,tool,V1,V2
 bulk_sample_1,1.0,0.0,MeDeCom,,
 bulk_sample_2,0.18,0.82,MeDeCom,,
@@ -59,7 +59,7 @@ If a ground truth is provided (`--ground_truth`), the report starts with an **Ev
 
 Only produced when a ground truth is provided. Evaluation metrics of each reference-based tool, computed over all the cell types of the samples present in both the results and the ground truth, sorted by RMSE.
 
-```plaintext:
+```plaintext
 tool,samples,MSE,RMSE,Spearman
 EpiDISH,3,0.0016,0.0401,0.9660
 meth_atlas,3,0.0023,0.0481,0.9660

@@ -1,0 +1,86 @@
+site_name: DecoNFlow
+site_description: Nextflow pipeline for the computational deconvolution of DNA methylation data
+site_url: https://vibtobilab.github.io/DecoNFlow/
+repo_url: https://github.com/VIBTOBIlab/DecoNFlow
+repo_name: VIBTOBIlab/DecoNFlow
+edit_uri: ""
+copyright: Copyright &copy; VIBTOBIlab
+
+docs_dir: docs
+exclude_docs: |
+  README.md
+  hooks/
+  images/*.pdf
+  images/*.pptx
+  images/*.mmd
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Output: output.md
+  - Parameters: parameters.md
+  - Citations: citations.md
+  - Changelog: changelog.md
+  - Contributing: CONTRIBUTING.md
+
+theme:
+  name: material
+  logo: images/logo.png
+  favicon: images/logo.png
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  # GitHub-style anchors (e.g. `--regions` -> #--regions), so links work on GitHub and on the site
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  # Nested lists indented by 2 or 3 spaces, as formatted by prettier (Python-Markdown expects 4)
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
+  # Include CHANGELOG.md and CITATIONS.md from the root of the repository
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+# Generates the parameters page from nextflow_schema.json
+hooks:
+  - docs/hooks/schema_params.py
+
+watch:
+  - nextflow_schema.json
+  - CHANGELOG.md
+  - CITATIONS.md
+
+validation:
+  links:
+    anchors: warn

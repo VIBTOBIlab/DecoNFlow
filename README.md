@@ -50,7 +50,7 @@ First, prepare a samplesheet (.csv) file with your samples that need to be decon
 
 `test.csv`:
 
-```plaintext:
+```plaintext
 name,sample
 test1,/path/to/the/files/file1.cov.gz
 test2,/path/to/the/files/file2.cov.gz
@@ -68,7 +68,7 @@ Finally, prepare a samplesheet with your reference samples to build the referenc
 
 `reference.csv`
 
-```plaintext:
+```plaintext
 name,type,file
 file1,healthy,/path/to/the/file/file1.cov.gz
 file2,healthy,/path/to/the/file/file2.cov.gz
@@ -88,13 +88,13 @@ Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least
 
 You can run the pipeline using docker profile:
 
-```plaintext:
+```plaintext
 nextflow run main.nf -params-file params.yaml -profile docker
 ```
 
 Or using singularity profile:
 
-```plaintext:
+```plaintext
 nextflow run main.nf -params-file params.yaml -profile singularity
 ```
 
@@ -102,7 +102,7 @@ The params.yaml file looks like the following:
 
 `params.yaml`:
 
-```plaintext:
+```plaintext
 input: ./resources/reference.csv
 outdir: ./results
 bulk_samples: ./resources/test.csv

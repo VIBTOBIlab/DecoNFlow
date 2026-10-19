@@ -1,32 +1,10 @@
-# DNAmDeconv: Usage
-
-## Table of Contents
-
-- [Introduction](#Introduction)
-- [Reference-based deconvolution](#reference-based)
-- [Reference-free deconvolution](#reference-free)
-- [Running the pipeline](#pipeline-run)
-  - [Default behaviours](#default-behaviours)
-- [Core Nextflow arguments](#core-nextflow-arguments)
-- [DMR selection arguments](#dmr-selection-arguments)
-  - [limma arguments](#limma-arguments)
-- [Deconvolution parameters](#deconvolution-parameters)
-  - [EpiDISH params](#epidish-params)
-  - [MethylResolver params](#methylresolver-params)
-  - [EpiSCORE params](#episcore-params)
-  - [PRMeth params](#prmeth-params)
-  - [MeDeCom params](#medecom-params)
-  - [CelFiE params](#celfie-params)
-  - [MetDecode params](#metdecode-params)
-- [Other parameters](#other-parameters)
-- [Resource requests](#resource-requests)
-- [Running in the background](#running-in-the-background)
+# DecoNFlow: Usage
 
 ## Introduction
 
 DecoNFlow is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It allows deconvolution of samples using both reference-based and reference-free deconvolution tools. It also allows benchmarking of the different tools included in the pipeline.
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) (>= 23.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
+The pipeline is built using [Nextflow](https://www.nextflow.io/) (>= 26.04.0), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
 
 ## Reference-based deconvolution
 
@@ -44,7 +22,7 @@ where the samplesheet file looks like the following:
 
 `reference.csv`
 
-```plaintext:
+```plaintext
 name,type,file
 DNAXX1,healthy,DNAXX1.cov.gz
 DNAXX2,healthy,DNAXX2.cov.gz
@@ -60,7 +38,7 @@ DNAXX6,nbl,DNAXX6.cov.gz
 | `type` | Cell type name                                                                               |
 | `file` | Full path to the coverage file of the sample (see [Coverage files](#coverage-files)).        |
 
-An [example samplesheet](../assets/reference.csv) has been provided with the pipeline.
+An [example samplesheet](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/ref_cov.csv) is available in the test data of the pipeline.
 
 ### Bulk samples
 
@@ -74,7 +52,7 @@ where the samplesheet file looks like the following:
 
 `bulk_samples.csv`
 
-```plaintext:
+```plaintext
 name,sample
 bulk1,bulk1.cov.gz
 bulk2,bulk2.cov.gz
@@ -88,7 +66,7 @@ bulk5,bulk5.cov.gz
 | `name`   | Custom sample name.                                                                   |
 | `sample` | Full path to the coverage file of the sample (see [Coverage files](#coverage-files)). |
 
-An [example samplesheet](../assets/bulk_samples.csv) has been provided with the pipeline.
+An [example samplesheet](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/bulk_samples_cov.csv) is available in the test data of the pipeline.
 
 ### Coverage files
 
@@ -96,14 +74,14 @@ The reference and bulk samples can be provided in two formats. Both contain the 
 
 - **Bismark coverage files** (`.cov` or `.cov.gz`), produced by `bismark_methylation_extractor` (or `coverage2cytosine`). Positions are 1-based:
 
-  ```plaintext:
+  ```plaintext
   chr1	10469	10469	0	0	1
   chr1	10471	10471	100	1	0
   ```
 
 - **MethylDackel bedGraph files** (`.bedGraph` or `.bedGraph.gz`), produced by `MethylDackel extract`, with or without `--mergeContext`. Positions are 0-based (`start` is one base before the cytosine), and the `track` header line is optional:
 
-  ```plaintext:
+  ```plaintext
   track type="bedGraph" description="SRR1182519.sorted CpG methylation levels"
   1	25114	25115	66	2	1
   1	25115	25116	100	3	0
@@ -129,7 +107,7 @@ It has to be a comma-separated file with a header row: a `sample` column with th
 
 `ground_truth.csv`
 
-```plaintext:
+```plaintext
 sample,colon,lung,pancreas
 bulk1,0.50,0.50,0.00
 bulk2,0.05,0.05,0.90
@@ -144,7 +122,7 @@ For each reference-based tool, the estimated proportions are compared with the e
 
 ## Reference-free deconvolution
 
-For the reference-free deconvolution tools, the required files are the [regions file](#regions) and the [bulk samplesheet](#bulk-samples).
+For the reference-free deconvolution tools, the required files are the [regions file](#--regions) and the [bulk samplesheet](#bulk-samples).
 
 ## Running the pipeline
 
@@ -259,7 +237,7 @@ where the samplesheet file looks like the following:
 
 `RRBS_regions20-200_chr.bed`
 
-```plaintext:
+```plaintext
 chr1   10497       10588
 chr1   10589       10640
 chr1   10641       10669
@@ -269,7 +247,7 @@ chr22  50064064    50064084
 chr22  50064090    50064112
 ```
 
-An [example regions file](../assets/RRBS_regions20-200_chr.bed) has been provided with the pipeline.
+An [example regions file](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/RRBS_regions20-200_hg19_chr1_1M.bed) is available in the test data of the pipeline.
 
 ##### Coordinates of the regions file
 
@@ -429,7 +407,7 @@ If this parameter is specified, the pipeline skips the preprocessing and DMR sel
 
 `reference_matrix.tsv`
 
-```plaintext:
+```plaintext
 chr   start     end         entity1 entity2     entity3
 14	89493501	89493545	0       0.9897      0
 15	89922039	89922098	0.0021  0.9898      0
@@ -457,7 +435,7 @@ The matrix is the atlas format of MetDecode: a tab separated (.tsv/.bed/.txt) fi
 
 `celfie_ref_matrix.tsv`
 
-```plaintext:
+```plaintext
 chr     start   end     colon_meth  colon_depth lung_meth   lung_depth  pancreas_meth   pancreas_depth
 chr1    10497   10588   549         617         241         271         46              51
 chr1    15089   15188   12          15          15          19          2               3
