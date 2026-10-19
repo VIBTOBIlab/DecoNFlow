@@ -2,31 +2,30 @@
  * celfie subworkflow
  */
 
-include { MERGE_TABLES                                                            } from '../../../modules/local/celfie/merge_tables/main'
-include { RUN_DECONV                                                              } from '../../../modules/local/celfie/deconv/main'
-include { MERGE_SAMPLES as MERGE_CELFIE_REF; MERGE_SAMPLES as MERGE_CELFIE_TEST   } from '../../../modules/local/merge_samples/main'
+include { MERGE_TABLES                         } from '../../../modules/local/celfie/merge_tables/main'
+include { RUN_DECONV                           } from '../../../modules/local/celfie/deconv/main'
+include { MERGE_SAMPLES as MERGE_CELFIE_TEST   } from '../../../modules/local/merge_samples/main'
 
 
 // combine the two processes into a subworkflow
 workflow CELFIE {
     take:
-    ref_celfie
-    test_celfie
+    atlas         // reference atlas in the CelFiE format
+    test_celfie   // bulk samples in the CelFiE format, one file per sample
 
     main:
 
     /*
-     * Merge the samples in a unique matrix compatible with CelFiE
+     * Merge the bulk samples in a unique matrix compatible with CelFiE
      */
-    MERGE_CELFIE_REF('celfie_atlas',ref_celfie)    // reference samples
-    MERGE_CELFIE_TEST('test_celfie',test_celfie)  // test samples
+    MERGE_CELFIE_TEST('test_celfie',test_celfie)
 
 
     /*
      * merge data to match celfie format
      */
     MERGE_TABLES(
-        MERGE_CELFIE_REF.out.celfie_fin_matrix,
+        atlas,
         MERGE_CELFIE_TEST.out.fin_matrix
     )
 

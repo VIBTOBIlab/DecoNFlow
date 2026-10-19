@@ -22,9 +22,17 @@ include { FORMAT_COVERAGE as FORMAT_BULK_COVERAGE } from "../modules/local/forma
 include { MERGE_SAMPLES                          } from "../modules/local/merge_samples/main"
 include { LIMMA                                  } from "../modules/local/dmr_selection_limma/limma/main"
 include { PROCESS_REF_MATRIX                     } from "../modules/local/process_ref_matrix/main"
+include { PROCESS_COUNT_MATRIX as PROCESS_CELFIE_MATRIX    } from "../modules/local/process_count_matrix/main"
+include { PROCESS_COUNT_MATRIX as PROCESS_METDECODE_MATRIX } from "../modules/local/process_count_matrix/main"
+include { TEST_PREPROCESSING as TEST_PREPROCESSING_CELFIE    } from "../modules/local/test_preprocessing/main"
+include { TEST_PREPROCESSING as TEST_PREPROCESSING_METDECODE } from "../modules/local/test_preprocessing/main"
+include { TEST_PREPROCESSING as TEST_PREPROCESSING_COUNTS    } from "../modules/local/test_preprocessing/main"
+include { MERGE_SAMPLES as MERGE_CELFIE_ATLAS    } from "../modules/local/merge_samples/main"
 include { METDECODE                              } from "../subworkflows/local/metdecode"
 include { classicToolsSelected                   } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
-include { celfieLikeToolsSelected                } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
+include { celfieSelected                         } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
+include { metdecodeSelected                      } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
+include { atlasFromReferenceSamples              } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
 include { refBasedToolsSelected                  } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
 include { refFreeToolsSelected                   } from "../subworkflows/local/utils_nfcore_deconflow_pipeline"
 
@@ -50,16 +58,24 @@ workflow DECONFLOW{
      * been checked by validateInputParameters() in PIPELINE_INITIALISATION.
      */
     def run_classic = classicToolsSelected()
-    def run_celfie_like = celfieLikeToolsSelected()
+    def run_celfie = celfieSelected()
+    def run_metdecode = metdecodeSelected()
     def run_ref_based = refBasedToolsSelected()
     def run_ref_free = refFreeToolsSelected()
+
+    /*
+     * The atlas is built from the reference samples (--input) only if a selected
+     * tool has no reference matrix of its own (--ref_matrix, --celfie_ref_matrix,
+     * --metdecode_ref_matrix)
+     */
+    def run_atlas = atlasFromReferenceSamples()
 
     /*
      * Regions used by the limma DMR selection and the reference-free deconvolution:
      * the regions file (--regions) or, if not given, the CpG islands of a genome
      * downloaded from UCSC (--cgi_genome)
      */
-    def needs_regions = (run_ref_based && !params.ref_matrix) || run_ref_free
+    def needs_regions = run_atlas || run_ref_free
     regions_ch = channel.empty()
     if (needs_regions && params.regions) {
         regions_ch = channel.fromPath(params.regions).first()
@@ -81,20 +97,10 @@ workflow DECONFLOW{
     test_ch = FORMAT_BULK_COVERAGE.out.coverage
 
     /*
-     * If a reference matrix has been specified, skip the
-     * preprocessing and DMR selection steps
-     */
-    if (run_ref_based && params.ref_matrix) {
-        atlas_tsv = channel.fromPath(params.ref_matrix).first()
-        PROCESS_REF_MATRIX(atlas_tsv)
-        atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
-    }
-
-    /*
-     * Otherwise build the atlas from the reference samples:
+     * Build the atlas from the reference samples (--input):
      * run the preprocessing and DMR selection steps
      */
-    else if (run_ref_based) {
+    if (run_atlas) {
         channel.fromList(
             samplesheetToList(params.input, "assets/schema_input.json"))
             .map {
@@ -134,57 +140,92 @@ workflow DECONFLOW{
          *  Run limma DMR selection
          */
         markerSelection(samples_ch, regions_ch)
-        atlas_tsv = markerSelection.out.atlas_tsv
-        atlas_csv = markerSelection.out.atlas_csv
+        limma_atlas_tsv = markerSelection.out.atlas_tsv
+        limma_atlas_csv = markerSelection.out.atlas_csv
     }
 
 
     /*
-     * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools
+     * SUBWORKFLOW: Reference-based cellular deconvolution using classical deconvolution tools,
+     * with the reference matrix (--ref_matrix) or the atlas of the reference samples.
+     * The bulk samples are preprocessed on the regions of the atlas.
      */
-    if (run_ref_based) {
-
-        /*
-         * Preprocess test samples
-         * And merge them in a unique matrix
-         */
+    if (run_classic) {
+        if (params.ref_matrix) {
+            atlas_tsv = channel.fromPath(params.ref_matrix).first()
+            PROCESS_REF_MATRIX(atlas_tsv)
+            atlas_csv = PROCESS_REF_MATRIX.out.reference_csv
+        }
+        else {
+            atlas_tsv = limma_atlas_tsv
+            atlas_csv = limma_atlas_csv
+        }
         TEST_PREPROCESSING(test_ch, atlas_tsv)
-        test = TEST_PREPROCESSING
-                .out
-                .preprocessed_test
-                .collect()
-        MERGE_SAMPLES('test',test)
+        MERGE_SAMPLES('test', TEST_PREPROCESSING.out.preprocessed_test.collect())
+        refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
+        refbased_proportions = refbased_proportions.concat(refBasedDeconv.out.refbased_proportions)
+    }
 
-        /*
-         * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE or MetDecode
-         * Note that CELFIE_PREPROCESSING performs the preprocessing that can be used by
-         * both CelFiE and MetDecode (similar structure)
-         */
-        if (run_celfie_like) {
 
-            // Generate CelFiE (or MetDecode) like matrices
-            test_celfie_format = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
-            CELFIE_PREPROCESSING(samples_ch, atlas_tsv)
-            ref_celfie_format = CELFIE_PREPROCESSING.out.filt_celfie_sample.collect()
+    /*
+     * Atlas of read counts built from the reference samples, for CelFiE and
+     * MetDecode when they have no reference matrix of their own
+     */
+    if ((run_celfie && !params.celfie_ref_matrix) || (run_metdecode && !params.metdecode_ref_matrix)) {
+        CELFIE_PREPROCESSING(samples_ch, limma_atlas_tsv)
+        MERGE_CELFIE_ATLAS('celfie_atlas', CELFIE_PREPROCESSING.out.filt_celfie_sample.collect())
+        counts_atlas = MERGE_CELFIE_ATLAS.out.celfie_fin_matrix
 
-            // Run the subworkflows based on the parameters specified
-            if (params.celfie || params.benchmark) {
-                CELFIE(ref_celfie_format, test_celfie_format)
-                refbased_proportions = refbased_proportions.mix( CELFIE.out.output.map { file -> tuple('CelFiE', file) } )
-            }
-            if (params.metdecode || params.benchmark) {
-                METDECODE(ref_celfie_format, test_celfie_format)
-                refbased_proportions = refbased_proportions.mix( METDECODE.out.output.map { file -> tuple('MetDecode', file) } )
-            }
+        // Reuse the bulk samples preprocessed for the classical tools if they share the atlas
+        if (run_classic && !params.ref_matrix) {
+            counts_test = TEST_PREPROCESSING.out.preprocessed_celfie_test.collect()
         }
-
-        /*
-         * If not MetDecode or CelFiE, run "classical" deconvolution tools
-         */
-        if (run_classic) {
-            refBasedDeconv(atlas_csv, MERGE_SAMPLES.out.fin_matrix)
-            refbased_proportions = refbased_proportions.concat(refBasedDeconv.out.refbased_proportions)
+        else {
+            TEST_PREPROCESSING_COUNTS(test_ch, limma_atlas_tsv)
+            counts_test = TEST_PREPROCESSING_COUNTS.out.preprocessed_celfie_test.collect()
         }
+    }
+
+
+    /*
+     * SUBWORKFLOW: Reference-based cellular deconvolution using CelFiE, with its
+     * own reference matrix (--celfie_ref_matrix) or the atlas of the reference samples
+     */
+    if (run_celfie) {
+        if (params.celfie_ref_matrix) {
+            celfie_matrix = channel.fromPath(params.celfie_ref_matrix).first()
+            PROCESS_CELFIE_MATRIX(celfie_matrix)
+            TEST_PREPROCESSING_CELFIE(test_ch, celfie_matrix)
+            celfie_atlas = PROCESS_CELFIE_MATRIX.out.atlas
+            celfie_test = TEST_PREPROCESSING_CELFIE.out.preprocessed_celfie_test.collect()
+        }
+        else {
+            celfie_atlas = counts_atlas
+            celfie_test = counts_test
+        }
+        CELFIE(celfie_atlas, celfie_test)
+        refbased_proportions = refbased_proportions.mix( CELFIE.out.output.map { file -> tuple('CelFiE', file) } )
+    }
+
+
+    /*
+     * SUBWORKFLOW: Reference-based cellular deconvolution using MetDecode, with its
+     * own reference matrix (--metdecode_ref_matrix) or the atlas of the reference samples
+     */
+    if (run_metdecode) {
+        if (params.metdecode_ref_matrix) {
+            metdecode_matrix = channel.fromPath(params.metdecode_ref_matrix).first()
+            PROCESS_METDECODE_MATRIX(metdecode_matrix)
+            TEST_PREPROCESSING_METDECODE(test_ch, metdecode_matrix)
+            metdecode_atlas = PROCESS_METDECODE_MATRIX.out.atlas
+            metdecode_test = TEST_PREPROCESSING_METDECODE.out.preprocessed_celfie_test.collect()
+        }
+        else {
+            metdecode_atlas = counts_atlas
+            metdecode_test = counts_test
+        }
+        METDECODE(metdecode_atlas, metdecode_test)
+        refbased_proportions = refbased_proportions.mix( METDECODE.out.output.map { file -> tuple('MetDecode', file) } )
     }
 
 

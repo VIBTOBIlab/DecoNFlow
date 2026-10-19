@@ -136,7 +136,7 @@ bulk2,0.05,0.05,0.90
 bulk3,0.70,0.05,0.25
 ```
 
-The cell types must be exactly the same as in the reference: the `type` column of the [reference samplesheet](#reference-samples), or the columns of the reference matrix (`--ref_matrix`). This is checked when the pipeline starts. Samples that are not listed in the ground truth are not evaluated.
+The cell types must be exactly the same as in the reference: the `type` column of the [reference samplesheet](#reference-samples), or the cell types of the reference matrices (`--ref_matrix`, `--celfie_ref_matrix`, `--metdecode_ref_matrix`). If the tools use different references, the ground truth is checked against each of them. This is checked when the pipeline starts. Samples that are not listed in the ground truth are not evaluated.
 
 For each reference-based tool, the estimated proportions are compared with the expected ones over all the cell types of the evaluated samples, computing the mean squared error (MSE), the root mean squared error (RMSE) and the Spearman correlation. The metrics are added to the [HTML report](output.md), with a plot of the estimated vs expected proportions of each tool, and saved in `evaluation_metrics.csv`.
 
@@ -377,6 +377,8 @@ MeDeCom max number of iterations (def. 300).
 
 ### CelFiE params
 
+CelFiE uses the reference samples (`--input`) or its own reference matrix of read counts ([`--celfie_ref_matrix`](#--celfie_ref_matrix-and---metdecode_ref_matrix)).
+
 #### `--celfie_maxiter`
 
 How long the EM should iterate before stopping, unless convergence criteria is met (def. 1000).
@@ -398,6 +400,8 @@ CelFiE: Convergence criteria for EM (def. 0.0001)
 CelFiE will perform several random restarts and select the one with the highest log-likelihood (def. 10).
 
 ### MetDecode params
+
+MetDecode uses the reference samples (`--input`) or its own reference matrix of read counts ([`--metdecode_ref_matrix`](#--celfie_ref_matrix-and---metdecode_ref_matrix)).
 
 #### `--unknown_tissues`
 
@@ -438,6 +442,28 @@ chr   start     end         entity1 entity2     entity3
 ```
 
 The file needs to be a tab separated (.tsv/.bed) file. The values in the matrix are methylation beta values. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/modules/limma/reference_matrix_limma.tsv).
+
+CelFiE and MetDecode cannot use this matrix, since they need read counts instead of beta values: give them their own reference matrix (`--celfie_ref_matrix`, `--metdecode_ref_matrix`) or the reference samples (`--input`). Otherwise they are skipped with a warning.
+
+Each selected tool uses one reference: the reference-based tools other than CelFiE and MetDecode use `--ref_matrix` if given, otherwise the reference samples (`--input`), while CelFiE and MetDecode use their own reference matrix if given, otherwise the reference samples. So `--ref_matrix` and `--input` can be combined, e.g. `--ref_matrix` for `--meth_atlas` and `--input` for `--celfie`. If `--input` is given but every selected tool uses a reference matrix instead, the pipeline stops with an error, so that a reference is never silently ignored.
+
+### `--celfie_ref_matrix` and `--metdecode_ref_matrix`
+
+> **NOTE** As for `--ref_matrix`, the chromosome names and the coordinates (1-based, as in the Bismark coverage files) must be consistent with the coverage files to deconvolve.
+
+Reference matrices of read counts used by CelFiE (`--celfie_ref_matrix`) and MetDecode (`--metdecode_ref_matrix`) instead of the atlas built from the reference samples (`--input`). They are independent: each tool can use its own matrix, or one tool its own matrix and the other the reference samples. The bulk samples are preprocessed on the regions of each matrix, and a tool with its own matrix does not need the reference samples, the limma DMR selection or the regions (`--regions`, `--cgi_genome`).
+
+The matrix is the atlas format of MetDecode: a tab separated (.tsv/.bed/.txt) file with the columns `chr`, `start` and `end`, followed by two columns per cell type, `<cell type>_meth` with the number of methylated reads (or methylated CpG calls) of the region and `<cell type>_depth` with the total number of reads (methylated and unmethylated):
+
+`celfie_ref_matrix.tsv`
+
+```plaintext:
+chr     start   end     colon_meth  colon_depth lung_meth   lung_depth  pancreas_meth   pancreas_depth
+chr1    10497   10588   549         617         241         271         46              51
+chr1    15089   15188   12          15          15          19          2               3
+```
+
+The matrix is checked when the pipeline runs: each `_meth` column must be followed by the `_depth` column of the same cell type, there must be at least two cell types, and the counts must be numeric, not missing and with `_meth` not larger than `_depth`. With `--save_intermeds`, the reference atlas built from the reference samples is saved as `preprocessing/reference_samples_preprocessing/filtered_samples/final_celfie_atlas_matrix.csv`, which (without its first, index column, and tab separated) can be reused as a reference matrix. You can find an example [here](../tests/fixtures/count_ref_matrix.tsv).
 
 ## Resource requests
 

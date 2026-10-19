@@ -120,14 +120,40 @@ def classicToolsSelected() {
         params.prmeth || params.methyl_resolver || params.episcore || params.cibersort || params.benchmark
 }
 
-// CelFiE and MetDecode, which also need the reference samples (--input)
-def celfieLikeToolsRequested() {
-    return params.celfie || params.metdecode || params.benchmark
+// CelFiE and MetDecode, which need read counts instead of beta values: their own
+// count reference matrix (--celfie_ref_matrix, --metdecode_ref_matrix) or the reference samples (--input)
+def celfieRequested() {
+    return params.celfie || params.benchmark
 }
 
-// CelFiE and MetDecode are skipped when a reference matrix replaces the reference samples
+def metdecodeRequested() {
+    return params.metdecode || params.benchmark
+}
+
+def celfieLikeToolsRequested() {
+    return celfieRequested() || metdecodeRequested()
+}
+
+// CelFiE and MetDecode are skipped when they have neither their own reference matrix
+// nor the reference samples (e.g. when a beta-value reference matrix replaces the reference samples)
+def celfieSelected() {
+    return celfieRequested() && (params.celfie_ref_matrix || params.input)
+}
+
+def metdecodeSelected() {
+    return metdecodeRequested() && (params.metdecode_ref_matrix || params.input)
+}
+
 def celfieLikeToolsSelected() {
-    return celfieLikeToolsRequested() && !params.ref_matrix
+    return celfieSelected() || metdecodeSelected()
+}
+
+// The atlas is built from the reference samples (--input) with the limma DMR selection
+// only if a selected tool has no reference matrix of its own
+def atlasFromReferenceSamples() {
+    return (classicToolsSelected() && !params.ref_matrix) ||
+        (celfieSelected() && !params.celfie_ref_matrix) ||
+        (metdecodeSelected() && !params.metdecode_ref_matrix)
 }
 
 def refBasedToolsSelected() {
@@ -151,22 +177,27 @@ def validateInputParameters() {
     if (!classicToolsSelected() && !celfieLikeToolsRequested() && !refFreeToolsSelected()) {
         error("\n----> ERROR: specify at least one deconvolution tool. <----\n")
     }
-    if (params.ref_matrix && params.input) {
-        error("\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input), but not both. <----\n")
-    }
     if (params.big_covs && !params.genome_order) {
         error("\n----> ERROR: Please provide the genome order (--genome_order) when using --big_covs. <----\n")
     }
-    if (celfieLikeToolsRequested() && params.ref_matrix) {
-        if (!classicToolsSelected() && !refFreeToolsSelected()) {
-            error("\n----> ERROR: CelFiE and MetDecode need the reference samples (--input) and cannot be used with a reference matrix (--ref_matrix). <----\n")
+    def skipped_tools = [
+        [name: 'CelFiE', requested: celfieRequested(), selected: celfieSelected(), matrix: 'celfie_ref_matrix'],
+        [name: 'MetDecode', requested: metdecodeRequested(), selected: metdecodeSelected(), matrix: 'metdecode_ref_matrix']
+    ].findAll { tool -> tool.requested && !tool.selected }
+    skipped_tools.each { tool ->
+        def reason = "${tool.name} needs read counts: provide its own reference matrix (--${tool.matrix}) or the reference samples (--input)"
+        if (params.ref_matrix) {
+            reason += ", since it cannot use the beta values of the reference matrix (--ref_matrix)"
         }
-        log.warn "CelFiE and MetDecode need the reference samples (--input) and are skipped when using a reference matrix (--ref_matrix)."
+        if (!classicToolsSelected() && !celfieLikeToolsSelected() && !refFreeToolsSelected()) {
+            error("\n----> ERROR: ${reason}. <----\n")
+        }
+        log.warn "${reason}. ${tool.name} is skipped."
     }
-    if (refBasedToolsSelected() && !params.ref_matrix && !params.input) {
+    if (classicToolsSelected() && !params.ref_matrix && !params.input) {
         error("\n----> ERROR: Please provide either a reference matrix (--ref_matrix) or reference samples (--input) for reference-based deconvolution. <----\n")
     }
-    if (refBasedToolsSelected() && params.input && !regionsProvided()) {
+    if (atlasFromReferenceSamples() && !regionsProvided()) {
         error("\n----> ERROR: Please provide a regions file (--regions) or a genome to use its CpG islands as regions (--cgi_genome) for the limma DMR selection on the reference samples (--input). <----\n")
     }
     if (refFreeToolsSelected() && !regionsProvided()) {
@@ -178,8 +209,31 @@ def validateInputParameters() {
     if (!refBasedToolsSelected() && params.input) {
         log.warn "No reference-based tool selected: the reference samples (--input) are ignored."
     }
+    else if (params.input && !atlasFromReferenceSamples()) {
+        // Each tool uses one reference: fail instead of silently ignoring the reference samples
+        def replaced_by = []
+        if (classicToolsSelected() && params.ref_matrix) {
+            replaced_by << "the reference-based tools other than CelFiE and MetDecode use the reference matrix (--ref_matrix)"
+        }
+        if (celfieSelected() && params.celfie_ref_matrix) {
+            replaced_by << "CelFiE uses its own reference matrix (--celfie_ref_matrix)"
+        }
+        if (metdecodeSelected() && params.metdecode_ref_matrix) {
+            replaced_by << "MetDecode uses its own reference matrix (--metdecode_ref_matrix)"
+        }
+        error("\n----> ERROR: The reference samples (--input) are not used by any selected tool: ${replaced_by.join(', ')}. Please remove --input, or the reference matrix that should not be used. <----\n")
+    }
     if (!refBasedToolsSelected() && params.ref_matrix) {
         log.warn "No reference-based tool selected: the reference matrix (--ref_matrix) is ignored."
+    }
+    else if (!classicToolsSelected() && params.ref_matrix) {
+        log.warn "The reference matrix (--ref_matrix) is only used by the reference-based tools other than CelFiE and MetDecode, and none is selected: it is ignored."
+    }
+    if (!celfieRequested() && params.celfie_ref_matrix) {
+        log.warn "CelFiE is not selected: its reference matrix (--celfie_ref_matrix) is ignored."
+    }
+    if (!metdecodeRequested() && params.metdecode_ref_matrix) {
+        log.warn "MetDecode is not selected: its reference matrix (--metdecode_ref_matrix) is ignored."
     }
     if (params.ground_truth) {
         if (refBasedToolsSelected()) {
@@ -191,40 +245,70 @@ def validateInputParameters() {
 }
 
 //
-// Check that the ground truth has a 'sample' column and the same cell types as the reference
+// Check that the ground truth has a 'sample' column and the same cell types as each reference used
 //
 def validateGroundTruth() {
-    def header = csvFields(file(params.ground_truth).readLines()[0], ',')
+    def header = csvFields(firstLine(params.ground_truth), ',')
     if (header[0] != 'sample') {
         error("\n----> ERROR: The first column of the ground truth (--ground_truth) must be named 'sample', found '${header[0]}'. <----\n")
     }
     def truth_cell_types = header.drop(1).toSet()
-    def reference_cell_types = referenceCellTypes()
 
-    def missing = reference_cell_types - truth_cell_types
-    def extra = truth_cell_types - reference_cell_types
-    if (missing || extra) {
-        def details = []
-        if (missing) {
-            details << "missing in the ground truth: ${missing.sort().join(', ')}"
+    referencesCellTypes().each { reference, reference_cell_types ->
+        def missing = reference_cell_types - truth_cell_types
+        def extra = truth_cell_types - reference_cell_types
+        if (missing || extra) {
+            def details = []
+            if (missing) {
+                details << "missing in the ground truth: ${missing.sort().join(', ')}"
+            }
+            if (extra) {
+                details << "not in the reference: ${extra.sort().join(', ')}"
+            }
+            error("\n----> ERROR: The cell types of the ground truth (--ground_truth) must be the same as in the ${reference} (${details.join('; ')}). <----\n")
         }
-        if (extra) {
-            details << "not in the reference: ${extra.sort().join(', ')}"
-        }
-        error("\n----> ERROR: The cell types of the ground truth (--ground_truth) must be the same as in the reference (${details.join('; ')}). <----\n")
     }
 }
 
 //
-// Cell types of the reference: the columns of the reference matrix, or the 'type' column of the reference samplesheet
+// Cell types of each reference used by the selected tools, keyed by its description:
+// the columns of the reference matrices, or the 'type' column of the reference samplesheet
 //
-def referenceCellTypes() {
-    if (params.ref_matrix) {
-        return csvFields(file(params.ref_matrix).readLines()[0], '\t').drop(3).toSet()
+def referencesCellTypes() {
+    def references = [:]
+    if (classicToolsSelected() && params.ref_matrix) {
+        references['reference matrix (--ref_matrix)'] = csvFields(firstLine(params.ref_matrix), '\t').drop(3).toSet()
     }
-    def lines = file(params.input).readLines().findAll { line -> line.trim() }
-    def type_column = csvFields(lines[0], ',').indexOf('type')
-    return lines.drop(1).collect { line -> csvFields(line, ',')[type_column] }.toSet()
+    if (celfieSelected() && params.celfie_ref_matrix) {
+        references['CelFiE reference matrix (--celfie_ref_matrix)'] = countMatrixCellTypes(params.celfie_ref_matrix)
+    }
+    if (metdecodeSelected() && params.metdecode_ref_matrix) {
+        references['MetDecode reference matrix (--metdecode_ref_matrix)'] = countMatrixCellTypes(params.metdecode_ref_matrix)
+    }
+    if (atlasFromReferenceSamples()) {
+        def lines = file(params.input).readLines().findAll { line -> line.trim() }
+        def type_column = csvFields(lines[0], ',').indexOf('type')
+        references['reference samples (--input)'] = lines.drop(1).collect { line -> csvFields(line, ',')[type_column] }.toSet()
+    }
+    return references
+}
+
+//
+// Cell types of a count reference matrix, from its '<cell type>_meth' columns
+//
+def countMatrixCellTypes(String path) {
+    return csvFields(firstLine(path), '\t')
+        .drop(3)
+        .findAll { column -> column.endsWith('_meth') }
+        .collect { column -> column.substring(0, column.length() - '_meth'.length()) }
+        .toSet()
+}
+
+//
+// First line of a file, without reading the whole file
+//
+def firstLine(String path) {
+    return file(path).withReader { reader -> reader.readLine() }
 }
 
 //

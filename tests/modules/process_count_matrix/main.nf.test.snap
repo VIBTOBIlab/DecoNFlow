@@ -1,0 +1,19 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "count_matrix.csv:md5,2b0f45ca898dc432a17629bdad4c64b6"
+                ],
+                "atlas": [
+                    "count_matrix.csv:md5,2b0f45ca898dc432a17629bdad4c64b6"
+                ]
+            }
+        ],
+        "timestamp": "2026-10-19T12:36:10.9803",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.10.0"
+        }
+    }
+}

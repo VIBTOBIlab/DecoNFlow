@@ -42,7 +42,7 @@ nextflow_pipeline {
         }
     }
 
-    test("Test scenario: reference matrix + CelFiE is skipped with a warning") {
+    test("Test scenario: reference matrix + CelFiE without its own reference matrix is skipped with a warning") {
 
         when {
             params {
@@ -59,13 +59,14 @@ nextflow_pipeline {
             def log = path("${outputDir}/../meta/nextflow.log").text
             assertAll(
                 { assert workflow.success },
-                { assert log.contains("CelFiE and MetDecode need the reference samples (--input) and are skipped") },
+                { assert log.contains("CelFiE needs read counts: provide its own reference matrix (--celfie_ref_matrix) or the reference samples (--input)") },
+                { assert log.contains("CelFiE is skipped") },
                 { assert !path("$outputDir/deconvolution_results/combined_results_refbased.csv").text.contains("CelFiE") }
             )
         }
     }
 
-    test("Test scenario: reference matrix + only CelFiE fails") {
+    test("Test scenario: reference matrix + only CelFiE without its own reference matrix fails") {
 
         when {
             params {
@@ -82,7 +83,125 @@ nextflow_pipeline {
             def log = (workflow.stdout + workflow.stderr).join('\n')
             assertAll(
                 { assert workflow.failed },
-                { assert log.contains("CelFiE and MetDecode need the reference samples (--input) and cannot be used with a reference matrix") }
+                { assert log.contains("CelFiE needs read counts: provide its own reference matrix (--celfie_ref_matrix) or the reference samples (--input), since it cannot use the beta values of the reference matrix (--ref_matrix)") }
+            )
+        }
+    }
+
+    test("Test scenario: reference matrix + CelFiE and MetDecode reference matrices (--celfie_ref_matrix, --metdecode_ref_matrix)") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                // Each tool has its own reference matrix: no reference samples nor DMR selection
+                input = null
+                regions = null
+                meth_atlas = true
+                celfie = true
+                metdecode = true
+                // Read counts of the atlas built by the limma route of the test profile
+                celfie_ref_matrix = "${projectDir}/tests/fixtures/count_ref_matrix.tsv"
+                metdecode_ref_matrix = "${projectDir}/tests/fixtures/count_ref_matrix.tsv"
+            }
+        }
+
+        then {
+            def combined = path("$outputDir/deconvolution_results/combined_results_refbased.csv")
+                .readLines()
+                .collect { line ->
+                    line.split(',', -1).collect { field ->
+                        field.isBigDecimal()
+                            ? new BigDecimal(field).setScale(4, java.math.RoundingMode.HALF_UP).toPlainString()
+                            : field
+                    }.join(',')
+                }
+
+            assertAll(
+                { assert workflow.success },
+                { assert !workflow.trace.tasks().any { task -> task.name.contains('LIMMA') } },
+                { assert workflow.trace.tasks().any { task -> task.name.contains('PROCESS_CELFIE_MATRIX') } },
+                { assert workflow.trace.tasks().any { task -> task.name.contains('PROCESS_METDECODE_MATRIX') } },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    combined
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: reference matrix for meth_atlas + reference samples for CelFiE") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                // input, regions and ref_matrix come from tests/nextflow.config
+                meth_atlas = true
+                celfie = true
+            }
+        }
+
+        then {
+            def combined = path("$outputDir/deconvolution_results/combined_results_refbased.csv")
+                .readLines()
+                .collect { line ->
+                    line.split(',', -1).collect { field ->
+                        field.isBigDecimal()
+                            ? new BigDecimal(field).setScale(4, java.math.RoundingMode.HALF_UP).toPlainString()
+                            : field
+                    }.join(',')
+                }
+
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.tasks().any { task -> task.name.contains('PROCESS_REF_MATRIX') } },
+                { assert workflow.trace.tasks().any { task -> task.name.contains('LIMMA') } },
+                { assert workflow.trace.tasks().any { task -> task.name.contains('TEST_PREPROCESSING_COUNTS') } },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    combined
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: reference matrix + reference samples used by no tool fails") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                // input and ref_matrix come from tests/nextflow.config
+                meth_atlas = true
+            }
+        }
+
+        then {
+            def log = (workflow.stdout + workflow.stderr).join('\n')
+            assertAll(
+                { assert workflow.failed },
+                { assert log.contains("The reference samples (--input) are not used by any selected tool: the reference-based tools other than CelFiE and MetDecode use the reference matrix (--ref_matrix)") }
+            )
+        }
+    }
+
+    test("Test scenario: CelFiE reference matrix + reference samples used by no tool fails") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                ref_matrix = null
+                meth_atlas = false
+                celfie = true
+                celfie_ref_matrix = "${projectDir}/tests/fixtures/count_ref_matrix.tsv"
+            }
+        }
+
+        then {
+            def log = (workflow.stdout + workflow.stderr).join('\n')
+            assertAll(
+                { assert workflow.failed },
+                { assert log.contains("The reference samples (--input) are not used by any selected tool: CelFiE uses its own reference matrix (--celfie_ref_matrix)") }
             )
         }
     }

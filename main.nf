@@ -30,6 +30,10 @@ params {
     input: String?
     // The path of the reference matrix that you want to use for ref-based deconvolution.
     ref_matrix: String?
+    // The path of the reference matrix of read counts used by CelFiE instead of the reference samples.
+    celfie_ref_matrix: String?
+    // The path of the reference matrix of read counts used by MetDecode instead of the reference samples.
+    metdecode_ref_matrix: String?
     // The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
     outdir: String?
 

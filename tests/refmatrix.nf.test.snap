@@ -1,4 +1,26 @@
 {
+    "Test scenario: reference matrix + CelFiE and MetDecode reference matrices (--celfie_ref_matrix, --metdecode_ref_matrix)": {
+        "content": [
+            25,
+            [
+                "sample,colon,lung,pancreas,tool",
+                "SRR536238,0.6404,0.3596,0.0000,CelFiE",
+                "SRR620008,0.0017,0.0001,0.9982,CelFiE",
+                "SRR641695,0.0002,0.0000,0.9998,CelFiE",
+                "SRR536238,0.6800,0.3200,0.0000,MetDecode",
+                "SRR620008,0.2010,0.0680,0.7310,MetDecode",
+                "SRR641695,0.3830,0.3190,0.2980,MetDecode",
+                "SRR536238,0.4570,0.5430,0.0000,meth_atlas",
+                "SRR620008,0.2360,0.3840,0.3800,meth_atlas",
+                "SRR641695,0.8370,0.0870,0.0760,meth_atlas"
+            ]
+        ],
+        "timestamp": "2026-10-19T12:41:01.754836",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.10.0"
+        }
+    },
     "Test scenario: reference matrix (--ref_matrix) + meth_atlas + Houseman": {
         "content": [
             12,
@@ -15,6 +37,25 @@
         "timestamp": "2026-10-17T13:41:03.968854",
         "meta": {
             "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "Test scenario: reference matrix for meth_atlas + reference samples for CelFiE": {
+        "content": [
+            44,
+            [
+                "sample,colon,lung,pancreas,tool",
+                "SRR536238,0.6404,0.3596,0.0000,CelFiE",
+                "SRR620008,0.0017,0.0001,0.9982,CelFiE",
+                "SRR641695,0.0002,0.0000,0.9998,CelFiE",
+                "SRR536238,0.4570,0.5430,0.0000,meth_atlas",
+                "SRR620008,0.2360,0.3840,0.3800,meth_atlas",
+                "SRR641695,0.8370,0.0870,0.0760,meth_atlas"
+            ]
+        ],
+        "timestamp": "2026-10-19T13:45:46.989873",
+        "meta": {
+            "nf-test": "0.9.4",
             "nextflow": "26.10.0"
         }
     }

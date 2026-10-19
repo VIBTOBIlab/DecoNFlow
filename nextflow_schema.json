@@ -30,6 +30,22 @@
                     "description": "The path of the reference matrix that you want to use for ref-based deconvolution.",
                     "exists": true
                 },
+                "celfie_ref_matrix": {
+                    "type": "string",
+                    "pattern": "^\\S+\\.(bed|tsv|txt)$",
+                    "format": "file-path",
+                    "description": "The path of the reference matrix of read counts used by CelFiE instead of the reference samples.",
+                    "help_text": "Tab-separated file with the columns chr, start and end, followed by a '<cell type>_meth' and a '<cell type>_depth' column (methylated and total read counts) per cell type.",
+                    "exists": true
+                },
+                "metdecode_ref_matrix": {
+                    "type": "string",
+                    "pattern": "^\\S+\\.(bed|tsv|txt)$",
+                    "format": "file-path",
+                    "description": "The path of the reference matrix of read counts used by MetDecode instead of the reference samples.",
+                    "help_text": "Tab-separated file with the columns chr, start and end, followed by a '<cell type>_meth' and a '<cell type>_depth' column (methylated and total read counts) per cell type.",
+                    "exists": true
+                },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",

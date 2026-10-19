@@ -1,25 +1,21 @@
 /*
- * celfie subworkflow
+ * metdecode subworkflow
  */
-include { MERGE_SAMPLES as MERGE_CELFIE_REF; MERGE_SAMPLES as MERGE_CELFIE_TEST   } from '../../../modules/local/merge_samples/main'
-include { METDECODE_DECONV                                                        } from '../../../modules/local/metdecode/main'
-include { INTERSECT                                                               } from '../../../modules/local/intersect/main'
+include { MERGE_SAMPLES as MERGE_CELFIE_TEST   } from '../../../modules/local/merge_samples/main'
+include { METDECODE_DECONV                     } from '../../../modules/local/metdecode/main'
+include { INTERSECT                            } from '../../../modules/local/intersect/main'
 
 
 workflow METDECODE {
     take:
-    ref_metdecode
-    test_metdecode
+    atlas            // reference atlas in the CelFiE format
+    test_metdecode   // bulk samples in the CelFiE format, one file per sample
 
     main:
 
     /*
-     * Merge the samples in a unique matrix compatible with MetDecode
+     * Merge the bulk samples in a unique matrix compatible with MetDecode
      */
-    MERGE_CELFIE_REF( // reference samples
-        'celfie_atlas',
-        ref_metdecode
-    )
     MERGE_CELFIE_TEST( // test samples
         'test_celfie',
         test_metdecode
@@ -29,7 +25,7 @@ workflow METDECODE {
      * Intersect the matrices
      */
     INTERSECT(
-        MERGE_CELFIE_REF.out.celfie_fin_matrix,
+        atlas,
         MERGE_CELFIE_TEST.out.fin_matrix
     )
 
