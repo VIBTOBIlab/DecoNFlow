@@ -129,7 +129,7 @@ For the reference-free deconvolution tools, the required files are the [regions 
 The typical command for running the pipeline is the following:
 
 ```bash
-nextflow run main.nf --input assets/reference.csv --bulk_samples assets/bulk_samples.csv --outdir ./results -profile docker
+nextflow run main.nf --input assets/reference.csv --bulk_samples assets/bulk_samples.csv --cgi_genome hg38 --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -154,6 +154,7 @@ with `params.yaml` containing:
 ```yaml
 input: 'assets/reference.csv'
 bulk_samples: 'assets/test.csv'
+cgi_genome: 'hg38'
 outdir: './results/'
 <...>
 ```
