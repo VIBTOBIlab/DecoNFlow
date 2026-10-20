@@ -441,7 +441,33 @@ chr1    10497   10588   549         617         241         271         46      
 chr1    15089   15188   12          15          15          19          2               3
 ```
 
-The matrix is checked when the pipeline runs: each `_meth` column must be followed by the `_depth` column of the same cell type, there must be at least two cell types, and the counts must be numeric, not missing and with `_meth` not larger than `_depth`. With `--save_intermeds`, the reference atlas built from the reference samples is saved as `preprocessing/reference_samples_preprocessing/filtered_samples/final_celfie_atlas_matrix.csv`, which (without its first, index column, and tab separated) can be reused as a reference matrix. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/count_ref_matrix.tsv).
+The matrix is checked when the pipeline runs: each `_meth` column must be followed by the `_depth` column of the same cell type, there must be at least two cell types, and the counts must be numeric, not missing and with `_meth` not larger than `_depth`. You can find an example [here](https://github.com/VIBTOBIlab/deconflow_testdata/blob/main/resources/count_ref_matrix.tsv), and how to build one from your own reference samples [below](#building-your-own-reference-matrices).
+
+### Building your own reference matrices
+
+The pipeline can build the reference matrices from your reference samples, so that you can reuse them in later runs without the reference samples, the limma DMR selection and the regions. Run the pipeline once with the [reference samples](#reference-samples) (`--input`), the regions (`--regions` or `--cgi_genome`), a beta-value tool (e.g. `--meth_atlas`), CelFiE or MetDecode (e.g. `--celfie`) and `--save_intermeds`:
+
+```bash
+nextflow run VIBTOBIlab/DecoNFlow \
+  --input reference.csv \
+  --bulk_samples bulk_samples.csv \
+  --regions regions.bed \
+  --meth_atlas --celfie \
+  --save_intermeds \
+  --outdir results \
+  -profile docker
+```
+
+The matrices are saved in `results/preprocessing/reference_samples_preprocessing/`:
+
+- `limma/reference_matrix_limma.tsv`: the beta values of the DMRs selected by limma, which can be used as is with `--ref_matrix`.
+- `filtered_samples/final_celfie_atlas_matrix.csv`: the read counts of the DMRs selected by limma. It is comma separated and its first column is an index, so convert it to the format of `--celfie_ref_matrix` and `--metdecode_ref_matrix` with:
+
+  ```bash
+  cut -d, -f2- final_celfie_atlas_matrix.csv | tr ',' '\t' > count_ref_matrix.tsv
+  ```
+
+The reference matrices can also be built outside the pipeline, e.g. from a published methylation atlas, as long as they follow the formats described above ([`--ref_matrix`](#--ref_matrix), [`--celfie_ref_matrix` and `--metdecode_ref_matrix`](#--celfie_ref_matrix-and---metdecode_ref_matrix)).
 
 ## Resource requests
 

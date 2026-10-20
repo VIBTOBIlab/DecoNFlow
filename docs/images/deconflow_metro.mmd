@@ -59,7 +59,7 @@ graph LR
         test_prep -->|classic| merge_test
     end
 
-    subgraph refbased [Reference-based deconvolution]
+    subgraph refbased [Reference-based deconvolution: beta values]
         meth_atlas[MethAtlas]
         houseman_eq[Houseman CP/EQ]
         houseman_ineq[Houseman CP/INEQ]
@@ -70,7 +70,7 @@ graph LR
         methyl_resolver[MethylResolver]
     end
 
-    subgraph emdeconv [CelFiE and MetDecode]
+    subgraph emdeconv [Reference-based deconvolution: read counts]
         celfie_prep[CelFiE-format\nreference]
         merge_em[Merge ref. + bulk]
         celfie[CelFiE]

@@ -179,8 +179,8 @@
                 },
                 "genome_order": {
                     "type": "string",
-                    "description": "If \"--big_cov\" flag is specified, the genome order needs to be specified as well.",
-                    "help_text": "Default is \"None\". You can choose among: [human.hg19,human.hg38,human.hg19.nochr,human.hg38.nochr,mouse.mm9,mouse.mm10,mouse.mm9.nochr,mouse.mm10.nochr]",
+                    "description": "If \"--big_covs\" flag is specified, the genome order needs to be specified as well.",
+                    "help_text": "Genome assembly of the coverage files, with the suffix '.nochr' if the chromosome names are only numbers (e.g. 1 instead of chr1).",
                     "enum": [
                         "human.hg19",
                         "human.hg38",
@@ -232,7 +232,7 @@
                 "direction": {
                     "type": "string",
                     "description": "Direction of methylation.",
-                    "help_text": "Can be either \"hypo\", \"hyper\", \"both\" or \"random\" (default: \"both\").",
+                    "default": "both",
                     "enum": ["hypo", "hyper", "both", "random"]
                 },
                 "top": {
@@ -348,7 +348,7 @@
                     "type": "string",
                     "default": "QP",
                     "description": "PRMeth deconv modality",
-                    "help_text": "Alternatives are: ['QP', 'NMF'] (ref-based, partial ref-based).",
+                    "help_text": "QP is reference-based, NMF is partially reference-based.",
                     "enum": ["QP", "NMF"]
                 },
                 "prmeth_NMF_entities": {
