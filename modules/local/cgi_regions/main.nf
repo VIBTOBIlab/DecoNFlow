@@ -10,7 +10,10 @@
  * sorted by chromosome and start.
  */
 process CGI_REGIONS {
-    container 'egiuili/bedtools_preprocessing:v2'
+    conda "bioconda::bedtools==2.29.2"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0' :
+        'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0' }"
 
     label 'process_low'
 
