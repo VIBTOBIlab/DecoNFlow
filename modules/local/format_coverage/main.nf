@@ -16,10 +16,10 @@
  * A bedGraph without read counts (e.g. from bismark2bedGraph) is rejected.
  */
 process FORMAT_COVERAGE {
-    conda "bioconda::bedtools==2.29.2"
+    conda "bioconda::bedtools==2.31.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0' :
-        'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     label 'process_low'
 
@@ -32,8 +32,10 @@ process FORMAT_COVERAGE {
     script:
     def is_bismark = coverage.name ==~ /.*\.cov(\.gz)?$/
     def prefix = coverage.name.replaceAll(/\.(cov|bedGraph)(\.gz)?$/, '')
+    // gzip -dc rather than zcat, which only reads .Z files on macOS (e.g. with -profile conda)
+    def reader = coverage.name.endsWith('.gz') ? 'gzip -dc' : 'cat'
     """
-    zcat -f ${coverage} | awk -v OFS='\\t' -v bismark=${is_bismark} '
+    ${reader} ${coverage} | awk -v OFS='\\t' -v bismark=${is_bismark} '
         /^(track|#)/ { next }
         NF < 6 {
             print "Error: ${coverage} has " NF " columns instead of 6 (chr, start, end, methylation %, methylated and unmethylated read counts). A bedGraph without read counts (e.g. from bismark2bedGraph) cannot be used." > "/dev/stderr"

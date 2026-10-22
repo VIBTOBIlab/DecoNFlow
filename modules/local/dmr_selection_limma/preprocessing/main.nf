@@ -1,10 +1,10 @@
 #!/usr/bin/env nextflow
 
 process PREPROCESSING {
-    conda "bioconda::bedtools==2.29.2"
+    conda "bioconda::bedtools==2.31.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0' :
-        'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     label 'process_medium'
 
@@ -23,7 +23,7 @@ process PREPROCESSING {
     else
         chr_present_regions="false"
     fi
-    first_column_cov=\$(zcat $cov | awk -F'\t' 'NR==2 {print \$1}')
+    first_column_cov=\$(gzip -dc $cov | awk -F'\t' 'NR==2 {print \$1}')
     if [[ \$first_column_cov == chr* ]]; then
         chr_present_cov="true"
     else
@@ -39,7 +39,7 @@ process PREPROCESSING {
     # The coverage file is streamed (-a) and only the regions (-b) are kept in memory,
     # so that big coverage files (e.g. WGBS) do not need to be sorted or loaded in memory.
     # Columns of ${meta}_sum.bed: chr, start, end, methylated and unmethylated counts, CpGs
-    zcat $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | \\
+    gzip -dc $cov | awk -v OFS='\\t' '\$5 + \$6 >= ${params.min_counts}' | \\
     awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9])\$/ {print}' | \\
     bedtools intersect -a stdin -b ${meta}_regions.bed -wa -wb | \\
     awk -v OFS='\\t' '

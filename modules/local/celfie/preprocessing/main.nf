@@ -1,10 +1,10 @@
 #!/usr/bin/env nextflow
 
 process CELFIE_PREPROCESSING {
-    conda "bioconda::bedtools==2.29.2"
+    conda "bioconda::bedtools==2.31.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0' :
-        'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     label 'process_high'
 
@@ -22,7 +22,7 @@ process CELFIE_PREPROCESSING {
     # The coverage file is streamed (-a) and only the regions (-b) are kept in memory,
     # so that big coverage files (e.g. WGBS) do not need to be sorted or loaded in memory.
     # Columns of ${entity}_sum.bed: chr, start, end, methylated and unmethylated counts, CpGs
-    zcat $cov | \\
+    gzip -dc $cov | \\
     awk '\$1 ~ /^(chr)?(1[0-9]|2[0-2]|[1-9]|X|Y|MT|M)\$/ {print}' | \\
     bedtools intersect -a stdin -b ${entity}_regions.bed -wa -wb | \\
     awk -v OFS='\\t' '
