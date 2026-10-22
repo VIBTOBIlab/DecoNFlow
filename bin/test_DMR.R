@@ -13,8 +13,6 @@
 # DMRs can also be filtered on their absolute delta beta (-m), so that small but
 #   significant differences (e.g. low-noise aggregated regions) can be removed.
 suppressPackageStartupMessages(library(limma))
-suppressPackageStartupMessages(library(tibble))
-suppressPackageStartupMessages(library(dplyr))
 version <- "0.2"
 copyright <- "Copyright (C) 2024 Edoardo Giuili (edoardo.giuili@ugent.be)"
 
@@ -312,9 +310,10 @@ for (contrast_name in colnames(contrast_matrix)) {
     }
     contrast_results <- get_top_genes(contrast_results,top,direction)
   }
-  contrast_results <- rownames_to_column(contrast_results, "DMR")
+  contrast_results <- data.frame(DMR = rownames(contrast_results), contrast_results, row.names = NULL, check.names = FALSE)
   contrast_label <- paste0(unlist(strsplit(contrast_name, "-"))[1], "-all")
-  contrast_results <- rename(contrast_results, MValueDiff = logFC, MethylDiff = DeltaBeta)
+  names(contrast_results)[names(contrast_results) == "logFC"] <- "MValueDiff"
+  names(contrast_results)[names(contrast_results) == "DeltaBeta"] <- "MethylDiff"
   contrast_results$Contrast <- contrast_label
   results_df <- rbind(results_df, contrast_results)
 }
@@ -345,7 +344,7 @@ for (contrast in unique(results_df$Contrast)) {
 }
 
 # Remove duplicate rows based on the 'id' column, retaining only one instance of each duplicate
-fin_ref <- reference_matrix %>% distinct(DMR, .keep_all = TRUE)
+fin_ref <- reference_matrix[!duplicated(reference_matrix$DMR), ]
 cat("\n\n------> Significant DMRs finally retained:", nrow(fin_ref), "<------")
 
 # Save the results

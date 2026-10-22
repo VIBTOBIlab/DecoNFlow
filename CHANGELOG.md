@@ -41,6 +41,7 @@
 - Cleaned up and documented the helper scripts (`build_matrix.py`, `check_file.py`, `combine_files.py`, `intersect.py`, `merge_tables.py`), with identical outputs.
 - Fixed the config type warnings in `nextflow.config` and `conf/base.config`.
 - **bedtools from bioconda**: `FORMAT_COVERAGE`, `CGI_REGIONS` and the preprocessing modules (`PREPROCESSING`, `TEST_PREPROCESSING`, `CELFIE_PREPROCESSING`, `REFREE_PREPROCESSING`) use the BioContainers image of `bioconda::bedtools==2.29.2` (the Galaxy depot image with Singularity) instead of the custom `egiuili/bedtools_preprocessing:v2` container, with the same bedtools version and identical outputs, and a `conda` directive so they also run with `-profile conda`.
+- **pandas and limma from bioconda**: the Python helper scripts (`RUN_DECONV`, `MERGE_TABLES`, `COMBINE_FILES`, `DECONV_REPORT`, `INTERSECT`, `MERGE_SAMPLES`, `PROCESS_COUNT_MATRIX`, `PROCESS_REF_MATRIX`) use the BioContainers image of `conda-forge::pandas==1.5.2` instead of `egiuili/python3-3.9.16:v1`, and `LIMMA` uses `bioconda::bioconductor-limma==3.62.1` instead of `egiuili/r-v4.4.1:v1`, with outputs identical to the previous containers. For this, `celfie.py` no longer imports the unused bottleneck package, `test_DMR.R` no longer depends on dplyr and tibble, and the Spearman correlation of the report is computed on the ranks with pandas instead of through scipy.
 
 ### 🧪 Tests and CI
 

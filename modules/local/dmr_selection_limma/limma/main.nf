@@ -1,7 +1,10 @@
 #!/usr/bin/env nextflow
 
 process LIMMA {
-    container 'egiuili/r-v4.4.1:v1'
+    conda "bioconda::bioconductor-limma==3.62.1"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bioconductor-limma:3.62.1--r44h15a9599_1' :
+        'quay.io/biocontainers/bioconductor-limma:3.62.1--r44h15a9599_1' }"
 
     label 'process_low'
 

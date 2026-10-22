@@ -354,9 +354,11 @@ def evaluate(df, truth):
                 "samples": len(samples),
                 "MSE": mse,
                 "RMSE": math.sqrt(mse),
-                "Spearman": pairs["predicted"].corr(
-                    pairs["expected"], method="spearman"
-                ),
+                # Spearman correlation as the Pearson correlation of the (average) ranks,
+                # since method="spearman" of pandas needs scipy
+                "Spearman": pairs["predicted"]
+                .rank()
+                .corr(pairs["expected"].rank()),
             }
         )
         values[tool] = pairs
