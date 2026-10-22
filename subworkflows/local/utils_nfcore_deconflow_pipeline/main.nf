@@ -164,6 +164,11 @@ def refFreeToolsSelected() {
     return params.medecom || params.ref_freecell_mix || params.benchmark
 }
 
+// Software provided by conda environments (e.g. -profile conda or -profile mamba)
+def condaEnabled() {
+    return workflow.session.config.navigate('conda.enabled') as Boolean
+}
+
 // Regions are given as a file (--regions), or as the CpG islands of a genome (--cgi_genome)
 def regionsProvided() {
     return params.regions || params.cgi_genome
@@ -176,6 +181,10 @@ def regionsProvided() {
 def validateInputParameters() {
     if (!classicToolsSelected() && !celfieLikeToolsRequested() && !refFreeToolsSelected()) {
         error("\n----> ERROR: specify at least one deconvolution tool. <----\n")
+    }
+    // MeDeCom has no conda environment: its R package is only on GitHub and has C++ code to compile
+    if ((params.medecom || params.benchmark) && condaEnabled()) {
+        error("\n----> ERROR: MeDeCom (--medecom${params.benchmark ? ', included in --benchmark' : ''}) cannot run with conda, as it has no conda environment yet. Please use a container profile (e.g. -profile docker or -profile singularity). <----\n")
     }
     def skipped_tools = [
         [name: 'CelFiE', requested: celfieRequested(), selected: celfieSelected(), matrix: 'celfie_ref_matrix'],
