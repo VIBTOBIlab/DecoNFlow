@@ -79,10 +79,6 @@ params {
     min_counts: Integer = 10
     // Minimum number of CpGs per region
     min_cpgs: Integer = 3
-    // If specified, it makes the preprocessing running with a memory-efficient algorithm. Suggested to activate it when using whole-genome coverage files.
-    big_covs: Boolean
-    // If "--big_cov" flag is specified, the genome order needs to be specified as well.
-    genome_order: String?
 
     // Options for the preprocessing for bulk samples.
     // Minimum number of counts to keep a CpG position for the bulk samples.
@@ -93,6 +89,8 @@ params {
     // DMR analysis general options
     // Adjusted p-value threshold
     adjp: Float = 0.001
+    // Minimum absolute delta beta of a DMR (0 = no filter on the effect size)
+    min_delta_beta: Float = 0
     // Method to collapse the sample values for each region
     collapse_method: String = 'mean'
     // Direction of methylation.

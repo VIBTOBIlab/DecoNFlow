@@ -171,26 +171,6 @@
                     "type": "integer",
                     "default": 3,
                     "description": "Minimum number of CpGs per region"
-                },
-                "big_covs": {
-                    "type": "boolean",
-                    "description": "If specified, it makes the preprocessing running with a memory-efficient algorithm. Suggested to activate it when using whole-genome coverage files.",
-                    "help_text": "Default is false."
-                },
-                "genome_order": {
-                    "type": "string",
-                    "description": "If \"--big_covs\" flag is specified, the genome order needs to be specified as well.",
-                    "help_text": "Genome assembly of the coverage files, with the suffix '.nochr' if the chromosome names are only numbers (e.g. 1 instead of chr1).",
-                    "enum": [
-                        "human.hg19",
-                        "human.hg38",
-                        "human.hg19.nochr",
-                        "human.hg38.nochr",
-                        "mouse.mm9",
-                        "mouse.mm10",
-                        "mouse.mm9.nochr",
-                        "mouse.mm10.nochr"
-                    ]
                 }
             }
         },
@@ -222,6 +202,14 @@
                     "type": "number",
                     "default": 0.001,
                     "description": "Adjusted p-value threshold"
+                },
+                "min_delta_beta": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Minimum absolute delta beta of a DMR.",
+                    "help_text": "Difference in mean methylation between a cell type and the other cell types, from 0 to 1. DMRs passing the adjusted p-value threshold (--adjp) but with a smaller difference are removed. 0 disables the filter.",
+                    "minimum": 0,
+                    "maximum": 1
                 },
                 "collapse_method": {
                     "type": "string",

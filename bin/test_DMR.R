@@ -10,6 +10,8 @@
 # The linear model is fitted on M-values (logit2 of the beta values, Du et al. 2010),
 #   while DMRs are ranked and split into hyper/hypo by their delta beta
 #   (difference in mean methylation between target and background groups).
+# DMRs can also be filtered on their absolute delta beta (-m), so that small but
+#   significant differences (e.g. low-noise aggregated regions) can be removed.
 suppressPackageStartupMessages(library(limma))
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))
@@ -34,6 +36,8 @@ usage <- function() {
 
   Options:
     -p <pvalue>           Adjusted p-value threshold (def. 0.001)
+    -m <min_delta_beta>   Minimum absolute delta beta of a DMR, between 0 and 1
+                          (def. 0, no filter)
     -j <adj_method>       Multiple testing correction method (def. "BH")
                           among the ones available in limma R package
     -c <collapse_method>  How collapsing the samples values for each region
@@ -56,7 +60,8 @@ adj_method <- "BH"
 collapse_method <- "mean"
 top <- "None" # takes all the DMRs
 direction <- "None"
-m_offset <- 0.01 # offset added to beta values to avoid infinite M-values at 0 and 1
+min_delta_beta <- 0 # no filter on the effect size
+beta_eps <- 0.01 # betas of 0 and 1 are clamped to [beta_eps, 1 - beta_eps] to avoid infinite M-values
 
 
 # get CL args
@@ -75,6 +80,8 @@ while (i <= length(args)) {
       } else if (args[i] == "-p") {
         pvalue <- args[i + 1]
         pvalue <- as.numeric(pvalue)
+      } else if (args[i] == "-m") {
+        min_delta_beta <- as.numeric(args[i + 1])
       } else if (args[i] == "-j") {
         adj_method <- args[i + 1]
       } else if (args[i] == "-c") {
@@ -109,6 +116,10 @@ if (collapse_method != "mean" & collapse_method != "median") {
   cat("Error! Must specify mean or median as collapse method\n")
   usage()
 }
+if (is.na(min_delta_beta) || min_delta_beta < 0 || min_delta_beta > 1) {
+  cat("Error! Must specify a number between 0 and 1 for the -m flag\n")
+  usage()
+}
 if (top != "None" & direction == "None") {
   cat("Error! Must specify direction parameter before specifying the top parameter\n")
   usage()
@@ -140,10 +151,12 @@ rownames(beta_matrix) <- paste0(df$chr, ":", df$start, "-", df$end)
 print(head(beta_matrix))
 
 
-# Transform beta values into M-values
-cat("\n   Converting beta values into M-values (offset =", m_offset, ")...\n")
-beta_to_m <- function(beta, alpha = m_offset) {
-  log2((beta + alpha) / (1 - beta + alpha))
+# Transform beta values into M-values. Only the betas at (or beyond) the boundaries
+# are clamped, so that all the other betas are converted unchanged.
+cat("\n   Converting beta values into M-values (betas clamped to [", beta_eps, ",", 1 - beta_eps, "])...\n")
+beta_to_m <- function(beta, eps = beta_eps) {
+  beta <- pmin(pmax(beta, eps), 1 - eps)
+  log2(beta / (1 - beta))
 }
 m_matrix <- beta_to_m(beta_matrix)
 print(head(m_matrix))
@@ -202,6 +215,7 @@ delta_beta <- contrasts.fit(lmFit(beta_matrix, design), contrast_matrix)$coeffic
 cat("\n5) Extracting the results for each contrast...\n")
 cat("\n   - Multiple testing correction method:", adj_method)
 cat("\n   - Adjusted p-value threshold:", pvalue)
+cat("\n   - Minimum absolute delta beta:", min_delta_beta)
 cat("\n   - Collapsing method:", collapse_method)
 cat("\n   - Direction used:", direction)
 cat("\n   - Top DMRs retained:", top)
@@ -282,7 +296,20 @@ results_df <- data.frame()
 for (contrast_name in colnames(contrast_matrix)) {
   contrast_results <- topTable(fit, coef = contrast_name, adjust.method = adj_method, number = Inf, p.value = pvalue)
   contrast_results$DeltaBeta <- delta_beta[rownames(contrast_results), contrast_name]
+  # Keep only the DMRs with a large enough difference in methylation (effect size)
+  if (min_delta_beta > 0) {
+    contrast_results <- contrast_results[!is.na(contrast_results$DeltaBeta) & abs(contrast_results$DeltaBeta) >= min_delta_beta, , drop = FALSE]
+  }
   if (direction != "None") {
+    if (nrow(contrast_results) == 0) {
+      stop(paste0(
+        "No DMRs left for ", unlist(strsplit(contrast_name, "-"))[1],
+        " with an adjusted p-value below ", pvalue,
+        if (min_delta_beta > 0) paste0(" and an absolute delta beta of at least ", min_delta_beta) else "",
+        ". Relax the adjusted p-value threshold (--adjp)",
+        if (min_delta_beta > 0) " or the minimum delta beta (--min_delta_beta)" else "", "."
+      ))
+    }
     contrast_results <- get_top_genes(contrast_results,top,direction)
   }
   contrast_results <- rownames_to_column(contrast_results, "DMR")
