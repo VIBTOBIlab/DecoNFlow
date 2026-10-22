@@ -14,7 +14,7 @@ process MEDECOM {
 
     script:
     """
-    Rscript /source/run_medecom.R \
+    run_medecom.R \
     -m ${matrix} \
     -k ${params.clusters} \
     -n ${params.ninit} \

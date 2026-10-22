@@ -14,7 +14,7 @@ process EPISCORE {
 
     script:
     """
-    Rscript /source/run_episcore.R -s ${reference} -m ${samples} -w ${params.weight}
+    run_episcore.R -s ${reference} -m ${samples} -w ${params.weight}
     """
 
 }

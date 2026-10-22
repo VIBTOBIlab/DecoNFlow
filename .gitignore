@@ -12,3 +12,6 @@ test_folder/
 .nf-test.log
 .nf-test/
 site/
+
+# Python bytecode (e.g. bin/metdecode)
+__pycache__/

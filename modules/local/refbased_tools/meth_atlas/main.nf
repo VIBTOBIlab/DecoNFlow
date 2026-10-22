@@ -15,7 +15,7 @@ process METH_ATLAS {
 
     script:
     """
-    python3 /source/run_deconv.py -a ${reference} ${samples} --residuals
+    run_deconv.py -a ${reference} ${samples} --residuals
     """
 
 }

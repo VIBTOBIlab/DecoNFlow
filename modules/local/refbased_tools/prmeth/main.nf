@@ -14,7 +14,7 @@ process PRMETH {
 
     script:
     """
-    Rscript /source/run_prmeth.R \
+    run_prmeth.R \
     -s ${reference} \
     -m ${samples} \
     -k ${params.prmeth_NMF_entities} \

@@ -27,7 +27,7 @@ process METDECODE_DECONV {
         args += " --supervised"
     }
     """
-    python3 /source/run.py \
+    run_metdecode.py \
     $atlas \
     $samples \
     output.csv \

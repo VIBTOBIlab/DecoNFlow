@@ -14,7 +14,7 @@ process REF_FREECELL_MIX {
 
     script:
     """
-    Rscript /source/run_prmeth.R \
+    run_prmeth.R \
     -s ${matrix} \
     -m ${matrix} \
     -k ${params.clusters} \

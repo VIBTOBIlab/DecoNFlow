@@ -14,7 +14,7 @@ process METHYL_RESOLVER {
 
     script:
     """
-    Rscript /source/run_methylresolver.R -s ${reference} -m ${samples} -a ${params.alpha}
+    run_methylresolver.R -s ${reference} -m ${samples} -a ${params.alpha}
     """
 
 }
