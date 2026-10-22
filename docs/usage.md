@@ -207,6 +207,10 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 Adjusted p-value threshold for the DMR selection. Default 0.001.
 
+### `--min_delta_beta`
+
+Minimum absolute delta beta of a DMR, between 0 and 1: the difference in mean methylation between a cell type and the other cell types. DMRs passing the adjusted p-value threshold (`--adjp`) but with a smaller difference are removed, so that the DMRs are selected on their effect size as well as on their statistical significance (regions aggregating many CpGs can have small but significant differences). Default 0 (no filter). The filter is applied before `--direction` and `--top`.
+
 ### `--adj_method`
 
 Multiple testing correction method. Default is 'BH'. Look at limma documentation for other methods.
@@ -286,16 +290,6 @@ Minimum number of CpGs per region. Default 3.
 #### `--include_na`
 
 Activate this parameter to allow missing values when merging the reference samples before performing limma DMR selection (def. false).
-
-#### `--big_covs`
-
-If you are including big coverage files, such as WGBS around 200 MB, specify this flag to make the preprocessing of the files (before using limma) running with a memory-efficient algorithm. When specifying this flag within `limma` workflow, it's necessary to specify the `--genome_order` flag as well.
-
-#### `--genome_order`
-
-> **NOTE** The coverage files are expected to be sorted by chromosome position (chr1, chr11, chr12) instead of natural order (chr1, chr2, chr3). You can achieve this using the UNIX sort utility to sort cov files by chromosome and then by position. That is, _sort -k1,1 -k2,2n in.cov > in.sorted.cov_ .
-
-When `--big_covs` is specified, you need to specify the genome version of the files and if the chromosome name is represented just by the number (e.g. human.hg38.nochr) or with the "chr" string (e.g. human.38). You can choose among the following parameters: [`human.hg19`, `human.hg38`, `human.hg19.nochr`, `human.hg38.nochr`, `mouse.mm9`, `mouse.mm10`, `mouse.mm9.nochr`, `mouse.mm10.nochr`].
 
 ## Deconvolution parameters
 
