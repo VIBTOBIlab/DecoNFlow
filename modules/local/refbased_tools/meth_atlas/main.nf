@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process METH_ATLAS {
+    conda "${moduleDir}/environment.yml"
     container 'egiuili/methyl_atlas:v1.0'
 
     label 'process_medium'

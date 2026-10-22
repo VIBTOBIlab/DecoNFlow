@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process PRMETH {
+    conda "${moduleDir}/environment.yml"
     container 'egiuili/prmeth:v2'
 
     label 'process_medium'

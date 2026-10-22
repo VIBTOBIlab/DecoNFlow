@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process EPISCORE {
+    conda "${moduleDir}/environment.yml"
     container 'egiuili/episcore:v1'
 
     label 'process_low'

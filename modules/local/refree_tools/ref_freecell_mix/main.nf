@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process REF_FREECELL_MIX {
+    conda "${moduleDir}/environment.yml"
     container 'egiuili/prmeth:v3'
 
     label 'process_medium'

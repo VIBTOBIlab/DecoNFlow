@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process METDECODE_DECONV {
+    conda "${moduleDir}/environment.yml"
     container 'egiuili/metdecode:v1'
 
     label 'process_low'

@@ -10,10 +10,10 @@
  * sorted by chromosome and start.
  */
 process CGI_REGIONS {
-    conda "bioconda::bedtools==2.29.2"
+    conda "bioconda::bedtools==2.31.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0' :
-        'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     label 'process_low'
 
@@ -24,8 +24,10 @@ process CGI_REGIONS {
     path "cgi_${genome}.bed", emit: regions
 
     script:
+    // gzip -dc rather than zcat, which only reads .Z files on macOS (e.g. with -profile conda)
+    def reader = cpg_islands.name.endsWith('.gz') ? 'gzip -dc' : 'cat'
     """
-    zcat -f ${cpg_islands} \\
+    ${reader} ${cpg_islands} \\
         | awk -v OFS='\\t' '\$2 ~ /^chr([0-9]+|X|Y|M)\$/ { print \$2, \$3 + 1, \$4 }' \\
         | sort -T /tmp/ -k1,1 -k2,2n > cgi_${genome}.bed
     """

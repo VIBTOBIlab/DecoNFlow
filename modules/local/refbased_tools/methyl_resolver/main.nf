@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process METHYL_RESOLVER {
+    conda "${moduleDir}/environment.yml"
     container 'egiuili/methylresolver:v1'
 
     label 'process_low'
