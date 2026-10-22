@@ -4,7 +4,13 @@
 # 06 / 2024
 
 # Deconvolution using MethylResolver
-library(MethylResolver)
+# MethylResolver (https://github.com/darneson/MethylResolver, commit 2eae449, GPL-3) is in bin/MethylResolver,
+# next to this script, unchanged. Its built-in data (e.g. the purity model) is only used with absolute = TRUE.
+for (pkg in c("varhandle", "doSNOW", "snow", "robustbase", "foreach", "doParallel", "Metrics", "randomForest")) {
+    suppressMessages(library(pkg, character.only = TRUE))
+}
+script_dir <- dirname(normalizePath(sub("^--file=", "", grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE))))
+for (f in list.files(file.path(script_dir, "MethylResolver", "R"), pattern = "\\.R$", full.names = TRUE)) source(f)
 version <- "0.1"
 copyright <- "Copyright (C) 2024 Edoardo Giuili (edoardo.giuili@ugent.be)"
 

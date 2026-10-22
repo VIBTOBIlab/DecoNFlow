@@ -4,7 +4,11 @@
 # 06 / 2024
 
 # Deconvolution using EpiSCORE
-library(EpiSCORE)
+# wRPC() of EpiSCORE (https://github.com/aet21/EpiSCORE, v0.9.6, GPL-2) is in bin/EpiSCORE, next to this
+# script, unchanged. It is the only EpiSCORE function used, and it only needs MASS::rlm.
+suppressMessages(library(MASS))
+script_dir <- dirname(normalizePath(sub("^--file=", "", grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE))))
+source(file.path(script_dir, "EpiSCORE", "R", "wRPC.R"))
 version <- "0.1"
 copyright <- "Copyright (C) 2024 Edoardo Giuili (edoardo.giuili@ugent.be)"
 
