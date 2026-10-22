@@ -1,7 +1,10 @@
 #!/usr/bin/env nextflow
 
 process CIBERSORT {
-    container 'egiuili/epidish:v1'
+    conda "bioconda::bioconductor-epidish==2.22.0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bioconductor-epidish:2.22.0--r44hdfd78af_0' :
+        'quay.io/biocontainers/bioconductor-epidish:2.22.0--r44hdfd78af_0' }"
 
     label 'process_low'
 
@@ -14,7 +17,7 @@ process CIBERSORT {
 
     script:
     """
-    Rscript /source/EpiDISH.R -s ${ref_path} -m ${samples_path} -d "CBS"
+    EpiDISH.R -s ${ref_path} -m ${samples_path} -d "CBS"
     """
 
 }

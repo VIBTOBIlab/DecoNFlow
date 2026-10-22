@@ -23,15 +23,15 @@
             12,
             [
                 "sample,colon,lung,pancreas,tool",
-                "SRR536238,0.5849,0.3727,0.0000,Houseman_ineq",
-                "SRR620008,0.1117,0.3754,0.3797,Houseman_ineq",
-                "SRR641695,0.7441,0.1014,0.0487,Houseman_ineq",
+                "SRR536238,0.4145,0.5855,0.0000,Houseman_ineq",
+                "SRR620008,0.2158,0.3517,0.3479,Houseman_ineq",
+                "SRR641695,0.7614,0.0787,0.0691,Houseman_ineq",
                 "SRR536238,0.4570,0.5430,0.0000,meth_atlas",
                 "SRR620008,0.2360,0.3840,0.3800,meth_atlas",
                 "SRR641695,0.8370,0.0870,0.0760,meth_atlas"
             ]
         ],
-        "timestamp": "2026-10-17T13:41:03.968854",
+        "timestamp": "2026-10-22T12:44:20.133676",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"
