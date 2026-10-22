@@ -25,6 +25,7 @@ process LIMMA {
     test_DMR.R \
     -i ${clusters} \
     -p ${params.adjp} \
+    -m ${params.min_delta_beta} \
     -j ${params.adj_method} \
     -c ${params.collapse_method} \
     $args
