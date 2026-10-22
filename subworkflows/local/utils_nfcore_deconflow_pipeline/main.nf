@@ -177,9 +177,6 @@ def validateInputParameters() {
     if (!classicToolsSelected() && !celfieLikeToolsRequested() && !refFreeToolsSelected()) {
         error("\n----> ERROR: specify at least one deconvolution tool. <----\n")
     }
-    if (params.big_covs && !params.genome_order) {
-        error("\n----> ERROR: Please provide the genome order (--genome_order) when using --big_covs. <----\n")
-    }
     def skipped_tools = [
         [name: 'CelFiE', requested: celfieRequested(), selected: celfieSelected(), matrix: 'celfie_ref_matrix'],
         [name: 'MetDecode', requested: metdecodeRequested(), selected: metdecodeSelected(), matrix: 'metdecode_ref_matrix']
