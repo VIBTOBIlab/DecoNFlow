@@ -1,9 +1,17 @@
 ![Presentation1](docs/images/logo.png)
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A526.04.0-23aa62.svg)](https://www.nextflow.io/)
+[![GitHub Actions CI Status](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/nf-test.yml/badge.svg?branch=dev-refactoring)](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/nf-test.yml?query=branch%3Adev-refactoring)
+[![GitHub Actions Linting Status](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/linting.yml/badge.svg?branch=dev-refactoring)](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/linting.yml?query=branch%3Adev-refactoring)
+[![Documentation](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/docs.yml/badge.svg?branch=dev-refactoring)](https://vibtobilab.github.io/DecoNFlow/)
+[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
+[![Cite with bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.11.27.688590-b31b1b.svg)](https://doi.org/10.1101/2025.11.27.688590)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/VIBTOBIlab/DecoNFlow/blob/main/LICENSE)
+
+[![Nextflow](https://img.shields.io/badge/version-%E2%89%A526.04.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)
+[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.1.0-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.1.0)
+[![run with conda](https://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![nf-test](https://img.shields.io/badge/tested_with-nf--test-337ab7.svg)](https://github.com/askimed/nf-test)
 
 # Introduction
 
