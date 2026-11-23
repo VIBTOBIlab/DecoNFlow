@@ -2,7 +2,9 @@
 
 process METDECODE_DECONV {
     conda "${moduleDir}/environment.yml"
-    container 'egiuili/metdecode:v1'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/metdecode:1.0.1--pyhdfd78af_0' :
+        'quay.io/biocontainers/metdecode:1.0.1--pyhdfd78af_0' }"
 
     label 'process_low'
 
