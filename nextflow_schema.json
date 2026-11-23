@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/VIBTOBIlab/deconflow/master/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/VIBTOBIlab/deconflow/main/nextflow_schema.json",
     "title": "VIBTOBIlab/deconflow pipeline parameters",
     "description": "DecoNFlow is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It allows deconvolution of samples using both reference-based and reference-free deconvolution tools.",
     "type": "object",
@@ -123,7 +123,7 @@
                 },
                 "trace_report_suffix": {
                     "type": "string",
-                    "fa_icon": "far calendar",
+                    "fa_icon": "far fa-calendar",
                     "description": "Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.",
                     "hidden": true
                 },
