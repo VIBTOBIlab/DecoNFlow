@@ -1,8 +1,20 @@
-repository_type: pipeline
-
-nf_core_version: 4.1.0
-
 lint:
+  files_exist:
+    - conf/test_full.config
+    - ro-crate-metadata.json
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
+    - CODE_OF_CONDUCT.md
+    - assets/nf-core-DecoNFlow_logo_light.png
+    - docs/images/nf-core-DecoNFlow_logo_light.png
+    - docs/images/nf-core-DecoNFlow_logo_dark.png
+    - .github/ISSUE_TEMPLATE/config.yml
+    - .github/workflows/awstest.yml
+    - .github/workflows/awsfulltest.yml
+    - assets/email_template.html
+    - assets/sendmail_template.txt
+    - assets/email_template.txt
+    - assets/multiqc_config.yml
   files_unchanged:
     - .github/ISSUE_TEMPLATE/config.yml
     - .github/ISSUE_TEMPLATE/feature_request.yml
@@ -20,36 +32,21 @@ lint:
     - docs/README.md
     - assets/sendmail_template.txt
   # nf-core/tools does not support typed parameters yet (https://nf-co.re/blog/2026/parameter-types)
-  nextflow_config: false
-  schema_params: false
   multiqc_config: false
+  nextflow_config: false
   nf_test_content: false
-  files_exist:
-    - conf/test_full.config
-    - ro-crate-metadata.json
-    - conf/igenomes.config
-    - conf/igenomes_ignored.config
-    - CODE_OF_CONDUCT.md
-    - assets/nf-core-DecoNFlow_logo_light.png
-    - docs/images/nf-core-DecoNFlow_logo_light.png
-    - docs/images/nf-core-DecoNFlow_logo_dark.png
-    - .github/ISSUE_TEMPLATE/config.yml
-    - .github/workflows/awstest.yml
-    - .github/workflows/awsfulltest.yml
-    - assets/email_template.html
-    - assets/sendmail_template.txt
-    - assets/email_template.txt
-    - assets/multiqc_config.yml
-
+  schema_params: false
+nf_core_version: 4.2.2
+repository_type: pipeline
 template:
-  org: VIBTOBIlab
-  name: DecoNFlow
+  author: Edoardo Giuili
   description: DecoNFlow is a bioinformatics analysis pipeline used for computational
     deconvolution of DNA methylation data. It allows deconvolution of samples using
     both reference-based and reference-free deconvolution tools.
-  author: Edoardo Giuili
-  version: 3.0.0
   force: false
+  is_nfcore: false
+  name: DecoNFlow
+  org: VIBTOBIlab
   outdir: .
   skip_features:
     - igenomes
@@ -60,4 +57,4 @@ template:
     - seqera_platform
     - rocrate
     - codespaces
-  is_nfcore: false
+  version: 3.0.0
