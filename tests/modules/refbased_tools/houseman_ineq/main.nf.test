@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process HOUSEMAN_INEQ"
-    script "modules/refbased_tools/houseman_ineq/main.nf"
+    script "modules/local/refbased_tools/houseman_ineq/main.nf"
     process "HOUSEMAN_INEQ"
 
     test("Should run without failures") {

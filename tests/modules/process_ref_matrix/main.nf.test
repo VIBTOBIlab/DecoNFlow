@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process PROCESS_REF_MATRIX"
-    script "modules/process_ref_matrix/main.nf"
+    script "modules/local/process_ref_matrix/main.nf"
     process "PROCESS_REF_MATRIX"
 
     test("Should run without failures") {

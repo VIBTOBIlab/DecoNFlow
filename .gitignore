@@ -5,12 +5,13 @@ results/
 .DS_Store
 testing/
 testing*
-test_folder/
 *.pyc
 null/
+.lineage/
+test_folder/
 .nf-test.log
 .nf-test/
-.github/workflows/fix_linting.yml
-.github/workflows/linting.yml
-.github/workflows/linting_comment.yml
-.github/workflows/template-version-comment.yml
+site/
+
+# Python bytecode
+__pycache__/

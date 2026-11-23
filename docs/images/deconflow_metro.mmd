@@ -1,0 +1,145 @@
+%%metro title: DecoNFlow
+%%metro style: nfcore
+%%metro legend: bl
+%%metro line_order: definition
+%%metro center_ports: true
+%%metro compact_offsets: true
+
+%%metro line: classic | Reference-based (Houseman, EpiDISH, CIBERSORT, ...) | #24B064
+%%metro line: em | Reference-based (CelFiE, MetDecode) | #E6550D
+%%metro line: reffree | Reference-free (MeDeCom, RefFreeCellMix) | #756BB1
+
+%%metro file: ref_in | CSV | Reference\nsamples
+%%metro file: regions_in | BED | Regions\nor CGIs
+%%metro file: refmat_in | TSV | Reference\nmatrix
+%%metro file: bulk_in | CSV | Bulk\nsamples
+%%metro file: bulk_rf_in | CSV | Bulk\nsamples
+%%metro file: regions_rf_in | BED | Regions\nor CGIs
+%%metro file: refbased_out | CSV | Ref-based\nproportions
+%%metro file: reffree_out | CSV | Ref-free\nproportions
+%%metro file: report_out | HTML | Report
+%%metro file: gt_in | CSV | Ground\ntruth
+
+%%metro off_track: refmat_in, refbased_out, reffree_out
+
+%%metro grid: markers | 0,0
+%%metro grid: bulkprep | 1,0
+%%metro grid: refbased | 2,0
+%%metro grid: emdeconv | 2,1
+%%metro grid: reffree | 0,2,1,3
+%%metro grid: output | 3,0,3,1
+
+graph LR
+    subgraph markers [Marker selection]
+        ref_in[ ]
+        regions_in[ ]
+        refmat_in[ ]
+        format_ref[Format coverage]
+        preprocessing[Preprocessing]
+        merge_atlas[Merge samples]
+        limma[limma DMRs]
+        process_refmat[Process ref. matrix]
+
+        ref_in -->|classic,em| format_ref
+        format_ref -->|classic,em| preprocessing
+        regions_in -->|classic,em| preprocessing
+        preprocessing -->|classic,em| merge_atlas
+        merge_atlas -->|classic,em| limma
+        refmat_in -->|classic| process_refmat
+    end
+
+    subgraph bulkprep [Bulk sample preprocessing]
+        bulk_in[ ]
+        format_bulk[Format coverage]
+        test_prep[Bulk preprocessing]
+        merge_test[Merge samples]
+
+        bulk_in -->|classic,em| format_bulk
+        format_bulk -->|classic,em| test_prep
+        test_prep -->|classic| merge_test
+    end
+
+    subgraph refbased [Reference-based deconvolution: beta values]
+        meth_atlas[MethAtlas]
+        houseman_eq[Houseman CP/EQ]
+        houseman_ineq[Houseman CP/INEQ]
+        epidish[EpiDISH]
+        cibersort[CIBERSORT]
+        prmeth[PRMeth]
+        episcore[EpiSCORE]
+        methyl_resolver[MethylResolver]
+    end
+
+    subgraph emdeconv [Reference-based deconvolution: read counts]
+        celfie_prep[CelFiE-format\nreference]
+        merge_em[Merge ref. + bulk]
+        celfie[CelFiE]
+        intersect[Intersect regions]
+        metdecode[MetDecode]
+
+        celfie_prep -->|em| merge_em
+        merge_em -->|em| celfie
+        merge_em -->|em| intersect
+        intersect -->|em| metdecode
+    end
+
+    subgraph reffree [Reference-free deconvolution]
+        bulk_rf_in[ ]
+        regions_rf_in[ ]
+        format_rf[Format coverage]
+        refree_prep[Preprocessing]
+        merge_rf[Merge samples]
+        medecom[MeDeCom]
+        refcellmix[RefFreeCellMix]
+
+        bulk_rf_in -->|reffree| format_rf
+        format_rf -->|reffree| refree_prep
+        regions_rf_in -->|reffree| refree_prep
+        refree_prep -->|reffree| merge_rf
+        merge_rf -->|reffree| medecom
+        merge_rf -->|reffree| refcellmix
+    end
+
+    subgraph output [Results]
+        combine_rb[Combine ref-based]
+        combine_rf[Combine ref-free]
+        refbased_out[ ]
+        reffree_out[ ]
+        gt_in[ ]
+        report[HTML report]
+        report_out[ ]
+
+        combine_rb -->|classic,em| refbased_out
+        combine_rf -->|reffree| reffree_out
+        combine_rb -->|classic,em| report
+        combine_rf -->|reffree| report
+        gt_in -->|classic,em| report
+        report -->|classic,em,reffree| report_out
+    end
+
+    limma -->|classic,em| test_prep
+    process_refmat -->|classic| test_prep
+
+    merge_test -->|classic| meth_atlas
+    merge_test -->|classic| houseman_eq
+    merge_test -->|classic| houseman_ineq
+    merge_test -->|classic| epidish
+    merge_test -->|classic| cibersort
+    merge_test -->|classic| prmeth
+    merge_test -->|classic| episcore
+    merge_test -->|classic| methyl_resolver
+
+    test_prep -->|em| celfie_prep
+
+    meth_atlas -->|classic| combine_rb
+    houseman_eq -->|classic| combine_rb
+    houseman_ineq -->|classic| combine_rb
+    epidish -->|classic| combine_rb
+    cibersort -->|classic| combine_rb
+    prmeth -->|classic| combine_rb
+    episcore -->|classic| combine_rb
+    methyl_resolver -->|classic| combine_rb
+    celfie -->|em| combine_rb
+    metdecode -->|em| combine_rb
+    medecom -->|reffree| combine_rf
+    refcellmix -->|reffree| combine_rf

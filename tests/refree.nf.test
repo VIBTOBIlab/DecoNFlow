@@ -10,6 +10,7 @@ nextflow_pipeline {
             params {
                 // define parameters here. Example:
                 outdir = "${outputDir}"
+                ref_matrix = null
                 meth_atlas = false
                 ref_freecell_mix = true
             }
@@ -18,10 +19,11 @@ nextflow_pipeline {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert path("$outputDir/deconvolution_results/deconvolution_report.html").exists() },
                 { assert snapshot(
                     // Number of tasks
                     workflow.trace.succeeded().size(),
-                    path("$outputDir/deconvolution_results/combined_results.csv")
+                    path("$outputDir/deconvolution_results/combined_results_reffree.csv")
                 ).match() }
             )
         }
@@ -33,6 +35,7 @@ nextflow_pipeline {
             params {
                 // define parameters here. Example:
                 outdir = "${outputDir}"
+                ref_matrix = null
                 meth_atlas = false
                 medecom = true
             }
@@ -41,7 +44,8 @@ nextflow_pipeline {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path("$outputDir/deconvolution_results/combined_results.csv").readLines().size() == 4 }
+                { assert path("$outputDir/deconvolution_results/deconvolution_report.html").exists() },
+                { assert path("$outputDir/deconvolution_results/combined_results_reffree.csv").readLines().size() == 4 }
             )
         }
     }

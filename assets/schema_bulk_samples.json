@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "DecoNFlow pipeline - params.bulk_samples schema",
+    "description": "Schema for the file provided with params.bulk_samples",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
+            },
+            "sample": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.(cov|bedGraph)(\\.gz)?$",
+                "errorMessage": "Path to the coverage file must be provided, cannot contain spaces and must be a Bismark coverage file (.cov or .cov.gz) or a MethylDackel bedGraph (.bedGraph or .bedGraph.gz)"
+            }
+        },
+        "required": ["name", "sample"]
+    }
+}

@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process FORMAT_COVERAGE"
+    script "modules/local/format_coverage/main.nf"
+    process "FORMAT_COVERAGE"
+
+    test("Should keep the 1-based positions of a Bismark coverage file") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'SRR1045638',
+                    file(params.pipelines_testdata_base_path + 'covs/SRR1045638_1M.cov.gz')
+                ])
+                """
+            }
+        }
+
+        then {
+            def first_line = path(process.out.coverage[0][1]).linesGzip[0]
+            assertAll(
+                { assert process.success },
+                // Bismark positions are kept as they are
+                { assert first_line == "chr1\t10469\t10469\t0\t0\t1" }
+            )
+        }
+
+    }
+
+}

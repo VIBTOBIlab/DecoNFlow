@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process REF_FREECELL_MIX"
-    script "modules/refree_tools/ref_freecell_mix/main.nf"
+    script "modules/local/refree_tools/ref_freecell_mix/main.nf"
     process "REF_FREECELL_MIX"
 
     test("Should run without failures") {

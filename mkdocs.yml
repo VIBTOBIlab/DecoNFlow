@@ -1,0 +1,117 @@
+site_name: DecoNFlow
+site_description: Nextflow pipeline for the computational deconvolution of DNA methylation data
+site_url: https://vibtobilab.github.io/DecoNFlow/
+repo_url: https://github.com/VIBTOBIlab/DecoNFlow
+repo_name: VIBTOBIlab/DecoNFlow
+edit_uri: ""
+copyright: Copyright &copy; VIBTOBIlab
+
+docs_dir: docs
+exclude_docs: |
+  README.md
+  hooks/
+  images/*.pdf
+  images/*.pptx
+  images/*.mmd
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Parameters: parameters.md
+  - Output: output.md
+  - About:
+      - Citations: citations.md
+      - Changelog: changelog.md
+      - Contributing: CONTRIBUTING.md
+
+theme:
+  name: material
+  logo: images/logo.png
+  favicon: images/logo.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - content.code.copy
+    - content.tabs.link
+    - navigation.footer
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/VIBTOBIlab/DecoNFlow
+      name: DecoNFlow on GitHub
+    - icon: fontawesome/solid/book
+      link: https://www.biorxiv.org/content/10.1101/2025.11.27.688590v1
+      name: DecoNFlow preprint
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  # GitHub-style anchors (e.g. `--regions` -> #--regions), so links work on GitHub and on the site
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  # Nested lists indented by 2 or 3 spaces, as formatted by prettier (Python-Markdown expects 4)
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+  - pymdownx.details
+  # Material icons (e.g. :material-rocket-launch:) for the cards of the home page
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  # Content tabs (e.g. Docker / Singularity)
+  - pymdownx.tabbed:
+      alternate_style: true
+  # Include CHANGELOG.md and CITATIONS.md from the root of the repository
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+# Generates the parameters page from nextflow_schema.json
+hooks:
+  - docs/hooks/schema_params.py
+
+watch:
+  - nextflow_schema.json
+  - CHANGELOG.md
+  - CITATIONS.md
+
+validation:
+  links:
+    anchors: warn

@@ -1,134 +1,136 @@
 #!/usr/bin/env python
+"""Merge per-sample region tables into a single matrix.
+
+Each input CSV holds one sample (or one group of samples) with the genomic
+coordinates of the regions (``chr``, ``start``, ``end``) followed by one or
+more value columns (beta values, or ``<entity>_..._meth`` / ``_depth`` counts
+for CelFiE-like inputs). The files are joined on the coordinates, the value
+columns are put in a stable order and the rows are sorted by position.
+
+With ``--celfie_atlas`` the reference samples are additionally collapsed per
+entity (cell type) by summing their methylated and total counts, which is the
+atlas format expected by CelFiE and MetDecode.
+
+Author: Edoardo Giuili (edoardo.giuili@ugent.be)
+"""
+
+import argparse
 
 import pandas as pd
-import argparse
-import numpy as np
-import os
-import sys
-import re
 
-pd.options.mode.chained_assignment = None
-version = "0.1"
-copyright = "Copyright (C) 2024 Edoardo Giuili (edoardo.giuili@ugent.be)"
+__version__ = "0.2"
 
-
-def printVersion():
-    sys.stderr.write("\npreprocessing.py, version" + " %s\n" % version)
-    sys.stderr.write("\n" + copyright + "\n")
-    sys.exit(-1)
-
-
-def usage():
-    sys.stderr.write(
-        """Usage: python3 preprocessing.py  [options] --file_paths \n
-        --file_paths              List of .csv files representing the samples to deconvolve
-
-        """
-    )
-    sys.exit(-1)
+COORDINATES = ["chr", "start", "end"]
+MERGE_MODES = ["inner", "outer", "outer_fillna"]
 
 
 def parse_arguments():
-    # Specify the flags and print them
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--file_paths", help="File containing the paths of the samples")
-    parser.add_argument("--outfile", help="File containing the paths of the samples")
-    parser.add_argument("--how", help="Type of merge to be performed. It can be outer or inner (def.)")
-    parser.add_argument("--celfie_atlas", action="store_true", help="If specified, it performs the merging for CelFiE atlas.")
+    """Parse the command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Merge per-sample region tables into a single matrix."
+    )
     parser.add_argument(
-        "-v", "--version", help="Version of the tool", action="store_true"
+        "--file_paths",
+        required=True,
+        help="Space-separated list of the CSV files to merge.",
+    )
+    parser.add_argument(
+        "--outfile",
+        required=True,
+        help="Name of the output CSV file.",
+    )
+    parser.add_argument(
+        "--how",
+        choices=MERGE_MODES,
+        default="inner",
+        help=(
+            "How to join the files on the region coordinates: 'inner' keeps the "
+            "regions shared by all files, 'outer' keeps all regions (missing "
+            "values as NaN) and 'outer_fillna' keeps all regions with missing "
+            "values set to 0 (default: inner)."
+        ),
+    )
+    parser.add_argument(
+        "--celfie_atlas",
+        action="store_true",
+        help=(
+            "Collapse the samples per entity into a CelFiE atlas and save it "
+            "as 'final_<outfile>'."
+        ),
+    )
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {__version__}"
+    )
+    return parser.parse_args()
+
+
+def read_sample(path):
+    """Read one sample file, with consistent types for the coordinate columns."""
+    df = pd.read_csv(path, index_col=0, low_memory=False)
+    return df.astype({"chr": str, "start": int, "end": int})
+
+
+def merge_samples(paths, how):
+    """Join all sample files on the region coordinates."""
+    join = "inner" if how == "inner" else "outer"
+
+    merged = read_sample(paths[0])
+    for path in paths[1:]:
+        merged = merged.merge(read_sample(path), on=COORDINATES, how=join)
+
+    if how == "outer_fillna":
+        merged = merged.fillna(0)
+    return merged
+
+
+def column_sort_key(name):
+    """Sort key that groups the columns of each sample together.
+
+    Columns are ordered by sample name (the part before the last '_'), with the
+    '_meth' column before the '_depth' column of the same sample, and the full
+    column name as a tie-breaker.
+    """
+    sample = name.rsplit("_", 1)[0]
+    return (sample, "_meth" not in name, "_depth" in name, name)
+
+
+def sort_matrix(df):
+    """Order the value columns by sample and the rows by genomic position."""
+    value_columns = sorted(
+        (col for col in df.columns if col not in COORDINATES), key=column_sort_key
+    )
+    return (
+        df[COORDINATES + value_columns]
+        .sort_values(by=COORDINATES)
+        .reset_index(drop=True)
     )
 
-    # check for I/O errors
-    args = parser.parse_args()
-    if args.version:
-        printVersion()
-    if args.file_paths == None:
-        sys.stderr.write("Error! Must specify the input file\n")
-        usage()
-    return args
 
+def to_celfie_atlas(df):
+    """Collapse the samples per entity by summing their counts.
 
-def merge_files(paths, how, celfie_atlas, outfile):
-    """It merges the files in a count matrix using the in common regions."""
-    df = pd.read_csv(paths[0], index_col = 0, low_memory=False)
+    A column such as '<entity>_<sample>_meth' is renamed to '<entity>_meth' and
+    all the columns sharing that name are summed, giving one '_meth' and one
+    '_depth' column per entity (in order of first appearance).
+    """
+    entity_columns = {}
+    for col in df.columns.drop(COORDINATES):
+        parts = col.split("_")
+        entity_columns.setdefault(f"{parts[0]}_{parts[-1]}", []).append(col)
 
-    df['chr'] = df['chr'].astype(str)
-    df['start'] = df['start'].astype(int)
-    df['end'] = df['end'].astype(int)
-
-    for file in paths[1:]:
-        new_df = pd.read_csv(file, index_col = 0, low_memory=False)
-        new_df['chr'] = new_df['chr'].astype(str)
-        new_df['start'] = new_df['start'].astype(int)
-        new_df['end'] = new_df['end'].astype(int)
-        if how == 'outer':
-            df = pd.merge(df,new_df,on=['chr','start','end'], how = 'outer')
-        elif how == 'outer_fillna':
-            df = pd.merge(df,new_df,on=['chr','start','end'], how = 'outer').fillna(0)
-        else: df = pd.merge(df,new_df,on=['chr','start','end'], how = 'inner')
-
-    # Separate first three columns (they won't be sorted)
-    first_three_cols = df[['chr', 'start', 'end']]
-
-    # Get the remaining columns
-    remaining_cols = df[df.columns.difference(['chr', 'start', 'end'])]
-
-    # Sort the remaining columns using the custom key
-    sorted_cols = sorted(remaining_cols, key=sort_key)
-
-    # Concatenate the two parts
-    df_sorted = pd.concat([first_three_cols, df[sorted_cols]], axis=1)
-    df_sorted = df_sorted.sort_values(by=['chr','start','end']).reset_index(drop=True)
-
-    # If celfie atlas is specified, reformat the matrix accordingly and save it
-    if celfie_atlas == True:
-        df_celfie = celfie_atlas_format(df_sorted)
-        df_celfie.to_csv("final_"+outfile)
-        return df_celfie
-
-    # Otherwise, just save the sorted, concatanated matrix
-    df_sorted.to_csv(outfile)
-    return df_sorted
-
-
-def sort_key(x):
-    # Check for the presence of '_meth' or '_depth'
-    has_meth = '_meth' in x
-    has_depth = '_depth' in x
-
-    # Determine the base name; if there is no underscore, use the full name as base
-    base_name = x.rsplit('_', 1)[0] if '_' in x else x
-
-    # Return a tuple for sorting:
-    # 1. base name (for grouping)
-    # 2. priority for '_meth' columns (True = comes first)
-    # 3. priority for '_depth' columns (True = comes after '_meth')
-    # 4. original column name (for tiebreaking)
-    return (base_name, not has_meth, has_depth, x)
-
-
-def celfie_atlas_format(df_celfie):
-    # Get unique entity prefixes
-    for col in df_celfie.columns[3:]:
-        new_col = col.split("_")[0]+"_"+col.split("_")[-1]
-        df_celfie = df_celfie.rename(columns = {col:new_col})
-    # Group the DataFrame by entities
-    grouped = df_celfie.groupby(axis=1, level=0, sort=False).sum()
-    return grouped
+    summed = {entity: df[cols].sum(axis=1) for entity, cols in entity_columns.items()}
+    return pd.concat([df[COORDINATES], pd.DataFrame(summed)], axis=1)
 
 
 def main():
     args = parse_arguments()
 
-    file_paths = args.file_paths.split(" ")
+    matrix = sort_matrix(merge_samples(args.file_paths.split(), args.how))
 
-    merge_files(file_paths,
-                args.how,
-                args.celfie_atlas,
-                args.outfile)
-
-    #res_df.to_csv(args.outfile)
+    if args.celfie_atlas:
+        to_celfie_atlas(matrix).to_csv(f"final_{args.outfile}")
+    else:
+        matrix.to_csv(args.outfile)
 
 
 if __name__ == "__main__":

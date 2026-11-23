@@ -1,41 +1,51 @@
 ![Presentation1](docs/images/logo.png)
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.10.1-23aa62.svg)](https://www.nextflow.io/)
+[![GitHub Actions CI Status](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/nf-test.yml/badge.svg?branch=dev-refactoring)](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/nf-test.yml?query=branch%3Adev-refactoring)
+[![GitHub Actions Linting Status](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/linting.yml/badge.svg?branch=dev-refactoring)](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/linting.yml?query=branch%3Adev-refactoring)
+[![Documentation](https://github.com/VIBTOBIlab/DecoNFlow/actions/workflows/docs.yml/badge.svg?branch=dev-refactoring)](https://vibtobilab.github.io/DecoNFlow/)
+[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
+[![Cite with bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.11.27.688590-b31b1b.svg)](https://doi.org/10.1101/2025.11.27.688590)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/VIBTOBIlab/DecoNFlow/blob/main/LICENSE)
+
+[![Nextflow](https://img.shields.io/badge/version-%E2%89%A526.04.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)
+[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.1.0-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.1.0)
+[![run with conda](https://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![nf-test](https://img.shields.io/badge/tested_with-nf--test-337ab7.svg)](https://github.com/askimed/nf-test)
 
 # Introduction
 
 DecoNFlow is a bioinformatics analysis pipeline used for computational deconvolution of DNA methylation data. It allows deconvolution of samples using both reference-based and reference-free deconvolution tools. It also allows benchmarking of the different tools included in the pipeline.
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=23.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
+The pipeline is built using [Nextflow](https://www.nextflow.io/) (>=26.04.0) a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
 
 # Pipeline Summary
 
-![Presentation1](docs/images/animated.map.svg)
-The pipeline allows you to run both reference-based and reference-free deconvolution tools. The pipeline also allows you to choose among different differential methylated region (DMR) selection tools. Visit [docs](docs/) for more information.
+[![DecoNFlow metro map](docs/images/deconflow_metro.svg)](docs/images/deconflow_metro.html)
+
+_Click the map to open the interactive version ([deconflow_metro.html](docs/images/deconflow_metro.html)), which you can pan, zoom and filter by line._
+
+The pipeline allows you to run both reference-based and reference-free deconvolution tools. Differentially methylated regions (DMRs) are selected with limma. Visit [docs](docs/) for more information.
 
 1. DMR selection
-   1. DMRfinder
-   2. limma
-   3. wgbs_tools
+   - limma
 2. Deconvolution
    1. Reference-based deconvolution
-      - meth_atlas (.cov)
-      - CIBERSORT (.cov)
-      - EpiDISH (.cov)
+      - meth_atlas
+      - CIBERSORT
+      - EpiDISH
       - Houseman's CP (equality)
       - Houseman's CP (inequality)
-      - EpiSCORE (.cov)
-      - MethylResolver (.cov)
-      - PRMeth (.cov)
-      - CelFiE (.cov)
-      - MetDecode (.cov)
-      - UXM (.bam)
+      - EpiSCORE
+      - MethylResolver
+      - PRMeth
+      - CelFiE
+      - MetDecode
    2. Reference-free deconvolution
-      - MeDeCom (.cov)
-      - RefFreeCellMix (.cov)
+      - MeDeCom
+      - RefFreeCellMix
+
+The methylation data of the reference and bulk samples can be provided as Bismark coverage files (`.cov.gz`) or MethylDackel bedGraph files (`.bedGraph.gz`).
 
 # Usage
 
@@ -48,7 +58,7 @@ First, prepare a samplesheet (.csv) file with your samples that need to be decon
 
 `test.csv`:
 
-```plaintext:
+```plaintext
 name,sample
 test1,/path/to/the/files/file1.cov.gz
 test2,/path/to/the/files/file2.cov.gz
@@ -66,7 +76,7 @@ Finally, prepare a samplesheet with your reference samples to build the referenc
 
 `reference.csv`
 
-```plaintext:
+```plaintext
 name,type,file
 file1,healthy,/path/to/the/file/file1.cov.gz
 file2,healthy,/path/to/the/file/file2.cov.gz
@@ -82,17 +92,17 @@ Each row represents a coverage file, with the first column representing the samp
 
 > **NOTE** For more information, please refer to the [docs](docs/README.md).
 
-Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one deconvolution tool to use (e.g. `--meth_atlas`). If you specify a reference-based deconvolution tool, also a DMR selection approach needs to be specified (e.g. `--DMRselection DMRfinder`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)). If you want to run the pipeline using UXM, refer to the [documentation](./docs/usage.md).
+Now you can run the NextFlow (>=23.10.1) pipeline. You need to allocate at least 8 CPUs and 16 GB of RAM to make the pipeline running. When running the pipeline, you need to specify the at least one deconvolution tool to use (e.g. `--meth_atlas`). If you specify a reference-based deconvolution tool, you also need to provide either the reference samples (`--input`) together with a region file (`--regions`) for limma DMR selection, or a reference matrix (`--ref_matrix`). CelFiE and MetDecode need read counts instead of beta values, so they use the reference samples or their own reference matrix (`--celfie_ref_matrix`, `--metdecode_ref_matrix`). The pipeline can also be run using the flag `--benchmark`. In this case, it will run all the tools included in the pipeline, however several files need to be specified (please refer to the [documentation](./docs/usage.md)).
 
 You can run the pipeline using docker profile:
 
-```plaintext:
+```plaintext
 nextflow run main.nf -params-file params.yaml -profile docker
 ```
 
 Or using singularity profile:
 
-```plaintext:
+```plaintext
 nextflow run main.nf -params-file params.yaml -profile singularity
 ```
 
@@ -100,12 +110,12 @@ The params.yaml file looks like the following:
 
 `params.yaml`:
 
-```plaintext:
+```plaintext
 input: ./resources/reference.csv
 outdir: ./results
-test_set: ./resources/test.csv
+bulk_samples: ./resources/test.csv
 meth_atlas: true
-DMRselection: DMRfinder
+regions: ./resources/regions.bed
 ```
 
 All the parameters specified in the file can also be specified in the command line using the corresponding flags.

@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::r-base=4.3.3
+  - conda-forge::r-doparallel=1.0.17
+  - conda-forge::r-dosnow=1.0.20
+  - conda-forge::r-foreach=1.5.2
+  - conda-forge::r-metrics=0.1.4
+  - conda-forge::r-randomforest=4.7_1.1
+  - conda-forge::r-robustbase=0.99_2
+  - conda-forge::r-snow=0.4_4
+  - conda-forge::r-varhandle=2.0.6

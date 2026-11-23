@@ -10,7 +10,7 @@ nextflow_pipeline {
             params {
                 // define parameters here. Example:
                 outdir = "${outputDir}"
-                DMRselection = 'limma'
+                ref_matrix = null
                 meth_atlas = true
             }
         }
@@ -18,10 +18,11 @@ nextflow_pipeline {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert path("$outputDir/deconvolution_results/deconvolution_report.html").exists() },
                 { assert snapshot(
                     // Number of tasks
                     workflow.trace.succeeded().size(),
-                    path("$outputDir/deconvolution_results/combined_results.csv")
+                    path("$outputDir/deconvolution_results/combined_results_refbased.csv")
                 ).match() }
             )
         }

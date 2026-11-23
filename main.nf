@@ -1,65 +1,224 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    DecoNFlow
+    VIBTOBIlab/DecoNFlow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/VIBTOBIlab/DecoNFlow
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.enable.dsl = 2
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VALIDATE & PRINT PARAMETER SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-include { validateParameters; paramsHelp} from 'plugin/nf-schema'
-
-// Print help message, supply typical command line usage for the pipeline
-if (params.help) {
-    def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-    def String command = "nextflow run main.nf --input input_file.csv -test_set test.csv --outdir results/ --regions_file regions.bed -profile <profile>"
-    log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
-    System.exit(0)
-}
-
-// Validate input parameters
-if (params.validate_params) {
-    validateParameters()
-}
-
-WorkflowMain.initialise(workflow, params, log)
-
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOW FOR PIPELINE
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { DNAmDeconv } from './workflows/DNAmDeconv'
+include { DECONFLOW              } from './workflows/deconflow'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_deconflow_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_deconflow_pipeline'
 
-//
-// WORKFLOW: Run main nf-core/DNAmDeconv analysis pipeline
-//
-workflow RUN_DNAmDeconv {
-    DNAmDeconv ()
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    PIPELINE PARAMETERS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+params {
+
+    // Input/output options
+    // Path to comma-separated file containing information about the reference samples.
+    input: String?
+    // The path of the reference matrix that you want to use for ref-based deconvolution.
+    ref_matrix: String?
+    // The path of the reference matrix of read counts used by CelFiE instead of the reference samples.
+    celfie_ref_matrix: String?
+    // The path of the reference matrix of read counts used by MetDecode instead of the reference samples.
+    metdecode_ref_matrix: String?
+    // The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
+    outdir: String?
+
+    // Path to comma-separated file containing information about the samples to deconvolve.
+    bulk_samples: String?
+    // Path to comma-separated file with the expected cell type proportions of the bulk samples, to evaluate the reference-based tools.
+    ground_truth: String?
+
+    // Intermediate files options
+    // Save intermediate files.
+    save_intermeds: Boolean
+
+    // Deconvolution tools
+    // If True, it runs all the tools present in the pipeline
+    benchmark: Boolean
+    // Run the corresponding tool
+    epidish: Boolean
+    // Run the corresponding tool
+    houseman_eq: Boolean
+    // Run the corresponding tool
+    houseman_ineq: Boolean
+    // Run the corresponding tool
+    methyl_resolver: Boolean
+    // Run the corresponding tool
+    episcore: Boolean
+    // Run the corresponding tool
+    prmeth: Boolean
+    // Run the corresponding tool
+    ref_freecell_mix: Boolean
+    // Run the corresponding tool
+    medecom: Boolean
+    // Run the corresponding tool
+    celfie: Boolean
+    // Run the corresponding tool
+    meth_atlas: Boolean
+    // Run the corresponding tool
+    cibersort: Boolean
+    // Run the corresponding tool
+    metdecode: Boolean
+
+    // Options for the preprocessing of the reference samples
+    // Minimum number of counts to keep a CpG position
+    min_counts: Integer = 10
+    // Minimum number of CpGs per region
+    min_cpgs: Integer = 3
+
+    // Options for the preprocessing for bulk samples.
+    // Minimum number of counts to keep a CpG position for the bulk samples.
+    bulk_min_cpgs: Integer = 0
+    // Minimum number of CpGs per region for the bulk samples.
+    bulk_min_counts: Integer = 0
+
+    // DMR analysis general options
+    // Adjusted p-value threshold
+    adjp: Float = 0.001
+    // Minimum absolute delta beta of a DMR (0 = no filter on the effect size)
+    min_delta_beta: Float = 0
+    // Method to collapse the sample values for each region
+    collapse_method: String = 'mean'
+    // Direction of methylation.
+    direction: String = 'both'
+    // Take the top x number of DMRs per cell state.
+    top: Integer = 250
+
+    // Limma options
+    // Path to the region file used for limma DMR selection and reference-free deconvolution.
+    regions: String?
+    // Genome whose CpG islands (UCSC cpgIslandExt) are used as regions when no regions file is provided.
+    cgi_genome: String?
+    // Multiple testing correction method among the ones available in limma R package
+    adj_method: String = 'BH'
+    // When merging samples for limma DMR analysis, include the regions even if some samples have missing values
+    include_na: Boolean
+
+    // Reference-free deconvolution options.
+    // Number of cell types expected (necessary for ref-free modality)
+    clusters: Integer = 2
+
+    // MeDeCom parameters
+    // Number of random initializations
+    ninit: Integer = 10
+    // Number of folds for CV
+    nfold: Integer = 10
+    // Max number of iterations
+    itermax: Integer = 300
+
+    // EpiSCORE parameters
+    // Weight parameter used for deconvolution (can go from 0.05 to 0.9)
+    weight: Float = 0.4
+
+    // MethylResolver parameters
+    // Alpha parameter used by the model (can go from 0.5 to 0.9)
+    alpha: Float = 0.5
+
+    // PRMeth parameters
+    // PRMeth deconv modality
+    prmeth_mod: String = 'QP'
+    // PRMeth number of entities when using NMF
+    prmeth_NMF_entities: Integer = 3
+
+    // CelFiE parameters
+    // How long the EM should iterate before stopping, unless convergence criteria is met
+    celfie_maxiter: Integer = 1000
+    // Number of unknown categories to be estimated along with the reference data
+    unknown: Integer = 0
+    // Replicate number in a simulation experiment
+    parall_job: Integer = 1
+    // Convergence criteria for EM
+    converg: Float = 0.0001
+    // CelFiE will perform several random restarts and select the one with the highest log-likelihood
+    celfie_randrest: Integer = 10
+
+    // MetDecode parameters
+    // Number of unknown entities.
+    unknown_tissues: Integer?
+    // If specified, it makes the sum of the proportions to 1.
+    sum1: Boolean
+    // Disable CpG coverage factor.
+    no_coverage: Boolean
+    // Disable the unsupervised refinment of the proportions.
+    supervised: Boolean
+
+    // Generic options
+    // Display version and exit.
+    version: Boolean
+    // Do not use coloured log outputs.
+    monochrome_logs: Boolean
+    // Boolean whether to validate parameters against the schema at runtime
+    validate_params: Boolean = true
+    // Display the help message.
+    help: String?
+    // Display the full detailed help message.
+    help_full: Boolean
+    // Display hidden parameters in the help message (only works when --help or --help_full are provided).
+    show_hidden: Boolean
 }
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN ALL WORKFLOWS
+    NAMED WORKFLOWS FOR PIPELINE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 //
-// WORKFLOW: Execute a single named workflow for the pipeline
-// See: https://github.com/nf-core/rnaseq/issues/619
+// WORKFLOW: Run main DecoNFlow analysis pipeline
 //
+workflow RUN_DECONFLOW {
+
+    main:
+    DECONFLOW ()
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    RUN MAIN WORKFLOW
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
 workflow {
-    RUN_DNAmDeconv ()
+
+    main:
+    //
+    // SUBWORKFLOW: Run initialisation tasks
+    //
+    PIPELINE_INITIALISATION (
+        params.version,
+        params.validate_params,
+        args,
+        params.outdir,
+        params.help,
+        params.help_full,
+        params.show_hidden
+    )
+
+    //
+    // WORKFLOW: Run main workflow
+    //
+    RUN_DECONFLOW ()
+
+    //
+    // SUBWORKFLOW: Run completion tasks
+    //
+    PIPELINE_COMPLETION (
+        params.monochrome_logs,
+    )
 }
 
 /*

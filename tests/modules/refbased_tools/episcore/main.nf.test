@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EPISCORE"
-    script "modules/refbased_tools/episcore/main.nf"
+    script "modules/local/refbased_tools/episcore/main.nf"
     process "EPISCORE"
 
     test("Should run without failures") {

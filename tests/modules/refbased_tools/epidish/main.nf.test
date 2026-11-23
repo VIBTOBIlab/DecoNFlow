@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EPIDISH"
-    script "modules/refbased_tools/epidish/main.nf"
+    script "modules/local/refbased_tools/epidish/main.nf"
     process "EPIDISH"
 
     test("Should run without failures") {

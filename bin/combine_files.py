@@ -1,74 +1,73 @@
 #!/usr/bin/env python
+"""Combine the cell-type proportions estimated by each deconvolution tool.
+
+Each result file has one row per sample, the sample name in the first column
+and one column per cell type. The files are stacked into a single table with
+the first column renamed to ``sample`` and an extra ``tool`` column saying
+which tool produced each row.
+
+Author: Edoardo Giuili (edoardo.giuili@ugent.be)
+"""
+
+import argparse
 
 import pandas as pd
-import sys
-import argparse
-import ast
 
-version = "0.1"
-copyright = "Copyright (C) 2024 Edoardo Giuili (edoardo.giuili@ugent.be)"
-
-
-def printVersion():
-    sys.stderr.write("\ncombine_files.py, version" + " %s\n" % version)
-    sys.stderr.write("\n" + copyright + "\n")
-    sys.exit(-1)
-
-
-def usage():
-    sys.stderr.write(
-        """
-        Usage: python3 combine_files.py <file_paths> -o <output_file> \n
-        """
-    )
-    sys.exit(-1)
+__version__ = "0.2"
 
 
 def parse_arguments():
-    # Specify the flags and print them
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--results', nargs='*', help='A list of results files to process')
-    parser.add_argument('--tool_names', nargs='*', help='A list of tools names corresponding to the results to process')
-    parser.add_argument('-o','--outfile', type = str, help='Output file')
+    """Parse the command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Combine the results of several deconvolution tools in one table."
+    )
     parser.add_argument(
-        "-v", "--version", help="Version of the tool", action="store_true"
+        "--results",
+        nargs="+",
+        required=True,
+        help="Result files to combine (.txt files are read as TSV, others as CSV).",
+    )
+    parser.add_argument(
+        "--tool_names",
+        nargs="+",
+        required=True,
+        help="Name of the tool that produced each result file, in the same order.",
+    )
+    parser.add_argument(
+        "-o",
+        "--outfile",
+        required=True,
+        help="Output file name, without the .csv extension.",
+    )
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {__version__}"
     )
 
     args = parser.parse_args()
-    if args.version:
-        printVersion()
-    if args.outfile == None:
-        print("Specify the output file")
-        usage()
+    if len(args.results) != len(args.tool_names):
+        parser.error("--results and --tool_names must have the same number of values.")
     return args
 
 
-def merge_files(paths,tools):
-    df = pd.DataFrame()
-    for i in range(len(paths)):
+def read_result(path, tool):
+    """Read one result file and label its rows with the tool name."""
+    sep = "\t" if path.endswith(".txt") else ","
+    result = pd.read_csv(path, sep=sep)
+    result = result.rename(columns={result.columns[0]: "sample"})
+    result["tool"] = tool
+    return result
 
-        tool = tools[i]
-        path = paths[i]
 
-        if path.endswith(".txt"):
-            deconvFile = pd.read_csv(path,sep="\t")
-        else: deconvFile = pd.read_csv(path,sep=",")
-
-        deconvFile.columns.values[0] = "sample"
-        deconvFile[['tool']] = tool
-        df = pd.concat([df,deconvFile], axis = 0)
-
-    return df.reset_index(drop = True)
+def combine_results(paths, tools):
+    """Stack the results of all tools into a single table."""
+    results = [read_result(path, tool) for path, tool in zip(paths, tools)]
+    return pd.concat(results, axis=0, ignore_index=True)
 
 
 def main():
-    # Get the arguments and print them in the output file
     args = parse_arguments()
-    # Read from standard input
-    file_paths = args.results
-    tool_names = args.tool_names
-    res_df = merge_files(file_paths,tool_names)
-    res_df.to_csv(args.outfile+".csv", index = False)
+    combined = combine_results(args.results, args.tool_names)
+    combined.to_csv(f"{args.outfile}.csv", index=False)
 
 
 if __name__ == "__main__":

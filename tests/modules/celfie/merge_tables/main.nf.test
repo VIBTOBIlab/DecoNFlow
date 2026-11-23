@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process MERGE_TABLES"
-    script "modules/celfie/merge_tables/main.nf"
+    script "modules/local/celfie/merge_tables/main.nf"
     process "MERGE_TABLES"
 
     test("Should run without failures") {

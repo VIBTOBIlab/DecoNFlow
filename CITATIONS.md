@@ -34,18 +34,10 @@
   > Houseman, E.A., Accomando, W.P., Koestler, D.C. et al. DNA methylation arrays as surrogate measures of cell mixture distribution. BMC Bioinformatics 13, 86 (2012).
 - <u>[CelFiE](https://www.nature.com/articles/s41467-021-22901-x)</u>
   > Caggiano, C., Celona, B., Garton, F. et al. Comprehensive cell type decomposition of circulating cell-free DNA with CelFiE. Nat Commun 12, 2717 (2021)
-- <u>[UXM](https://www.nature.com/articles/s41586-022-05580-6)</u>
-  > Loyfer, N., Magenheim, J., Peretz, A. et al. A DNA methylation atlas of normal human cell types. Nature 613, 355–364 (2023).
 - <u>[MetDecode](https://academic.oup.com/bioinformatics/article/40/9/btae522/7739698)</u>
   > Antoine Passemiers, Stefania Tuveri, Dhanya Sudhakaran, Tatjana Jatsenko, Tina Laga, Kevin Punie, Sigrid Hatse, Sabine Tejpar, An Coosemans, Els Van Nieuwenhuysen, Dirk Timmerman, Giuseppe Floris, Anne-Sophie Van Rompuy, Xavier Sagaert, Antonia Testa, Daniela Ficherova, Daniele Raimondi, Frederic Amant, Liesbeth Lenaerts, Yves Moreau, Joris R Vermeesch, MetDecode: methylation-based deconvolution of cell-free DNA for noninvasive multi-cancer typing, Bioinformatics, Volume 40, Issue 9, September 2024, btae522.
 - <u>[limma](https://academic.oup.com/nar/article/43/7/e47/2414268)</u>
   > Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015
-- <u>[wgbs_tools](https://www.biorxiv.org/content/10.1101/2024.05.08.593132v1)</u>
-  > Netanel Loyfer, Jonathan Rosenski, Tommy Kaplan. wgbstools: A computational suite for DNA methylation sequencing data representation, visualization, and analysis, bioRxiv 2024.05.08.593132
-- <u>[DMRfinder](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1909-0)</u>
-  > Gaspar, J.M., Hart, R.P. DMRfinder: efficiently identifying differentially methylated regions from MethylC-seq data. BMC Bioinformatics 18, 528 (2017)
-- <u>[Bismark](https://academic.oup.com/bioinformatics/article/27/11/1571/216956)</u>
-  > Felix Krueger, Simon R. Andrews, Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications, Bioinformatics, Volume 27, Issue 11, June 2011, Pages 1571–1572
 - <u>[BEDTools](https://academic.oup.com/bioinformatics/article/26/6/841/244688)</u>
   > Aaron R. Quinlan, Ira M. Hall, BEDTools: a flexible suite of utilities for comparing genomic features, Bioinformatics, Volume 26, Issue 6, March 2010, Pages 841–842
 

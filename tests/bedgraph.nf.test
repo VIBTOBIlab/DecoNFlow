@@ -1,0 +1,75 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    tag "cpu"
+
+    // The bedGraph test files (MethylDackel) are aligned to hg38, so the CpG islands
+    // of hg38 are used as regions instead of the hg19 RRBS regions of the other tests
+
+    test("Test scenario: bedGraph reference and bulk samples + CpG islands of hg38 + meth_atlas") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                input = "https://github.com/VIBTOBIlab/deconflow_testdata/raw/main/resources/ref_bedgraph.csv"
+                bulk_samples = "https://github.com/VIBTOBIlab/deconflow_testdata/raw/main/resources/bulk_samples_bedgraph.csv"
+                ref_matrix = null
+                regions = null
+                cgi_genome = 'hg38'
+                meth_atlas = true
+            }
+        }
+
+        then {
+            // Round numeric values to 4 decimals so floating-point noise
+            // doesn't differ between arm64 and x86_64
+            def combined = path("$outputDir/deconvolution_results/combined_results_refbased.csv")
+                .readLines()
+                .collect { line ->
+                    line.split(',', -1).collect { field ->
+                        field.isBigDecimal()
+                            ? new BigDecimal(field).setScale(4, java.math.RoundingMode.HALF_UP).toPlainString()
+                            : field
+                    }.join(',')
+                }
+
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.succeeded().count { task -> task.name.contains('FORMAT_') && task.name.contains('_COVERAGE') } > 0 },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    combined
+                ).match() }
+            )
+        }
+    }
+
+    test("Test scenario: bedGraph bulk samples + CpG islands of hg38 + RefFreeCellMix") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                input = null
+                bulk_samples = "https://github.com/VIBTOBIlab/deconflow_testdata/raw/main/resources/bulk_samples_bedgraph.csv"
+                ref_matrix = null
+                regions = null
+                cgi_genome = 'hg38'
+                meth_atlas = false
+                ref_freecell_mix = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // Number of tasks
+                    workflow.trace.succeeded().size(),
+                    path("$outputDir/deconvolution_results/combined_results_reffree.csv")
+                ).match() }
+            )
+        }
+    }
+}

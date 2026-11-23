@@ -1,0 +1,29 @@
+{
+    "Test scenario: bedGraph bulk samples + CpG islands of hg38 + RefFreeCellMix": {
+        "content": [
+            11,
+            "combined_results_reffree.csv:md5,5863546243b3040b0a777f37573bfdaf"
+        ],
+        "timestamp": "2026-10-19T10:15:29.686886",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "Test scenario: bedGraph reference and bulk samples + CpG islands of hg38 + meth_atlas": {
+        "content": [
+            27,
+            [
+                "sample,colon,lung,pancreas,tool",
+                "SRR536238,0.4920,0.0000,0.5080,meth_atlas",
+                "SRR620008,0.1010,0.0000,0.8990,meth_atlas",
+                "SRR641695,0.4550,0.5450,0.0000,meth_atlas"
+            ]
+        ],
+        "timestamp": "2026-10-19T10:15:10.836025",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    }
+}

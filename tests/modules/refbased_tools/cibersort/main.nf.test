@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process CIBERSORT"
-    script "modules/refbased_tools/cibersort/main.nf"
+    script "modules/local/refbased_tools/cibersort/main.nf"
     process "CIBERSORT"
 
     test("Should run without failures") {
