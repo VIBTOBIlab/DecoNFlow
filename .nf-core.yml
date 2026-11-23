@@ -48,7 +48,7 @@ template:
     deconvolution of DNA methylation data. It allows deconvolution of samples using
     both reference-based and reference-free deconvolution tools.
   author: Edoardo Giuili
-  version: 2.5.0
+  version: 3.0.0
   force: false
   outdir: .
   skip_features:
